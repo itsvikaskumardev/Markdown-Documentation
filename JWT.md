@@ -1,4 +1,4 @@
-# What is the Complete JWT Authentication Flow?
+# 1. What is the Complete JWT Authentication Flow?
 
 ```text
 ┌──────────────────┐
@@ -62,7 +62,7 @@
 
 ---
 
-# What happens during Step 1 — User Registration?
+# 2. What happens during Step 1 - User Registration?
 
 Before login, the user usually creates an account.
 
@@ -91,7 +91,7 @@ POST /api/auth/register
 
 ---
 
-# 2. Why is the Password NOT Stored Directly?
+# 3. Why is the Password NOT Stored Directly?
 
 The backend should **never store**:
 
@@ -134,7 +134,7 @@ Id    Email              PasswordHash
 ---
 
 
-# 4. What happens during Step 2 — User Login?
+# 4. What happens during Step 2 - User Login?
 
 User enters:
 
@@ -279,7 +279,7 @@ Reject login
 ---
 
 ----
-# 1. How is the JWT Generated?
+# 7. How is the JWT Generated?
 
 If the password is correct:
 
@@ -300,7 +300,7 @@ HEADER.PAYLOAD.SIGNATURE
 
 ---
 
-# 2. What is the JWT Header?
+# 8. What is the JWT Header?
 
 Example:
 
@@ -341,7 +341,7 @@ Token type = JWT
 
 ---
 
-# 3. What is the JWT Payload?
+# 9. What is the JWT Payload?
 
 Payload contains **claims**.
 
@@ -378,7 +378,7 @@ Expiration time
 
 ---
 
-# 4. Why is it Important that the JWT Payload Is Not Secret?
+# 10. Why is it Important that the JWT Payload Is Not Secret?
 
 The payload is normally **encoded, not encrypted**.
 
@@ -406,7 +406,7 @@ inside the JWT.
 
 ---
 
-# 5. What is the JWT Signature?
+# 11. What is the JWT Signature?
 
 The signature protects the JWT from modification.
 
@@ -432,7 +432,7 @@ Header.Payload.Signature
 
 ---
 
-# 6. What Is HS256?
+# 12. What Is HS256?
 
 HS256 means:
 
@@ -479,7 +479,7 @@ Frontend must NOT know the secret key.
 
 ---
 
-# 7. How Does the Signature Prevent Modification?
+# 13. How Does the Signature Prevent Modification?
 
 Suppose the original JWT payload is:
 
@@ -546,7 +546,7 @@ Result:
 
 ---
 
-# 16. What Is the Secret Key?
+# 14. What Is the Secret Key?
 
 The secret key is a secret value known by the backend.
 
@@ -570,7 +570,7 @@ It should **never be sent to the frontend**.
 
 ---
 
-# 17. How does the Backend Send the JWT to the Frontend (Step 6)?
+# 15. How does the Backend Send the JWT to the Frontend (Step 6)?
 
 After generating the JWT:
 
@@ -594,7 +594,7 @@ Or the backend can set the token in a cookie.
 
 ---
 
-# 18. Where Is JWT Stored?
+# 16. Where Is JWT Stored?
 
 There are several choices.
 
@@ -628,7 +628,7 @@ Cookies are automatically sent with matching requests, so CSRF protection and co
 
 ---
 
-# 19. Option 2 — localStorage
+# 17. How does storing JWT in localStorage work (Option 2)?
 
 ```javascript
 localStorage.setItem(
@@ -667,7 +667,7 @@ JWT stolen
 
 ---
 
-# 20. Option 3 — sessionStorage
+# 18. How does storing JWT in sessionStorage work (Option 3)?
 
 ```javascript
 sessionStorage.setItem(
@@ -696,7 +696,7 @@ JavaScript can still access it, so XSS remains a concern.
 
 ---
 
-# 21. Storage Comparison
+# 19. How do different storage options compare?
 
 | Storage         | JavaScript can read? | Main concern             |
 | --------------- | -------------------: | ------------------------ |
@@ -716,7 +716,7 @@ Refresh Token Rotation / Revocation
 
 ---
 
-# 22. Step 7 — User Calls Protected API
+# 20. What happens when the User Calls a Protected API (Step 7)?
 
 Suppose the user wants their properties:
 
@@ -746,7 +746,7 @@ Flow:
 
 ---
 
-# 23. What Does the Backend Do With JWT?
+# 21. What Does the Backend Do With JWT?
 
 Backend receives:
 
@@ -776,7 +776,7 @@ Authentication successful
 
 ---
 
-# 24. JWT Signature Verification
+# 22. How does JWT Signature Verification work?
 
 Backend already knows:
 
@@ -827,7 +827,7 @@ Token modified/invalid
 
 ---
 
-# 25. JWT Expiration — `exp`
+# 23. What is JWT Expiration (`exp`)?
 
 JWT can contain:
 
@@ -879,7 +879,7 @@ then:
 
 ---
 
-# 26. Complete JWT Validation
+# 24. What are the steps for Complete JWT Validation?
 
 The backend can conceptually perform:
 
@@ -910,7 +910,7 @@ The backend can conceptually perform:
 
 ---
 
-# 27. Does JWT Need to Be Stored in Database?
+# 25. Does JWT Need to Be Stored in Database?
 
 ### Access JWT
 
@@ -940,7 +940,7 @@ No access-token database lookup is required just to validate the JWT.
 
 ---
 
-# 28. What Is Stored in Database?
+# 26. What Is Stored in Database?
 
 Example:
 
@@ -984,7 +984,7 @@ The exact schema depends on the authentication architecture.
 
 ---
 
-# 29. What Is Stored in JWT?
+# 27. What Is Stored in JWT?
 
 Example:
 
@@ -1022,7 +1022,7 @@ JWT
 
 ---
 
-# 30. Access Token
+# 28. What is an Access Token?
 
 Access token is used to access protected APIs.
 
@@ -1048,7 +1048,7 @@ Access Token
 
 ---
 
-# 31. Why Not Make Access Token Last 30 Days?
+# 29. Why Not Make Access Token Last 30 Days?
 
 Suppose an attacker steals an access token.
 
@@ -1078,7 +1078,7 @@ That's why we use refresh tokens.
 
 ---
 
-# 32. Refresh Token
+# 30. What is a Refresh Token?
 
 Refresh token is used to obtain a new access token.
 
@@ -1100,7 +1100,7 @@ It can simply be a long random value that the server tracks.
 
 ---
 
-# 33. Why Do We Need Refresh Tokens?
+# 31. Why Do We Need Refresh Tokens?
 
 Example:
 
@@ -1155,7 +1155,7 @@ Continue using application
 
 ---
 
-# 34. Complete Refresh Flow
+# 32. What is the Complete Refresh Flow?
 
 ```text
 ┌──────────────┐
@@ -1204,7 +1204,7 @@ Continue using application
 
 ---
 
-# 35. What If the Access Token Is Invalid?
+# 33. What If the Access Token Is Invalid?
 
 Examples:
 
@@ -1225,7 +1225,7 @@ Backend normally returns:
 
 ---
 
-# 36. What If the User Doesn't Have Permission?
+# 34. What If the User Doesn't Have Permission?
 
 Authentication and authorization are different.
 
@@ -1283,7 +1283,7 @@ Simple difference:
 
 
 
-# 39. Token Gets Tampered With
+# 35. What happens if the Token Gets Tampered With?
 
 Original:
 
@@ -1315,7 +1315,7 @@ Signature doesn't match
 
 ---
 
-# 40. Token Expires
+# 36. What happens if the Token Expires?
 
 ```text
 Access Token
@@ -1353,7 +1353,7 @@ Retry API
 
 ---
 
-# 41. The Entire JWT Flow in One Diagram
+# 37. What is the Entire JWT Flow in One Diagram?
 
 ```text
                          LOGIN
@@ -1443,7 +1443,7 @@ The easiest way to understand it is:
 
 ---
 
-# 1. First: What are we signing?
+# 38. First: What are we signing?
 
 Suppose your backend creates this JWT:
 
@@ -1490,7 +1490,7 @@ This is called **SIGNING the JWT**.
 
 ---
 
-# 2. What Does "SIGN" Mean?
+# 39. What Does "SIGN" Mean?
 
 "Sign" does **not** mean putting a normal signature like your handwritten signature.
 
@@ -1528,7 +1528,7 @@ Using Secret Key + HS256
 
 ---
 
-# 3. Why Do We Sign It?
+# 40. Why Do We Sign It?
 
 Because later the backend needs to know:
 
@@ -1561,7 +1561,7 @@ HEADER.PAYLOAD.ABC123
 
 ---
 
-# 4. Now the Frontend Gets the JWT
+# 41. What happens when the Frontend Gets the JWT?
 
 Backend sends:
 
@@ -1585,7 +1585,7 @@ Backend
 
 ---
 
-# 5. Now What Is "VERIFY JWT"?
+# 42. Now What Is "VERIFY JWT"?
 
 This happens when the backend receives the JWT later.
 
@@ -1646,7 +1646,7 @@ This is called **VERIFYING the JWT**.
 
 ---
 
-# 6. Very Simple Diagram
+# 43. What is a Very Simple Diagram of this?
 
 ### When creating JWT
 
@@ -1702,7 +1702,7 @@ This is:
 
 ---
 
-# 7. What If Someone Changes the JWT?
+# 44. What If Someone Changes the JWT?
 
 This is where signing becomes useful.
 
@@ -1780,7 +1780,7 @@ Therefore:
 
 ---
 
-# 8. The Important Point
+# 45. What is The Important Point here?
 
 The secret key is **NOT sent with the JWT**.
 
@@ -1810,7 +1810,7 @@ Secret Key ❌
 
 ---
 
-# 9. Think of It Like a Stamp
+# 46. Why should we Think of It Like a Stamp?
 
 Imagine your backend has a secret stamp:
 
@@ -1849,7 +1849,7 @@ The cryptographic process is much more sophisticated than a physical stamp, but 
 
 ---
 
-# 10. In One Sentence
+# 47. How would you summarize this In One Sentence?
 
 Remember this:
 
