@@ -1,4 +1,4 @@
-# Complete JWT Authentication Flow
+# What is the Complete JWT Authentication Flow?
 
 ```text
 ┌──────────────────┐
@@ -62,9 +62,7 @@
 
 ---
 
-# Q1) How User registyeration and login works  ?
-
-##1 Step 1 — User Registration
+# What happens during Step 1 — User Registration?
 
 Before login, the user usually creates an account.
 
@@ -93,7 +91,7 @@ POST /api/auth/register
 
 ---
 
-# 2. Password Is NOT Stored Directly
+# 2. Why is the Password NOT Stored Directly?
 
 The backend should **never store**:
 
@@ -135,73 +133,8 @@ Id    Email              PasswordHash
 
 ---
 
-# 3. Password Hashing vs JWT Signing
 
-These are **two different things**.
-
-### Password hashing
-
-Used for:
-
-```text
-User password
-     ↓
-Password hash
-     ↓
-Database
-```
-
-Common algorithms:
-
-```text
-PBKDF2
-bcrypt
-Argon2id
-scrypt
-```
-
-### JWT signing
-
-Used for:
-
-```text
-JWT Header
-     +
-JWT Payload
-     +
-Secret Key
-     ↓
-Signature
-```
-
-Common JWT algorithms include:
-
-```text
-HS256
-RS256
-ES256
-```
-
-Remember:
-
-```text
-PASSWORD
-   ↓
-Password Hashing
-   ↓
-Database
-
-
-JWT
-   ↓
-JWT Signing
-   ↓
-Frontend / Client
-```
-
----
-
-# 4. Step 2 — User Login
+# 4. What happens during Step 2 — User Login?
 
 User enters:
 
@@ -247,7 +180,7 @@ Diagram:
 
 ---
 
-# 5. Step 3 — Backend Finds User
+# 5. How does the Backend Find the User (Step 3)?
 
 Backend searches the database using the email:
 
@@ -275,7 +208,7 @@ Buyer
 
 ---
 
-# 6. Step 4 — Password Verification
+# 6. How does Password Verification work (Step 4)?
 
 The backend now has:
 
@@ -345,9 +278,8 @@ Reject login
 
 ---
 
-# Q2) How Jwt token genrate ?
 ----
-# 1. Generate JWT
+# 1. How is the JWT Generated?
 
 If the password is correct:
 
@@ -368,7 +300,7 @@ HEADER.PAYLOAD.SIGNATURE
 
 ---
 
-# 2. JWT Header
+# 2. What is the JWT Header?
 
 Example:
 
@@ -409,7 +341,7 @@ Token type = JWT
 
 ---
 
-# 3. JWT Payload
+# 3. What is the JWT Payload?
 
 Payload contains **claims**.
 
@@ -446,7 +378,7 @@ Expiration time
 
 ---
 
-# 4. Important: JWT Payload Is Not Secret
+# 4. Why is it Important that the JWT Payload Is Not Secret?
 
 The payload is normally **encoded, not encrypted**.
 
@@ -474,7 +406,7 @@ inside the JWT.
 
 ---
 
-# 5. JWT Signature
+# 5. What is the JWT Signature?
 
 The signature protects the JWT from modification.
 
@@ -638,7 +570,7 @@ It should **never be sent to the frontend**.
 
 ---
 
-# 17. Step 6 — Backend Sends JWT to Frontend
+# 17. How does the Backend Send the JWT to the Frontend (Step 6)?
 
 After generating the JWT:
 
@@ -1492,149 +1424,12 @@ Retry API
 
 ---
 
-# 42. JWT + Database — Final Mental Model
-
-Keep this picture in your mind:
-
-```text
-                 ┌───────────────┐
-                 │   FRONTEND    │
-                 │               │
-                 │ Email         │
-                 │ Password      │
-                 │               │
-                 │ JWT           │
-                 └───────┬───────┘
-                         │
-                         │ HTTP
-                         ▼
-                 ┌───────────────┐
-                 │    BACKEND    │
-                 │               │
-                 │ Password      │
-                 │ Verification  │
-                 │               │
-                 │ JWT Creation  │
-                 │               │
-                 │ JWT Validation│
-                 │      🔐       │
-                 │ Secret Key    │
-                 └───────┬───────┘
-                         │
-                         │ SQL
-                         ▼
-                 ┌───────────────┐
-                 │   DATABASE    │
-                 │               │
-                 │ UserId        │
-                 │ Email         │
-                 │ PasswordHash  │
-                 │ Role          │
-                 │               │
-                 │ Refresh Token │
-                 │   State       │
-                 └───────────────┘
-```
-
----
-
-# 43. Final Things to Remember
-
-### Password
-
-```text
-Plain Password
-      ↓
-Password Hashing
-      ↓
-PasswordHash
-      ↓
-Database
-```
-
-### Login
-
-```text
-Email + Password
-       ↓
-Backend
-       ↓
-Find User
-       ↓
-Verify Password
-       ↓
-Correct?
-```
-
-### JWT creation
-
-```text
-Header
-   +
-Payload
-   +
-Secret Key
-   ↓
-HS256
-   ↓
-Signature
-   ↓
-JWT
-```
-
-### JWT request
-
-```text
-Frontend
-   ↓
-JWT
-   ↓
-Backend
-   ↓
-Verify Signature
-   ↓
-Check exp
-   ↓
-Read Claims
-   ↓
-Authenticated
-```
-
-### Expiration
-
-```text
-exp reached
-    ↓
-Access Token expired
-    ↓
-401
-    ↓
-Refresh Token
-    ↓
-New Access Token
-```
-
-### Database vs JWT
-
-```text
-DATABASE
-├── User information
-├── PasswordHash
-├── Role
-└── Refresh-token/session state (if used)
 
 
-JWT
-├── User ID
-├── Role
-├── Expiration
-├── Issuer/Audience
-└── Other claims
 
 
-SECRET KEY
-└── Backend ONLY 🔐
-```
+
+
 
 ----
 ---
