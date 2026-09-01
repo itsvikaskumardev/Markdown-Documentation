@@ -481,7 +481,9 @@ Frontend must NOT know the secret key.
 
 # 13. How Does the Signature Prevent Modification?
 
-Suppose the original JWT payload is:
+If someone changes the payload, the backend will calculate a new signature that won't match the one stored in the token. 
+
+Here is a simplified code example demonstrating the process:
 
 ```json
 {
@@ -1351,87 +1353,6 @@ Frontend
 Retry API
 ```
 
----
-
-# 37. What is the Entire JWT Flow in One Diagram?
-
-```text
-                         LOGIN
-                           │
-                           ▼
-                  ┌─────────────────┐
-                  │    FRONTEND     │
-                  │                 │
-                  │ Email           │
-                  │ Password        │
-                  └────────┬────────┘
-                           │
-                           │ POST /login
-                           ▼
-                  ┌─────────────────┐
-                  │     BACKEND     │
-                  │                 │
-                  │ Find User       │
-                  │ Verify Password │
-                  └────────┬────────┘
-                           │
-                           ▼
-                  ┌─────────────────┐
-                  │    DATABASE     │
-                  │                 │
-                  │ UserId          │
-                  │ Email           │
-                  │ PasswordHash    │
-                  │ Role            │
-                  └────────┬────────┘
-                           │
-                           │ Password correct
-                           ▼
-                  ┌─────────────────┐
-                  │     BACKEND     │
-                  │                 │
-                  │ Generate JWT    │
-                  │                 │
-                  │ Header          │
-                  │ Payload         │
-                  │ Signature       │
-                  └────────┬────────┘
-                           │
-                           │ JWT
-                           ▼
-                  ┌─────────────────┐
-                  │    FRONTEND     │
-                  │                 │
-                  │ Store JWT       │
-                  └────────┬────────┘
-                           │
-                           │ API + JWT
-                           ▼
-                  ┌─────────────────┐
-                  │     BACKEND     │
-                  │                 │
-                  │ Verify JWT      │
-                  │                 │
-                  │ Signature ✓     │
-                  │ exp ✓           │
-                  │ Claims ✓        │
-                  └────────┬────────┘
-                           │
-                           │ Valid
-                           ▼
-                         DATA
-```
-
----
-
-
-
-
-
-
-
-
-----
 ---
 ---
 Yes — this is the part that usually confuses people. Let's forget the complicated terms for a moment.
