@@ -153,8 +153,9 @@ This is generally represented by:
 
 ---
 
-# how Backend Check Authentication ?
-## 1. User logs in
+# 6. How does the Backend Check Authentication?
+
+## Step 1: User logs in
 
 ```text
 Frontend
@@ -178,7 +179,7 @@ The JWT basically represents:
 
 ---
 
-## 2. Frontend sends the JWT with later requests
+## Step 2: Frontend sends the JWT with later requests
 
 For example, the user wants to view orders.
 
@@ -202,7 +203,7 @@ So yes, **the frontend sends the token to the backend with the request**.
 
 ---
 
-## 3. Backend checks Authentication
+## Step 3: Backend checks Authentication
 
 The backend receives:
 
@@ -248,8 +249,9 @@ Vikas
 
 ---
 
-# Hwo  backend chekc Authorization
-# 4. Then backend checks Authorization
+# 7. How does the Backend Check Authorization?
+
+## Step 4: Backend checks Authorization
 
 Now suppose Vikas requests:
 
