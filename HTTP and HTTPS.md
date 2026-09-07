@@ -29,7 +29,82 @@ Host: example.com
 
 ---
 
-# 2. What is HTTPS?
+# 2. What are HTTP Headers?
+
+**HTTP headers** are small pieces of information (metadata) sent along with an HTTP request or response.
+
+### Request Headers (Client → Server)
+When your browser or app sends a request:
+```http
+GET /profile HTTP/1.1
+Host: example.com
+Authorization: Bearer abc123
+Content-Type: application/json
+User-Agent: Chrome
+Accept: application/json
+```
+
+### Response Headers (Server → Client)
+When the server sends a response:
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+Cache-Control: max-age=3600
+
+{
+  "name": "Vikas"
+}
+```
+
+### Why does the server need these headers?
+
+#### 1. Content-Type
+Tells what type of data is being sent.
+`Content-Type: application/json` means:
+```json
+{
+  "name": "Vikas" 
+}
+```
+*(This is JSON data).*
+Other examples: `Content-Type: text/html`, `image/png`, or `application/pdf`
+
+#### 2. Authorization
+Used for authentication and security.
+`Authorization: Bearer xyz123`
+The token proves who the user is.
+Without it:
+* Anyone could access private data.
+* Server wouldn't know which user is making the request.
+**Benefit:** Secure access to APIs and user accounts.
+
+#### 3. User-Agent
+Identifies the client making the request.
+Example: `User-Agent: Chrome/137` or `User-Agent: PostmanRuntime/7.45`
+Server can know:
+* Browser type
+* Mobile or desktop
+* App version
+
+#### 4. Accept
+Tells the server what response format the client wants.
+`Accept: application/json` means: *"Please send me JSON."*
+Other examples: `Accept: text/html`, `image/png`
+
+#### 5. Cookie / Set-Cookie (State Management)
+Because HTTP is **stateless** (it forgets you after every request), these headers are used to remember you.
+* **Set-Cookie (Server → Client):** The server sends a piece of data for the browser to save (e.g., `Set-Cookie: session_id=123`).
+* **Cookie (Client → Server):** The browser automatically sends this saved data back on the next request (e.g., `Cookie: session_id=123`), allowing the server to recognize you without logging in again.
+
+### Benefits of HTTP Headers
+* **Authentication:** `Authorization: Bearer token` verifies user identity and protects private resources.
+* **Caching:** `Cache-Control: max-age=3600` means the browser can store the response for 1 hour. Benefits include faster loading, fewer server requests, and reduced server load.
+* **Content Negotiation:** `Accept: application/json` allows the client to choose the data format it wants.
+* **Security:** Headers like `Authorization` and `Strict-Transport-Security` help protect data and users.
+
+---
+
+# 3. What is HTTPS?
 
 **HTTPS = HTTP Secure**
 
@@ -57,7 +132,7 @@ It's better to think:
 
 ---
 
-# 3. What exactly changes when HTTP becomes HTTPS?
+# 4. What exactly changes when HTTP becomes HTTPS?
 
 **Your API endpoints, HTTP methods, headers, request body, and response structure don't fundamentally change because you switched from HTTP to HTTPS.** 
 
@@ -65,7 +140,7 @@ For example, a `POST /api/login` request is exactly the same conceptually in bot
 
 ---
 
-# 4. The Communication Flow: HTTP vs HTTPS
+# 5. The Communication Flow: HTTP vs HTTPS
 
 ### HTTP Flow (No Protection)
 With plain HTTP, the communication is not protected by TLS. The data is sent directly over the connection in its original, readable form.
@@ -104,7 +179,7 @@ Browser ───────────────→ Internet ────�
 
 ---
 
-# 5. What is the certificate?
+# 6. What is the certificate?
 
 The server has a **TLS certificate** issued by a trusted Certificate Authority. 
 The browser uses this certificate during the TLS handshake to verify: *"Am I really communicating with the real server for this domain?"*
@@ -113,7 +188,7 @@ For example, if you visit `https://bank.com`, the browser checks that the certif
 
 ---
 
-# 6. What does TLS actually provide?
+# 7. What does TLS actually provide?
 
 1. **Encryption:** Data sent between browser and server is encrypted so observers cannot read the HTTP contents.
 2. **Integrity:** TLS helps detect if transmitted data has been modified or tampered with in transit.
@@ -123,7 +198,7 @@ This is why HTTPS is especially important for websites handling logins, payments
 
 ---
 
-# 7. Key Differences Summary
+# 8. Key Differences Summary
 
 ### URL and Ports
 * **HTTP:** `http://` (Default Port: 80)
@@ -144,7 +219,7 @@ This is why HTTPS is especially important for websites handling logins, payments
 
 ---
 
-# 8. Important: HTTPS vs JWT
+# 9. Important: HTTPS vs JWT
 
 Since you're learning backend authentication, remember:
 * **HTTPS ≠ Authentication / Authorization**
