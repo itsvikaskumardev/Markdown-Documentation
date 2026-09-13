@@ -118,22 +118,51 @@ They can be used together, but they are **different concepts**.
 
 ---
 
-## EF Core mein
+## EF Core Implementation
 
 EF Core mein lazy loading commonly navigation property access karne par related data load kar sakta hai.
 
-Without lazy loading:
+### Database Models Setup
+
+To understand this deeply, let's set up a complete example. Suppose we have the following entity structure in our application:
+
+```csharp
+public class User
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+
+    public virtual ICollection<Order> Orders { get; set; }
+        = new List<Order>();
+}
+
+public class Order
+{
+    public int Id { get; set; }
+    public decimal Amount { get; set; }
+
+    public int UserId { get; set; }
+    public virtual User User { get; set; }
+}
+```
+
+### Lazy Loading vs Eager Loading in Practice
+
+Without lazy loading enabled, if you just query the user:
 
 ```csharp
 var user = await db.Users
     .FirstAsync();
 
-user.Orders
+// Accessing the navigation property
+var userOrders = user.Orders;
 ```
 
-`Orders` automatically load nahi honge.
+`Orders` automatically load nahi honge. 
 
-Aap explicitly eager loading kar sakte ho:
+However, with **Lazy Loading** enabled (usually via proxies), writing `user.Orders` can cause another database query to execute at that exact moment.
+
+Aap explicitly **Eager Loading** bhi kar sakte ho, jisme start mein hi related data load ho jata hai:
 
 ```csharp
 var user = await db.Users
@@ -141,63 +170,37 @@ var user = await db.Users
     .FirstAsync();
 ```
 
-Yeh **Eager Loading** hai.
-
 ```text
-Eager:
+Eager Loading Flow:
 Query User + Orders
        ↓
 Everything loaded immediately
 
 
-Lazy:
+Lazy Loading Flow:
 Query User
    ↓
 User loaded
    ↓
-Later: user.Orders
+Later: access user.Orders
    ↓
-Orders query
+Orders query generated & executed
 ```
-
-### One important problem with Lazy Loading
-
-Agar aap loop mein kar do:
-
-```csharp
-foreach (var user in users)
-{
-    Console.WriteLine(user.Orders.Count);
-}
-```
-
-to potentially:
-
-```text
-Get all users       → 1 query
-
-User 1 Orders       → query
-User 2 Orders       → query
-User 3 Orders       → query
-User 4 Orders       → query
-...
-```
-
-This can create the famous **N+1 query problem**.
-
-So lazy loading is not automatically "better". It is a **loading strategy** useful when related data should only be fetched when actually accessed.
 
 ---
+
+## The Famous N+1 Query Problem
+
+Agar aap lazy loading ko loop mein use karte ho, to ek major performance issue create hota hai jise **N+1 Query Problem** kehte hain.
 
 **N+1 Query** ka matlab hai:
 
 > **Pehle 1 query se main data lao, phir har ek item ke liye 1 extra query chalao.**
+> Isliye total queries = **1 + N**.
 
-Isliye total queries = **1 + N**.
+### Detailed EF Core Example
 
-### Simple EF Core example
-
-Suppose database mein **100 users** hain:
+Suppose database mein **100 users** hain. Aapne following code likha:
 
 ```csharp
 var users = await db.Users.ToListAsync();
@@ -208,17 +211,17 @@ foreach (var user in users)
 }
 ```
 
-Agar `Orders` **lazy loading** use kar raha hai:
+Agar `Orders` navigation property **lazy-loaded** hai, toh yahan kya hota hai:
 
+**Step 1:** Initial Query
 ```text
 Query 1:
 SELECT * FROM Users;
 ```
+Aapko 100 users mil gaye. (This is the "1" query).
 
-100 users mil gaye.
-
-Then loop:
-
+**Step 2:** The Loop
+Jab loop chalta hai, har iteration mein `user.Orders` access hota hai:
 ```text
 User 1 → SELECT * FROM Orders WHERE UserId = 1
 User 2 → SELECT * FROM Orders WHERE UserId = 2
@@ -226,24 +229,35 @@ User 3 → SELECT * FROM Orders WHERE UserId = 3
 ...
 User 100 → SELECT * FROM Orders WHERE UserId = 100
 ```
+This triggers 100 separate queries. (This is the "N" queries).
 
-So:
+So visually, the execution looks like this:
 
 ```text
-1 query       → Users
-+
-100 queries   → Each user's Orders
-────────────────────────
-101 queries
-```
+ToListAsync()
+     │
+     ▼
+┌─────────────────────┐
+│ SELECT Users        │
+└─────────────────────┘
+     │
+     ▼
+  100 Users
+     │
+     ├── User 1 → user.Orders → SQL query
+     ├── User 2 → user.Orders → SQL query
+     ├── User 3 → user.Orders → SQL query
+     │
+     └── User 100 → user.Orders → SQL query
 
-That's **N+1**.
+1 (Users) + 100 (Orders) = 101 total queries
+```
 
 ---
 
-### Why is this bad?
+## Why is N+1 Bad?
 
-Imagine:
+Imagine the scaling impact:
 
 ```text
 N = 10 users
@@ -277,201 +291,51 @@ Doing this thousands of times can make an API **very slow** and put unnecessary 
 
 ---
 
-## How do we avoid it?
+## How do we avoid the N+1 Problem?
 
-Usually, use **Eager Loading** with `Include()` when you know you need the related data:
+We should avoid triggering queries inside loops. There are two primary solutions: **Eager Loading** and **Projection**.
 
-```csharp
-var users = await db.Users
-    .Include(u => u.Orders)
-    .ToListAsync();
-```
+### Solution 1: Eager Loading using `Include()`
 
-Conceptually:
-
-```text
-Instead of:
-
-Users query
-   ↓
-Order query
-   ↓
-Order query
-   ↓
-Order query
-   ↓
-...
-
-Use:
-
-Users + required Orders
-        ↓
-     database
-```
-
-EF Core can fetch the related data efficiently rather than triggering one query for every user.
-
-### Remember this
-
-```text
-N+1 Query Problem
-
-1 query → get N records
-N queries → get related data for each record
-
-Total = 1 + N
-```
-
-And **Lazy Loading is one common way N+1 problems happen**, because accessing a navigation property inside a loop can trigger a separate database query for each item.
-
----
-Yes. For learning, I’d separate it into **two small .NET examples**:
-
-1. **File/Example 1:** Lazy Loading — what actually happens internally, including the N+1 problem.
-2. **File/Example 2:** Solving N+1 — `Include()`, projection, and when to use each.
-
-I can make them as actual `.md` files with folder structure, complete EF Core code, SQL generated at each step, diagrams, and line-by-line explanations. If you want to use your own `RealEstateManagementSystem` structure, you can also upload the relevant project files and I’ll adapt the examples to your code.
-
-For now, here is the structure I’d use:
-
-```text
-LazyLoading-NPlusOne/
-│
-├── 01-Lazy-Loading.md
-│
-└── 02-NPlusOne-Solutions.md
-```
-
-### `01-Lazy-Loading.md`
-
-Would cover:
-
-```text
-User
- └── Orders
-       ├── Order 1
-       ├── Order 2
-       └── Order 3
-```
-
-Complete setup:
-
-```csharp
-public class User
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-
-    public virtual ICollection<Order> Orders { get; set; }
-        = new List<Order>();
-}
-
-public class Order
-{
-    public int Id { get; set; }
-    public decimal Amount { get; set; }
-
-    public int UserId { get; set; }
-    public virtual User User { get; set; }
-}
-```
-
-Then show how EF Core Lazy Loading works:
-
-```csharp
-var users = await db.Users.ToListAsync();
-
-foreach (var user in users)
-{
-    Console.WriteLine(user.Orders.Count);
-}
-```
-
-And visually:
-
-```text
-ToListAsync()
-     │
-     ▼
-┌─────────────────────┐
-│ SELECT Users        │
-└─────────────────────┘
-     │
-     ▼
-  100 Users
-     │
-     ├── User 1 → user.Orders → SQL query
-     ├── User 2 → user.Orders → SQL query
-     ├── User 3 → user.Orders → SQL query
-     │
-     └── User 100 → user.Orders → SQL query
-
-1 + 100 = 101 queries
-```
-
-Then explain **why merely writing**:
-
-```csharp
-user.Orders
-```
-
-can cause another database query when lazy-loading proxies are enabled.
-
----
-
-### `02-NPlusOne-Solutions.md`
-
-Then the second file would start from the exact same bad code:
-
-```csharp
-var users = await db.Users.ToListAsync();
-
-foreach (var user in users)
-{
-    Console.WriteLine(user.Orders.Count);
-}
-```
-
-and show the solution:
+Usually, use **Eager Loading** with `Include()` when you know you need the related entity data:
 
 ```csharp
 var users = await db.Users
     .Include(u => u.Orders)
     .ToListAsync();
+
+foreach (var user in users)
+{
+    // Orders are already loaded in memory, no extra query is made!
+    Console.WriteLine(user.Orders.Count);
+}
 ```
 
 Conceptually:
 
 ```text
-BAD
-────────────────────────
-
-Users
-  ↓
-1 query
-
-User 1 → Orders → query
-User 2 → Orders → query
+BAD (Lazy inside Loop)          GOOD (Eager)
+────────────────────────        ────────────────────────
+Users                           Users + Orders
+  ↓                                   ↓
+1 query                           database
+                                      ↓
+User 1 → Orders → query         required data loaded
+User 2 → Orders → query         No query per user
 User 3 → Orders → query
 ...
 User N → Orders → query
 
-Total = N + 1
-
-
-GOOD
-────────────────────────
-
-Users + Orders
-      ↓
-  database
-      ↓
-required data loaded
-
-No query per user
+Total = N + 1 queries           Total = 1 query
 ```
 
-I'd also explain the **better API approach** using projection:
+EF Core can fetch the related data efficiently rather than triggering one query for every user.
+
+### Solution 2: Projection using `Select()` (Better API Approach)
+
+In real ASP.NET Core APIs, you often **don't actually need every full `Order` object**—you might only need the `OrderCount`, or specific fields. 
+
+Using projection (`Select`) is highly efficient:
 
 ```csharp
 var users = await db.Users
@@ -484,9 +348,13 @@ var users = await db.Users
     .ToListAsync();
 ```
 
-This is especially important in real ASP.NET Core APIs because you often **don't actually need every `Order` object**—you might only need `OrderCount`.
+This translates directly into an optimized SQL query (like using a `COUNT` aggregate), completely avoiding N+1 and keeping memory usage low because full entities aren't tracked.
 
-So the two files would teach the progression:
+---
+
+## Summary Flow
+
+To build efficient applications, remember how this loading chain works and how to break it:
 
 ```text
 Database
@@ -505,11 +373,9 @@ Loop
    ↓
 N+1 Problem
    ↓
-Include()
+Solution 1: Include()
    ↓
-Projection
+Solution 2: Projection (Select)
    ↓
 Efficient API
 ```
-
-I’d keep the examples **technical rather than cooking/real-world analogies**, and use actual C# + EF Core + PostgreSQL-style SQL so you can connect it directly to your .NET work.
