@@ -1,3 +1,16 @@
+# Table of Contents
+
+- [Two Sum](#two-sum)
+- [Contains Duplicate](#contains-duplicate)
+- [Valid Anagram](#valid-anagram)
+- [Group Anagrams](#group-anagrams)
+- [Top K Frequent Elements](#top-k-frequent-elements)
+- [Product of Array Except Self](#product-of-array-except-self)
+- [Longest Consecutive Sequence](#longest-consecutive-sequence)
+- [Encode and Decode Strings](#encode-and-decode-strings)
+
+---
+
 # Two Sum
 
 **LeetCode #1** · [LeetCode](https://leetcode.com/problems/two-sum/) · **Easy**
