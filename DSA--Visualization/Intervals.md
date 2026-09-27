@@ -38,6 +38,348 @@ return out
 | :--- | :---: | :---: |
 | **Sort + One-Pass Sweep** | **O(n log n)** | **O(n)** |
 
+### Dry Run
+
+### Input
+
+```text
+[[1,3], [2,6], [8,10], [15,18], [8,9], [9,11], [2,4], [16,17]]
+```
+
+## Step 1: Sort by starting value
+
+Sort using the **first number** of each interval:
+
+```text
+[[1,3], [2,6], [2,4], [8,10], [8,9], [9,11], [15,18], [16,17]]
+```
+
+Why?
+
+```text
+1, 2, 2, 8, 8, 9, 15, 16
+```
+
+are in increasing order.
+
+---
+
+## Step 2: `out ← []`
+
+Create an empty array for our final answer.
+
+```text
+out = []
+```
+
+---
+
+## Step 3: `cur ← intervals[0]`
+
+Take the first interval:
+
+```text
+cur = [1,3]
+```
+
+`cur` means:
+
+> The interval we're currently trying to merge.
+
+---
+
+## Step 4: Loop
+
+```text
+for b in intervals[1:]:
+```
+
+Means:
+
+> Start checking every interval after `[1,3]`.
+
+---
+
+### 🔹 Iteration 1
+
+```text
+b = [2,6]
+cur = [1,3]
+```
+
+Check:
+
+```text
+b.start <= cur.end
+2 <= 3
+```
+
+✅ True → intervals overlap.
+
+So:
+
+```text
+cur.end = max(cur.end, b.end)
+```
+
+```text
+cur.end = max(3,6)
+         = 6
+```
+
+Now:
+
+```text
+cur = [1,6]
+out = []
+```
+
+---
+
+### 🔹 Iteration 2
+
+```text
+b = [2,4]
+cur = [1,6]
+```
+
+Check:
+
+```text
+2 <= 6
+```
+
+✅ Overlap.
+
+```text
+cur.end = max(6,4)
+         = 6
+```
+
+Still:
+
+```text
+cur = [1,6]
+```
+
+---
+
+### 🔹 Iteration 3
+
+```text
+b = [8,10]
+cur = [1,6]
+```
+
+Check:
+
+```text
+8 <= 6
+```
+
+❌ No overlap.
+
+So execute:
+
+```text
+out.append(cur)
+```
+
+Now:
+
+```text
+out = [[1,6]]
+```
+
+Then:
+
+```text
+cur = b
+```
+
+Therefore:
+
+```text
+cur = [8,10]
+```
+
+---
+
+### 🔹 Iteration 4
+
+```text
+b = [8,9]
+cur = [8,10]
+```
+
+Check:
+
+```text
+8 <= 10
+```
+
+✅ Overlap.
+
+```text
+cur.end = max(10,9)
+         = 10
+```
+
+So:
+
+```text
+cur = [8,10]
+```
+
+---
+
+### 🔹 Iteration 5
+
+```text
+b = [9,11]
+cur = [8,10]
+```
+
+Check:
+
+```text
+9 <= 10
+```
+
+✅ Overlap.
+
+```text
+cur.end = max(10,11)
+         = 11
+```
+
+Now:
+
+```text
+cur = [8,11]
+```
+
+---
+
+### 🔹 Iteration 6
+
+```text
+b = [15,18]
+cur = [8,11]
+```
+
+Check:
+
+```text
+15 <= 11
+```
+
+❌ No overlap.
+
+So:
+
+```text
+out.append(cur)
+```
+
+```text
+out = [[1,6], [8,11]]
+```
+
+Then:
+
+```text
+cur = b
+```
+
+```text
+cur = [15,18]
+```
+
+---
+
+### 🔹 Iteration 7
+
+```text
+b = [16,17]
+cur = [15,18]
+```
+
+Check:
+
+```text
+16 <= 18
+```
+
+✅ Overlap.
+
+Update:
+
+```text
+cur.end = max(18,17)
+         = 18
+```
+
+So:
+
+```text
+cur = [15,18]
+```
+
+---
+
+## Step 5: Loop finished
+
+We've checked everything.
+
+But notice:
+
+```text
+cur = [15,18]
+```
+
+has **not yet been added to `out`**.
+
+That's why we need:
+
+```text
+out.append(cur)
+```
+
+Now:
+
+```text
+out = [[1,6], [8,11], [15,18]]
+```
+
+Finally:
+
+```text
+return out
+```
+
+### ✅ Final Answer
+
+```text
+[[1,6], [8,11], [15,18]]
+```
+
+### Full dry run in one table
+
+| `b`       | `cur` before | Check        | Action     | `cur` after | `out`                    |
+| --------- | ------------ | ------------ | ---------- | ----------- | ------------------------ |
+| `[2,6]`   | `[1,3]`      | `2 <= 3` ✅   | Merge      | `[1,6]`     | `[]`                     |
+| `[2,4]`   | `[1,6]`      | `2 <= 6` ✅   | Merge      | `[1,6]`     | `[]`                     |
+| `[8,10]`  | `[1,6]`      | `8 <= 6` ❌   | Save + new | `[8,10]`    | `[[1,6]]`                |
+| `[8,9]`   | `[8,10]`     | `8 <= 10` ✅  | Merge      | `[8,10]`    | `[[1,6]]`                |
+| `[9,11]`  | `[8,10]`     | `9 <= 10` ✅  | Merge      | `[8,11]`    | `[[1,6]]`                |
+| `[15,18]` | `[8,11]`     | `15 <= 11` ❌ | Save + new | `[15,18]`   | `[[1,6],[8,11]]`         |
+| `[16,17]` | `[15,18]`    | `16 <= 18` ✅ | Merge      | `[15,18]`   | `[[1,6],[8,11]]`         |
+| **end**   | `[15,18]`    | —            | Save       | —           | `[[1,6],[8,11],[15,18]]` |
+
+**The main trick:** after sorting, you only need to compare `b.start` with `cur.end`. If `b.start <= cur.end`, they overlap; otherwise, the current interval is finished.
+
+
 ---
 
 # Insert Interval
