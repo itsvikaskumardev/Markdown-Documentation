@@ -1,3 +1,11 @@
+# Table of Contents
+
+- [Merge Intervals](#merge-intervals)
+- [Insert Interval](#insert-interval)
+- [Non-overlapping Intervals](#non-overlapping-intervals)
+
+---
+
 # Merge Intervals
 
 **LeetCode #56** · [LeetCode](https://leetcode.com/problems/merge-intervals/) · **Medium**
@@ -425,6 +433,521 @@ while i < n:
 
 return out
 ```
+
+### Dry Run
+Yes. This is **LeetCode 57 — Insert Interval**. The easiest way to understand it is in **3 phases**:
+
+1. Intervals completely **before** `newInterval`
+2. Intervals that **overlap** with `newInterval` → merge them
+3. Intervals completely **after** `newInterval`
+
+Your input:
+
+```text
+intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]]
+newInterval = [4,8]
+```
+
+---
+
+## First understand the variables
+
+```text
+out ← []
+i ← 0
+```
+
+### `out ← []`
+
+Create an empty answer array:
+
+```text
+out = []
+```
+
+We'll put the final intervals here.
+
+### `i ← 0`
+
+`i` is the index of the interval we're currently checking.
+
+```text
+i = 0
+```
+
+So initially:
+
+```text
+intervals[0] = [1,2]
+```
+
+---
+
+## Phase 1: Intervals entirely before `newInterval`
+
+```text
+while i < n and intervals[i].end < new.start:
+    out.append(intervals[i])
+    i++
+```
+
+Our:
+
+```text
+new = [4,8]
+```
+
+So:
+
+```text
+new.start = 4
+```
+
+The question is:
+
+> Is the current interval completely before `[4,8]`?
+
+For that, we check:
+
+```text
+intervals[i].end < new.start
+```
+
+---
+
+### Iteration 1
+
+```text
+i = 0
+intervals[0] = [1,2]
+```
+
+Check:
+
+```text
+2 < 4
+```
+
+✅ True.
+
+So `[1,2]` is completely before `[4,8]`.
+
+Add it:
+
+```text
+out.append([1,2])
+```
+
+Now:
+
+```text
+out = [[1,2]]
+```
+
+Then:
+
+```text
+i++
+```
+
+So:
+
+```text
+i = 1
+```
+
+---
+
+### Iteration 2
+
+```text
+intervals[1] = [3,5]
+```
+
+Check:
+
+```text
+5 < 4
+```
+
+❌ False.
+
+So `[3,5]` is **not completely before** `[4,8]`.
+
+Why?
+
+Because `[3,5]` overlaps `[4,8]`.
+
+So we **stop Phase 1**.
+
+Current state:
+
+```text
+out = [[1,2]]
+i = 1
+new = [4,8]
+```
+
+---
+
+## Phase 2: Merge overlapping intervals
+
+The pseudocode says:
+
+```text
+while i < n and intervals[i].start <= new.end:
+    new = [min(starts), max(ends)]
+    i++
+```
+
+The important condition is:
+
+```text
+intervals[i].start <= new.end
+```
+
+Meaning:
+
+> Does the current interval overlap/touch `new`?
+
+Our current:
+
+```text
+new = [4,8]
+```
+
+so:
+
+```text
+new.end = 8
+```
+
+---
+
+### Iteration 1
+
+Current:
+
+```text
+i = 1
+intervals[1] = [3,5]
+new = [4,8]
+```
+
+Check:
+
+```text
+intervals[1].start <= new.end
+
+3 <= 8
+```
+
+✅ True.
+
+So `[3,5]` overlaps `[4,8]`.
+
+We merge:
+
+```text
+new.start = min(4,3)
+         = 3
+
+new.end = max(8,5)
+       = 8
+```
+
+Therefore:
+
+```text
+new = [3,8]
+```
+
+Then:
+
+```text
+i++
+```
+
+```text
+i = 2
+```
+
+---
+
+### Iteration 2
+
+Current:
+
+```text
+intervals[2] = [6,7]
+new = [3,8]
+```
+
+Check:
+
+```text
+6 <= 8
+```
+
+✅ True.
+
+They overlap.
+
+Merge:
+
+```text
+new.start = min(3,6)
+          = 3
+
+new.end = max(8,7)
+        = 8
+```
+
+So:
+
+```text
+new = [3,8]
+```
+
+Then:
+
+```text
+i = 3
+```
+
+---
+
+### Iteration 3
+
+Current:
+
+```text
+intervals[3] = [8,10]
+new = [3,8]
+```
+
+Check:
+
+```text
+8 <= 8
+```
+
+✅ True.
+
+This is important.
+
+Because `8 <= 8`, `[8,10]` is considered overlapping/touching `[3,8]`.
+
+Merge:
+
+```text
+new.start = min(3,8)
+          = 3
+
+new.end = max(8,10)
+        = 10
+```
+
+So:
+
+```text
+new = [3,10]
+```
+
+Then:
+
+```text
+i = 4
+```
+
+---
+
+### Iteration 4
+
+Current:
+
+```text
+intervals[4] = [12,16]
+new = [3,10]
+```
+
+Check:
+
+```text
+12 <= 10
+```
+
+❌ False.
+
+So `[12,16]` does **not** overlap `[3,10]`.
+
+Therefore Phase 2 stops.
+
+Current state:
+
+```text
+out = [[1,2]]
+new = [3,10]
+i = 4
+```
+
+---
+
+## Now add the merged interval
+
+Pseudocode:
+
+```text
+out.append(new)
+```
+
+So:
+
+```text
+out = [[1,2], [3,10]]
+```
+
+Notice that these three intervals:
+
+```text
+[3,5]
+[6,7]
+[8,10]
+```
+
+plus:
+
+```text
+new = [4,8]
+```
+
+have all become:
+
+```text
+[3,10]
+```
+
+---
+
+## Phase 3: Copy the remaining intervals
+
+Pseudocode:
+
+```text
+while i < n:
+    out.append(intervals[i])
+    i++
+```
+
+Currently:
+
+```text
+i = 4
+```
+
+And:
+
+```text
+intervals[4] = [12,16]
+```
+
+Add it:
+
+```text
+out = [[1,2], [3,10], [12,16]]
+```
+
+Then:
+
+```text
+i++
+```
+
+```text
+i = 5
+```
+
+Now:
+
+```text
+i < n
+5 < 5
+```
+
+❌ False.
+
+Loop ends.
+
+---
+
+## Finally
+
+```text
+return out
+```
+
+### ✅ Final output
+
+```text
+[[1,2],[3,10],[12,16]]
+```
+
+---
+
+## Complete dry run
+
+| Phase   | `i` | Current interval | `new`    | Condition    | Action         |
+| ------- | --: | ---------------- | -------- | ------------ | -------------- |
+| Before  |   0 | `[1,2]`          | `[4,8]`  | `2 < 4` ✅    | Add `[1,2]`    |
+| Before  |   1 | `[3,5]`          | `[4,8]`  | `5 < 4` ❌    | Stop           |
+| Merge   |   1 | `[3,5]`          | `[4,8]`  | `3 <= 8` ✅   | `new = [3,8]`  |
+| Merge   |   2 | `[6,7]`          | `[3,8]`  | `6 <= 8` ✅   | `new = [3,8]`  |
+| Merge   |   3 | `[8,10]`         | `[3,8]`  | `8 <= 8` ✅   | `new = [3,10]` |
+| Merge   |   4 | `[12,16]`        | `[3,10]` | `12 <= 10` ❌ | Stop           |
+| Add new |   4 | —                | `[3,10]` | —            | Add `[3,10]`   |
+| After   |   4 | `[12,16]`        | —        | —            | Add `[12,16]`  |
+
+### The key logic to remember
+
+```text
+BEFORE:
+interval.end < new.start
+        ↓
+     no overlap
+        ↓
+     directly add
+
+
+OVERLAP:
+interval.start <= new.end
+        ↓
+      overlap
+        ↓
+      MERGE
+
+
+AFTER:
+whatever remains
+        ↓
+     directly add
+```
+
+So visually:
+
+```text
+[1,2]   [3,5]   [6,7]   [8,10]   [12,16]
+          \       \       /
+             [4,8]
+                ↓
+[1,2]        [3,10]        [12,16]
+```
+
+**Answer:**
+
+```text
+[[1,2],[3,10],[12,16]]
+```
+
 
 ### Complexity
 
