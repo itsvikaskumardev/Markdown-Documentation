@@ -1,3 +1,10 @@
+# Table of Contents
+
+- [Count Vowels in Substrings](#count-vowels-in-substrings)
+- [Subarray Sum Equals K](#subarray-sum-equals-k)
+
+---
+
 # Count Vowels in Substrings
 
 **Prefix Sum · Range Queries · Prefix vowel counts**

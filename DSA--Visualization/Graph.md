@@ -1,3 +1,19 @@
+# Table of Contents
+
+- [Course Schedule](#course-schedule)
+- [Course Schedule II](#course-schedule-ii)
+- [Shortest Path Algorithms](#shortest-path-algorithms)
+- [Network Delay Time](#network-delay-time)
+- [Cheapest Flights Within K Stops](#cheapest-flights-within-k-stops)
+- [Path With Minimum Effort](#path-with-minimum-effort)
+- [Find the City With Fewest Reachable](#find-the-city-with-fewest-reachable)
+- [Union-Find (DSU)](#union-find-dsu)
+- [Number of Connected Components](#number-of-connected-components)
+- [Redundant Connection](#redundant-connection)
+- [Word Ladder](#word-ladder)
+
+---
+
 # Course Schedule
 
 **LeetCode #207** · [LeetCode](https://leetcode.com/problems/course-schedule/) · **Medium**

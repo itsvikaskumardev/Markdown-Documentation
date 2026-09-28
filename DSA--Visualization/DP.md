@@ -1,3 +1,27 @@
+# Table of Contents
+
+- [Solving a Question with Dynamic Programming](#solving-a-question-with-dynamic-programming)
+- [Pascal's Triangle](#pascals-triangle)
+- [Climbing Stairs](#climbing-stairs)
+- [Dice Combinations](#dice-combinations)
+- [Maximum Subarray](#maximum-subarray)
+- [House Robber](#house-robber)
+- [Coin Change](#coin-change)
+- [Longest Common Subsequence](#longest-common-subsequence)
+- [Edit Distance](#edit-distance)
+- [Counting Bits](#counting-bits)
+- [Decode Ways](#decode-ways)
+- [Unique Paths](#unique-paths)
+- [Maximal Square](#maximal-square)
+- [Longest Increasing Subsequence](#longest-increasing-subsequence)
+- [Word Break](#word-break)
+- [Maximum Profit in Job Scheduling](#maximum-profit-in-job-scheduling)
+- [Paint House](#paint-house)
+- [Paint House II](#paint-house-ii)
+- [Minimum Window Subsequence](#minimum-window-subsequence)
+
+---
+
 # Solving a Question with Dynamic Programming
 
 **Concept** · 5-Step DP Framework

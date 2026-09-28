@@ -1,3 +1,19 @@
+# Table of Contents
+
+- [Binary Search](#binary-search)
+- [Search Insert Position](#search-insert-position)
+- [Peak Index in a Mountain Array](#peak-index-in-a-mountain-array)
+- [Maximum Candies Allocated to K Children](#maximum-candies-allocated-to-k-children)
+- [Koko Eating Bananas](#koko-eating-bananas)
+- [Search in Rotated Sorted Array](#search-in-rotated-sorted-array)
+- [Find Minimum in Rotated Sorted Array](#find-minimum-in-rotated-sorted-array)
+- [Search a 2D Matrix](#search-a-2d-matrix)
+- [Split Array Largest Sum](#split-array-largest-sum)
+- [Kth Smallest in a Sorted Matrix](#kth-smallest-in-a-sorted-matrix)
+- [Capacity to Ship Packages Within D Days](#capacity-to-ship-packages-within-d-days)
+
+---
+
 # Binary Search
 
 **LeetCode #704** · [LeetCode](https://leetcode.com/problems/binary-search/) · **Easy**

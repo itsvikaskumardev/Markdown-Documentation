@@ -1,3 +1,13 @@
+# Table of Contents
+
+- [Single Number](#single-number)
+- [Number of 1 Bits](#number-of-1-bits)
+- [Missing Number](#missing-number)
+- [Reverse Bits](#reverse-bits)
+- [Sum of Two Integers](#sum-of-two-integers)
+
+---
+
 # Single Number
 
 **LeetCode #136** · [LeetCode](https://leetcode.com/problems/single-number/) · **Easy**

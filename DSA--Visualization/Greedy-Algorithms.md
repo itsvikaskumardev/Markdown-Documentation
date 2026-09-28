@@ -1,3 +1,9 @@
+# Table of Contents
+
+- [Best Time to Buy and Sell Stock](#best-time-to-buy-and-sell-stock)
+
+---
+
 # Best Time to Buy and Sell Stock
 
 **LeetCode #121** · [LeetCode](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/) · **Easy**

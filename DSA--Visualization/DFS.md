@@ -1,3 +1,20 @@
+# Table of Contents
+
+- [Maximum Depth of Binary Tree](#maximum-depth-of-binary-tree)
+- [Path Sum](#path-sum)
+- [Validate Binary Search Tree](#validate-binary-search-tree)
+- [Binary Tree Tilt](#binary-tree-tilt)
+- [Diameter of a Binary Tree](#diameter-of-a-binary-tree)
+- [Path Sum II](#path-sum-ii)
+- [Longest Univalue Path](#longest-univalue-path)
+- [Invert Binary Tree](#invert-binary-tree)
+- [Same Tree](#same-tree)
+- [Lowest Common Ancestor of a Binary Tree](#lowest-common-ancestor-of-a-binary-tree)
+- [Binary Tree Maximum Path Sum](#binary-tree-maximum-path-sum)
+- [Serialize and Deserialize Binary Tree](#serialize-and-deserialize-binary-tree)
+
+---
+
 # Maximum Depth of Binary Tree
 
 **LeetCode #104** · [LeetCode](https://leetcode.com/problems/maximum-depth-of-binary-tree/) · **Easy**

@@ -1,3 +1,16 @@
+# Table of Contents
+
+- [Valid Parentheses](#valid-parentheses)
+- [Baseball Game](#baseball-game)
+- [Decode String](#decode-string)
+- [Longest Valid Parentheses](#longest-valid-parentheses)
+- [Monotonic Stack](#monotonic-stack)
+- [Daily Temperatures](#daily-temperatures)
+- [Min Stack](#min-stack)
+- [Evaluate Reverse Polish Notation](#evaluate-reverse-polish-notation)
+
+---
+
 # Valid Parentheses
 
 **LeetCode #20** · [LeetCode](https://leetcode.com/problems/valid-parentheses/) · **Easy**

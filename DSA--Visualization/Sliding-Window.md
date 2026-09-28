@@ -1,3 +1,17 @@
+# Table of Contents
+
+- [Max Sum Subarray of Size K](#max-sum-subarray-of-size-k)
+- [Max Sum of Distinct Subarrays, Size K](#max-sum-of-distinct-subarrays-size-k)
+- [Max Points From Cards](#max-points-from-cards)
+- [Variable-Size Window](#variable-size-window)
+- [Longest Substring Without Repeats](#longest-substring-without-repeats)
+- [Longest Repeating Character Replacement](#longest-repeating-character-replacement)
+- [Minimum Window Substring](#minimum-window-substring)
+- [Permutation in String](#permutation-in-string)
+- [Sliding Window Maximum](#sliding-window-maximum)
+
+---
+
 # Max Sum Subarray of Size K
 
 **LeetCode #643** · [LeetCode](https://leetcode.com/problems/maximum-average-subarray-i/) · **Easy**

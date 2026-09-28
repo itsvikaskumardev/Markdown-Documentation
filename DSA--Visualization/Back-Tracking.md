@@ -1,3 +1,16 @@
+# Table of Contents
+
+- [Word Search](#word-search)
+- [Subsets](#subsets)
+- [Permutations](#permutations)
+- [Letter Combinations of a Phone Number](#letter-combinations-of-a-phone-number)
+- [Generate Parentheses](#generate-parentheses)
+- [Combination Sum](#combination-sum)
+- [Palindrome Partitioning](#palindrome-partitioning)
+- [N-Queens](#n-queens)
+
+---
+
 # Word Search
 
 **LeetCode #79** · [LeetCode](https://leetcode.com/problems/word-search/) · **Medium**

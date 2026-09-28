@@ -1,3 +1,12 @@
+# Table of Contents
+
+- [Spiral Matrix](#spiral-matrix)
+- [Rotate Image](#rotate-image)
+- [Set Matrix Zeroes](#set-matrix-zeroes)
+- [Find Missing and Repeated Values](#find-missing-and-repeated-values)
+
+---
+
 # Spiral Matrix
 
 **LeetCode #54** · [LeetCode](https://leetcode.com/problems/spiral-matrix/) · **Medium**
