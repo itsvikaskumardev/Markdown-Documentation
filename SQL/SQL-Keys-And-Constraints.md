@@ -1,6 +1,24 @@
 
 ---
 
+# Table of Contents
+
+- [Q4) What is Primary Key?](#q4-what-is-primary-key)
+- [Q5) What is Foreign Key?](#q5-what-is-foreign-key)
+- [Primary Key vs Foreign Key](#primary-key-vs-foreign-key)
+- [Q6) What is UNIQUE Key?](#q6-what-is-unique-key)
+- [Primary Key aur UNIQUE mein difference kya hai?](#primary-key-aur-unique-mein-difference-kya-hai)
+- [Q7) Primary Key vs UNIQUE Key](#q7-primary-key-vs-unique-key)
+- [Q8) What is NOT NULL Constraint?](#q8-what-is-not-null-constraint)
+- [Q9) What is DEFAULT Constraint?](#q9-what-is-default-constraint)
+- [Q10) DELETE vs TRUNCATE vs DROP](#q10-delete-vs-truncate-vs-drop)
+- [1. DELETE](#1-delete)
+- [2. TRUNCATE](#2-truncate)
+- [3. DROP](#3-drop)
+- [DELETE vs TRUNCATE vs DROP](#delete-vs-truncate-vs-drop)
+
+---
+
 # Q4) What is Primary Key?
 
 ## Primary Key kya hoti hai?

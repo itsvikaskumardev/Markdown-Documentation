@@ -6,6 +6,61 @@ Aur haan — **MySQL aur PostgreSQL dono internally SQL use karte hain**, lekin 
 
 ---
 
+# Table of Contents
+
+- [1. Sabse pehle big picture](#1-sabse-pehle-big-picture)
+- [2. MySQL kya hai?](#2-mysql-kya-hai)
+- [3. PostgreSQL kya hai?](#3-postgresql-kya-hai)
+- [4. Toh MySQL aur PostgreSQL same hain kya?](#4-toh-mysql-aur-postgresql-same-hain-kya)
+- [5. "Dono internally SQL hi use kar rahe hain?" — YES, but...](#5-dono-internally-sql-hi-use-kar-rahe-hain-yes-but)
+- [6. SQL actually kya karta hai?](#6-sql-actually-kya-karta-hai)
+- [7. Phir PostgreSQL aur MySQL mein actual difference kya hai?](#7-phir-postgresql-aur-mysql-mein-actual-difference-kya-hai)
+- [8. PostgreSQL ka biggest advantage kya hai?](#8-postgresql-ka-biggest-advantage-kya-hai)
+- [9. PostgreSQL ka JSON support](#9-postgresql-ka-json-support)
+- [10. PostgreSQL arrays](#10-postgresql-arrays)
+- [11. PostgreSQL mein custom data types](#11-postgresql-mein-custom-data-types)
+- [12. MySQL ka advantage kya hai?](#12-mysql-ka-advantage-kya-hai)
+- [13. Example: E-commerce](#13-example-e-commerce)
+- [14. But SQL syntax 100% same nahi hoti](#14-but-sql-syntax-100-same-nahi-hoti)
+- [15. PostgreSQL vs MySQL — INSERT example](#15-postgresql-vs-mysql-insert-example)
+- [16. PostgreSQL vs MySQL: UPSERT](#16-postgresql-vs-mysql-upsert)
+- [17. PostgreSQL vs MySQL: data types](#17-postgresql-vs-mysql-data-types)
+- [18. PostgreSQL vs MySQL: JSON](#18-postgresql-vs-mysql-json)
+- [19. PostgreSQL vs MySQL: storage engine](#19-postgresql-vs-mysql-storage-engine)
+- [20. PostgreSQL vs MySQL: concurrency](#20-postgresql-vs-mysql-concurrency)
+- [21. Now MongoDB](#21-now-mongodb)
+- [22. SQL vs MongoDB structure](#22-sql-vs-mongodb-structure)
+- [23. MongoDB mein JOIN nahi hota kya?](#23-mongodb-mein-join-nahi-hota-kya)
+- [24. MongoDB mein embedding](#24-mongodb-mein-embedding)
+- [25. MongoDB kab useful hai?](#25-mongodb-kab-useful-hai)
+- [26. MongoDB kab use nahi karna chahiye?](#26-mongodb-kab-use-nahi-karna-chahiye)
+- [27. Real example: WMS](#27-real-example-wms)
+- [28. Example inventory transaction](#28-example-inventory-transaction)
+- [29. MongoDB ka real-world example](#29-mongodb-ka-real-world-example)
+- [30. Another MongoDB example: logs/events](#30-another-mongodb-example-logsevents)
+- [31. PostgreSQL vs MongoDB — fundamental difference](#31-postgresql-vs-mongodb-fundamental-difference)
+- [32. "NoSQL" ka matlab SQL nahi hota?](#32-nosql-ka-matlab-sql-nahi-hota)
+- [33. PostgreSQL query vs MongoDB query](#33-postgresql-query-vs-mongodb-query)
+- [34. SQL databases mein normalization](#34-sql-databases-mein-normalization)
+- [35. MongoDB schema-less ka matlab kya hai?](#35-mongodb-schema-less-ka-matlab-kya-hai)
+- [36. PostgreSQL vs MySQL — which one should you choose?](#36-postgresql-vs-mysql-which-one-should-you-choose)
+- [37. Tumhare case mein PostgreSQL kyun logical choice hai?](#37-tumhare-case-mein-postgresql-kyun-logical-choice-hai)
+- [38. PostgreSQL + EF Core ka relation](#38-postgresql-ef-core-ka-relation)
+- [39. MongoDB + C#](#39-mongodb-c)
+- [40. Performance — kaun fastest?](#40-performance-kaun-fastest)
+- [41. Scaling difference](#41-scaling-difference)
+- [42. ACID — MongoDB mein ACID nahi hai?](#42-acid-mongodb-mein-acid-nahi-hai)
+- [43. One very important conceptual difference](#43-one-very-important-conceptual-difference)
+- [44. Example: Hospital application](#44-example-hospital-application)
+- [45. Example: Product catalog](#45-example-product-catalog)
+- [46. But PostgreSQL can also handle flexible data](#46-but-postgresql-can-also-handle-flexible-data)
+- [47. Very simple decision tree](#47-very-simple-decision-tree)
+- [48. PostgreSQL vs MySQL vs MongoDB — real examples](#48-postgresql-vs-mysql-vs-mongodb-real-examples)
+- [49. One thing you should NOT say in interview](#49-one-thing-you-should-not-say-in-interview)
+- [50. Final mental model](#50-final-mental-model)
+
+---
+
 # 1. Sabse pehle big picture
 
 ```text

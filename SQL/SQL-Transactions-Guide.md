@@ -1,5 +1,33 @@
 Bilkul. **SQL Transaction** ko zero se samjhte hain — **kya hota hai, kab use hota hai, kaha use hota hai, states kya hoti hain, COMMIT/ROLLBACK kaise kaam karte hain**, aur real project example ke saath.
 
+# Table of Contents
+
+- [1. Transaction kya hota hai?](#1-transaction-kya-hota-hai)
+- [2. Real-life example](#2-real-life-example)
+- [3. Transaction ka basic structure](#3-transaction-ka-basic-structure)
+- [4. Transaction ki zarurat kab hoti hai?](#4-transaction-ki-zarurat-kab-hoti-hai)
+- [5. Transaction ke important commands](#5-transaction-ke-important-commands)
+- [6. COMMIT kya karta hai?](#6-commit-kya-karta-hai)
+- [7. ROLLBACK kya karta hai?](#7-rollback-kya-karta-hai)
+- [8. SAVEPOINT kya hota hai?](#8-savepoint-kya-hota-hai)
+- [9. Transaction ki states kitni hoti hain?](#9-transaction-ki-states-kitni-hoti-hain)
+- [10. State 1 — Active](#10-state-1-active)
+- [11. State 2 — Partially Committed](#11-state-2-partially-committed)
+- [12. State 3 — Committed](#12-state-3-committed)
+- [13. State 4 — Failed](#13-state-4-failed)
+- [14. State 5 — Aborted](#14-state-5-aborted)
+- [15. Complete Transaction State Diagram](#15-complete-transaction-state-diagram)
+- [16. Transaction aur ACID ka relation](#16-transaction-aur-acid-ka-relation)
+- [17. Real project example — Order Placement](#17-real-project-example-order-placement)
+- [18. Agar stock update fail ho gaya?](#18-agar-stock-update-fail-ho-gaya)
+- [19. .NET / EF Core mein transaction](#19-net-ef-core-mein-transaction)
+- [20. Ek important point — `SaveChanges()` vs `Commit()`](#20-ek-important-point-savechanges-vs-commit)
+- [21. Har query ko transaction mein rakhna chahiye?](#21-har-query-ko-transaction-mein-rakhna-chahiye)
+- [22. Transaction vs COMMIT vs ROLLBACK](#22-transaction-vs-commit-vs-rollback)
+- [23. Interview mein ekdum simple answer](#23-interview-mein-ekdum-simple-answer)
+
+---
+
 # 1. Transaction kya hota hai?
 
 **Transaction = database operations ka ek logical group jo ek unit ki tarah execute hota hai.**

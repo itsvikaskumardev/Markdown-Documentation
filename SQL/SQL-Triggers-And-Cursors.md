@@ -2,6 +2,44 @@ Bilkul. Ab **Triggers + Cursors** ko zero se samajhte hain. Dono database-side c
 
 ---
 
+# Table of Contents
+
+- [Part 1 — Trigger kya hota hai?](#part-1-trigger-kya-hota-hai)
+- [2. Trigger kab execute hota hai?](#2-trigger-kab-execute-hota-hai)
+- [3. Real-life example](#3-real-life-example)
+- [4. PostgreSQL trigger ka structure](#4-postgresql-trigger-ka-structure)
+- [5. Trigger function example](#5-trigger-function-example)
+- [6. `OLD` aur `NEW` kya hain?](#6-old-aur-new-kya-hain)
+- [7. `BEFORE` vs `AFTER`](#7-before-vs-after)
+- [8. `FOR EACH ROW`](#8-for-each-row)
+- [9. Trigger kya normal SQL query hai?](#9-trigger-kya-normal-sql-query-hai)
+- [10. Kya .NET code mein trigger likhte hain?](#10-kya-net-code-mein-trigger-likhte-hain)
+- [11. Trigger kab use karna chahiye?](#11-trigger-kab-use-karna-chahiye)
+- [12. Trigger ke disadvantages](#12-trigger-ke-disadvantages)
+- [Part 2 — Cursor kya hota hai?](#part-2-cursor-kya-hota-hai)
+- [13. Cursor ko simple example se samjho](#13-cursor-ko-simple-example-se-samjho)
+- [14. Cursor ke basic steps](#14-cursor-ke-basic-steps)
+- [15. PostgreSQL cursor syntax](#15-postgresql-cursor-syntax)
+- [16. Complete cursor example](#16-complete-cursor-example)
+- [17. `OPEN`](#17-open)
+- [18. `FETCH`](#18-fetch)
+- [19. `LOOP`](#19-loop)
+- [20. `EXIT WHEN NOT FOUND`](#20-exit-when-not-found)
+- [21. `CLOSE`](#21-close)
+- [22. Kya cursor while loop hai?](#22-kya-cursor-while-loop-hai)
+- [23. Cursor memory zyada khata hai?](#23-cursor-memory-zyada-khata-hai)
+- [24. Cursor slow kyun ho sakta hai?](#24-cursor-slow-kyun-ho-sakta-hai)
+- [25. Cursor ka alternative kya hai?](#25-cursor-ka-alternative-kya-hai)
+- [26. Another alternative — `UPDATE ... FROM`](#26-another-alternative-update-from)
+- [27. Cursor vs Set-based SQL](#27-cursor-vs-set-based-sql)
+- [28. Lekin cursor kab genuinely useful hai?](#28-lekin-cursor-kab-genuinely-useful-hai)
+- [29. Cursor + Stored Procedure relationship](#29-cursor-stored-procedure-relationship)
+- [30. Trigger vs Cursor vs Stored Procedure](#30-trigger-vs-cursor-vs-stored-procedure)
+- [31. Ek important practical example](#31-ek-important-practical-example)
+- [32. Exam/Interview ke liye final notes](#32-examinterview-ke-liye-final-notes)
+
+---
+
 # Part 1 — Trigger kya hota hai?
 
 ## 1. Simple definition

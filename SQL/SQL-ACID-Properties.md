@@ -1,5 +1,39 @@
 Bilkul. **ACID properties** ko SQL ke actual queries aur `Orders` / `OrderItems` example se samjhte hain. Ye topic especially **transactions, banking, payments, order placement, inventory** mein bahut important hai.
 
+# Table of Contents
+
+- [ACID Properties kya hoti hain?](#acid-properties-kya-hoti-hain)
+- [1. Transaction kya hoti hai?](#1-transaction-kya-hoti-hai)
+- [A — Atomicity](#a-atomicity)
+- [3. Atomicity ki SQL query](#3-atomicity-ki-sql-query)
+- [4. Atomicity with error](#4-atomicity-with-error)
+- [C — Consistency](#c-consistency)
+- [6. Example: Primary Key consistency](#6-example-primary-key-consistency)
+- [7. Foreign Key consistency](#7-foreign-key-consistency)
+- [8. CHECK constraint consistency](#8-check-constraint-consistency)
+- [9. Atomicity + Consistency together](#9-atomicity-consistency-together)
+- [I — Isolation](#i-isolation)
+- [10. Isolation kya hai?](#10-isolation-kya-hai)
+- [11. Isolation example](#11-isolation-example)
+- [12. Isolation levels](#12-isolation-levels)
+- [13. READ COMMITTED](#13-read-committed)
+- [14. REPEATABLE READ](#14-repeatable-read)
+- [15. SERIALIZABLE](#15-serializable)
+- [16. Isolation ka practical example — inventory](#16-isolation-ka-practical-example-inventory)
+- [D — Durability](#d-durability)
+- [18. Durability ka real-life example](#18-durability-ka-real-life-example)
+- [19. `COMMIT` vs `ROLLBACK`](#19-commit-vs-rollback)
+- [20. Complete ACID example](#20-complete-acid-example)
+- [21. ACID ko ek real-world analogy se yaad karo](#21-acid-ko-ek-real-world-analogy-se-yaad-karo)
+- [22. ACID vs Transaction Commands](#22-acid-vs-transaction-commands)
+- [23. SAVEPOINT bhi samajh lo](#23-savepoint-bhi-samajh-lo)
+- [24. ACID ko SQL level par ek table mein](#24-acid-ko-sql-level-par-ek-table-mein)
+- [25. Sabse important difference: Atomicity vs Consistency](#25-sabse-important-difference-atomicity-vs-consistency)
+- [26. Isolation vs Atomicity](#26-isolation-vs-atomicity)
+- [27. Final mental diagram](#27-final-mental-diagram)
+
+---
+
 # ACID Properties kya hoti hain?
 
 **ACID =**

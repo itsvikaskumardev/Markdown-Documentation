@@ -1,4 +1,18 @@
 
+# Table of Contents
+
+- [Q1) What is SQL?](#q1-what-is-sql)
+- [Q2) What is a Database?](#q2-what-is-a-database)
+- [Database vs SQL](#database-vs-sql)
+- [Q3) What are the types of SQL Commands?](#q3-what-are-the-types-of-sql-commands)
+- [1. DDL — Data Definition Language](#1-ddl-data-definition-language)
+- [2. DML — Data Manipulation Language](#2-dml-data-manipulation-language)
+- [3. DCL — Data Control Language](#3-dcl-data-control-language)
+- [4. TCL — Transaction Control Language](#4-tcl-transaction-control-language)
+- [5. DQL — Data Query Language](#5-dql-data-query-language)
+
+---
+
 # Q1) What is SQL?
 
 

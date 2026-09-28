@@ -4,6 +4,37 @@ Main tumhe **importance order** mein samjha raha hoon, aur examples ke liye `Ord
 
 ---
 
+# Table of Contents
+
+- [1. `IN` ⭐⭐⭐⭐⭐](#1-in-)
+- [2. `EXISTS` ⭐⭐⭐⭐⭐](#2-exists-)
+- [3. `NOT EXISTS` ⭐⭐⭐⭐⭐](#3-not-exists-)
+- [4. `BETWEEN` ⭐⭐⭐⭐⭐](#4-between-)
+- [5. `LIKE` ⭐⭐⭐⭐⭐](#5-like-)
+- [6. `IS NULL` / `IS NOT NULL` ⭐⭐⭐⭐⭐](#6-is-null-is-not-null-)
+- [7. `CASE` ⭐⭐⭐⭐⭐](#7-case-)
+- [8. `COALESCE` ⭐⭐⭐⭐⭐](#8-coalesce-)
+- [9. `DISTINCT` ⭐⭐⭐⭐](#9-distinct-)
+- [10. `UNION` ⭐⭐⭐⭐](#10-union-)
+- [11. `UNION ALL` ⭐⭐⭐⭐](#11-union-all-)
+- [12. `ANY` / `SOME` ⭐⭐⭐](#12-any-some-)
+- [13. `ALL` ⭐⭐⭐](#13-all-)
+- [14. `ANY` vs `ALL`](#14-any-vs-all)
+- [15. `FETCH FIRST` / `LIMIT` ⭐⭐⭐⭐](#15-fetch-first-limit-)
+- [16. `OFFSET` ⭐⭐⭐⭐](#16-offset-)
+- [17. `WITH` — CTE ⭐⭐⭐⭐⭐](#17-with-cte-)
+- [18. `RETURNING` — PostgreSQL ⭐⭐⭐⭐⭐](#18-returning-postgresql-)
+- [19. `ON CONFLICT` — PostgreSQL ⭐⭐⭐⭐⭐](#19-on-conflict-postgresql-)
+- [20. `HAVING` — already important ⭐⭐⭐⭐⭐](#20-having-already-important-)
+- [21. `ORDER BY` ⭐⭐⭐⭐⭐](#21-order-by-)
+- [22. `GROUP BY` ⭐⭐⭐⭐⭐](#22-group-by-)
+- [23. `JOIN` ⭐⭐⭐⭐⭐](#23-join-)
+- [24. `ANY` vs `EXISTS` vs `IN`](#24-any-vs-exists-vs-in)
+- [25. Important keywords — priority order](#25-important-keywords-priority-order)
+- [26. Ek query mein multiple keywords kaise combine hote hain?](#26-ek-query-mein-multiple-keywords-kaise-combine-hote-hain)
+
+---
+
 # 1. `IN` ⭐⭐⭐⭐⭐
 
 `IN` ka use tab hota hai jab hume check karna ho ki koi value **given values ki list mein hai ya nahi**.

@@ -1,5 +1,29 @@
 
 
+# Table of Contents
+
+- [Stored Procedure kya hoti hai?](#stored-procedure-kya-hoti-hai)
+- [1. Real-life example](#1-real-life-example)
+- [2. Stored Procedure ka basic syntax](#2-stored-procedure-ka-basic-syntax)
+- [3. Procedure ko execute kaise karte hain?](#3-procedure-ko-execute-kaise-karte-hain)
+- [4. Parameters kyun chahiye?](#4-parameters-kyun-chahiye)
+- [5. Stored Procedure mein multiple SQL statements bhi ho sakti hain](#5-stored-procedure-mein-multiple-sql-statements-bhi-ho-sakti-hain)
+- [6. SQL vs Stored Procedure](#6-sql-vs-stored-procedure)
+- [7. Stored Procedure kyun use karte hain?](#7-stored-procedure-kyun-use-karte-hain)
+- [8. Stored Procedure aur Function same hain?](#8-stored-procedure-aur-function-same-hain)
+- [9. Procedure mein `IF`, variables etc. bhi ho sakte hain](#9-procedure-mein-if-variables-etc-bhi-ho-sakte-hain)
+- [10. `Orders` + `OrderItems` ka practical example](#10-orders-orderitems-ka-practical-example)
+- [11. Important: Stored Procedure ko `.NET` code mein add kar sakte hain?](#11-important-stored-procedure-ko-net-code-mein-add-kar-sakte-hain)
+- [12. EF Core mein kaise call karte hain?](#12-ef-core-mein-kaise-call-karte-hain)
+- [13. Stored Procedure vs EF Core LINQ](#13-stored-procedure-vs-ef-core-linq)
+- [14. Kya har SQL query ko Stored Procedure banana chahiye?](#14-kya-har-sql-query-ko-stored-procedure-banana-chahiye)
+- [15. Stored Procedure ke disadvantages bhi hain](#15-stored-procedure-ke-disadvantages-bhi-hain)
+- [16. Ek important misconception](#16-ek-important-misconception)
+- [17. Complete mental model](#17-complete-mental-model)
+- [18. Interview mein short answer](#18-interview-mein-short-answer)
+
+---
+
 # Stored Procedure kya hoti hai?
 
 **Stored Procedure ek SQL statements ka saved/reusable group hota hai jo database ke andar store hota hai.**

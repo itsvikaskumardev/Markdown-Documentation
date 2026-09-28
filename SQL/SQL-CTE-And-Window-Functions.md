@@ -4,6 +4,41 @@ Main `Orders` + `OrderItems` example se zero se samjhaunga.
 
 ---
 
+# Table of Contents
+
+- [Part 1 — Window Functions](#part-1-window-functions)
+- [2. Window Function ka basic syntax](#2-window-function-ka-basic-syntax)
+- [3. `PARTITION BY` kya hota hai?](#3-partition-by-kya-hota-hai)
+- [4. `PARTITION BY` vs `GROUP BY`](#4-partition-by-vs-group-by)
+- [5. Window Functions ke main types](#5-window-functions-ke-main-types)
+- [6. `ROW_NUMBER()`](#6-row_number)
+- [7. `ROW_NUMBER()` + `PARTITION BY`](#7-row_number-partition-by)
+- [8. `RANK()`](#8-rank)
+- [9. `DENSE_RANK()`](#9-dense_rank)
+- [10. `SUM()` Window Function](#10-sum-window-function)
+- [11. Running Total](#11-running-total)
+- [12. `COUNT()` Window Function](#12-count-window-function)
+- [13. `AVG()`, `MIN()`, `MAX()`](#13-avg-min-max)
+- [14. `LAG()`](#14-lag)
+- [15. `LEAD()`](#15-lead)
+- [16. Window Functions ka real-world use](#16-window-functions-ka-real-world-use)
+- [Part 2 — CTE](#part-2-cte)
+- [18. CTE kyun use karte hain?](#18-cte-kyun-use-karte-hain)
+- [19. Simple CTE example](#19-simple-cte-example)
+- [20. CTE + GROUP BY](#20-cte-group-by)
+- [21. CTE ka main benefit](#21-cte-ka-main-benefit)
+- [22. CTE + JOIN](#22-cte-join)
+- [23. CTE + Window Function](#23-cte-window-function)
+- [24. CTE ke types](#24-cte-ke-types)
+- [25. CTE vs Temporary Table](#25-cte-vs-temporary-table)
+- [26. CTE vs Stored Procedure](#26-cte-vs-stored-procedure)
+- [27. Window Function vs CTE](#27-window-function-vs-cte)
+- [28. Ek complete example](#28-ek-complete-example)
+- [29. Quick revision](#29-quick-revision)
+- [30. CTE Quick Revision](#30-cte-quick-revision)
+
+---
+
 # Part 1 — Window Functions
 
 ## 1. Window Function kya hoti hai?

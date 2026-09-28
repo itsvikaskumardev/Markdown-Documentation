@@ -9,6 +9,47 @@ In sab ko example ke saath samjhte hain.
 
 ---
 
+# Table of Contents
+
+- [1. Indexing kya hoti hai?](#1-indexing-kya-hoti-hai)
+- [2. Without Index kya hota hai?](#2-without-index-kya-hota-hai)
+- [3. Index bana diya to?](#3-index-bana-diya-to)
+- [4. `CREATE INDEX idx...` mein `idx` kya hai?](#4-create-index-idx-mein-idx-kya-hai)
+- [5. Index actual mein kaha banta hai?](#5-index-actual-mein-kaha-banta-hai)
+- [6. To .NET mein index ka koi use nahi?](#6-to-net-mein-index-ka-koi-use-nahi)
+- [7. EF Core mein Index kaise create karte hain?](#7-ef-core-mein-index-kaise-create-karte-hain)
+- [8. Table create karte time hi index banana chahiye?](#8-table-create-karte-time-hi-index-banana-chahiye)
+- [9. Kya har column par index bana dena chahiye?](#9-kya-har-column-par-index-bana-dena-chahiye)
+- [10. Index ka benefit](#10-index-ka-benefit)
+- [11. Lekin Index free nahi hota](#11-lekin-index-free-nahi-hota)
+- [12. INSERT par index ka cost](#12-insert-par-index-ka-cost)
+- [13. UPDATE par bhi cost](#13-update-par-bhi-cost)
+- [14. DELETE par bhi cost](#14-delete-par-bhi-cost)
+- [15. Primary Key par index?](#15-primary-key-par-index)
+- [16. Foreign Key par automatically index?](#16-foreign-key-par-automatically-index)
+- [17. Index kab banana chahiye?](#17-index-kab-banana-chahiye)
+- [18. High-cardinality column](#18-high-cardinality-column)
+- [19. Single-column index](#19-single-column-index)
+- [20. Composite Index ⭐⭐⭐⭐⭐](#20-composite-index-)
+- [21. Composite index mein column order important hai](#21-composite-index-mein-column-order-important-hai)
+- [22. Leftmost prefix concept](#22-leftmost-prefix-concept)
+- [23. B-Tree Index kya hota hai?](#23-b-tree-index-kya-hota-hai)
+- [24. Query kaise benefit leti hai?](#24-query-kaise-benefit-leti-hai)
+- [25. `EXPLAIN` se kaise check karein?](#25-explain-se-kaise-check-karein)
+- [26. `EXPLAIN ANALYZE`](#26-explain-analyze)
+- [27. Ek important misconception](#27-ek-important-misconception)
+- [28. Index ka use .NET code mein kaise dikhega?](#28-index-ka-use-net-code-mein-kaise-dikhega)
+- [29. EF Core project mein recommended approach](#29-ef-core-project-mein-recommended-approach)
+- [30. WMS example — tumhare project jaisa](#30-wms-example-tumhare-project-jaisa)
+- [31. Partial Index — PostgreSQL ⭐⭐⭐⭐⭐](#31-partial-index-postgresql-)
+- [32. Unique Index](#32-unique-index)
+- [33. Index vs Primary Key](#33-index-vs-primary-key)
+- [34. Index vs Table](#34-index-vs-table)
+- [35. To "table create karte time indexing bhi kar dete hain?"](#35-to-table-create-karte-time-indexing-bhi-kar-dete-hain)
+- [36. Sabse important mental model](#36-sabse-important-mental-model)
+
+---
+
 # 1. Indexing kya hoti hai?
 
 Database mein **Index ek data structure hai jo database ko rows jaldi find karne mein help karta hai.**

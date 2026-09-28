@@ -18,6 +18,52 @@ mein convert karenge.
 
 ---
 
+# Table of Contents
+
+- [1. Normalization kya hoti hai?](#1-normalization-kya-hoti-hai)
+- [2. Normalization kyu karte hain?](#2-normalization-kyu-karte-hain)
+- [3. Normalization ka main idea](#3-normalization-ka-main-idea)
+- [4. Ek important term — Functional Dependency](#4-ek-important-term-functional-dependency)
+- [5. Start with a bad table](#5-start-with-a-bad-table)
+- [6. 1NF — First Normal Form ⭐⭐⭐⭐⭐](#6-1nf-first-normal-form-)
+- [7. 1NF ka correct version](#7-1nf-ka-correct-version)
+- [8. 1NF ke baad problem kya hai?](#8-1nf-ke-baad-problem-kya-hai)
+- [9. 2NF — Second Normal Form ⭐⭐⭐⭐⭐](#9-2nf-second-normal-form-)
+- [10. Partial Dependency kya hai?](#10-partial-dependency-kya-hai)
+- [11. 2NF kaise achieve karenge?](#11-2nf-kaise-achieve-karenge)
+- [12. SQL mein 2NF design](#12-sql-mein-2nf-design)
+- [13. 2NF ko simple language mein yaad rakho](#13-2nf-ko-simple-language-mein-yaad-rakho)
+- [14. 3NF — Third Normal Form ⭐⭐⭐⭐⭐](#14-3nf-third-normal-form-)
+- [15. Transitive Dependency kya hai?](#15-transitive-dependency-kya-hai)
+- [16. 3NF ka rule](#16-3nf-ka-rule)
+- [17. Bad 3NF example](#17-bad-3nf-example)
+- [18. Correct 3NF design](#18-correct-3nf-design)
+- [19. SQL](#19-sql)
+- [20. Ab actual data ka flow dekho](#20-ab-actual-data-ka-flow-dekho)
+- [21. Data retrieve karna hai to JOIN](#21-data-retrieve-karna-hai-to-join)
+- [22. Order + Product complete data](#22-order-product-complete-data)
+- [23. BCNF — Boyce-Codd Normal Form ⭐⭐⭐⭐](#23-bcnf-boyce-codd-normal-form-)
+- [24. BCNF example](#24-bcnf-example)
+- [25. Isko BCNF mein kaise split karenge?](#25-isko-bcnf-mein-kaise-split-karenge)
+- [26. 1NF → 2NF → 3NF → BCNF ek hi example se](#26-1nf-2nf-3nf-bcnf-ek-hi-example-se)
+- [27. Final normalized design](#27-final-normalized-design)
+- [28. SQL complete example](#28-sql-complete-example)
+- [29. Insert data](#29-insert-data)
+- [30. Ab complete order information kaise nikale?](#30-ab-complete-order-information-kaise-nikale)
+- [31. Normalization ka actual benefit](#31-normalization-ka-actual-benefit)
+- [32. Product price change](#32-product-price-change)
+- [33. But ek important real-world issue — historical price](#33-but-ek-important-real-world-issue-historical-price)
+- [34. Normalization vs Denormalization](#34-normalization-vs-denormalization)
+- [35. Kya har database ko BCNF tak normalize karna chahiye?](#35-kya-har-database-ko-bcnf-tak-normalize-karna-chahiye)
+- [36. Normalization kab use karte hain?](#36-normalization-kab-use-karte-hain)
+- [37. Normalization kab less important ho sakti hai?](#37-normalization-kab-less-important-ho-sakti-hai)
+- [38. Sabse important difference: 1NF vs 2NF vs 3NF vs BCNF](#38-sabse-important-difference-1nf-vs-2nf-vs-3nf-vs-bcnf)
+- [39. Ek aur easy way yaad rakho](#39-ek-aur-easy-way-yaad-rakho)
+- [40. Interview answer](#40-interview-answer)
+- [41. Final mental picture](#41-final-mental-picture)
+
+---
+
 # 1. Normalization kya hoti hai?
 
 **Normalization = database tables ko logically organize karna taaki data duplication kam ho aur INSERT/UPDATE/DELETE anomalies avoid ho.**

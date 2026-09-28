@@ -1,6 +1,37 @@
 
 ---
 
+# Table of Contents
+
+- [1. JOIN ki need kyun padti hai?](#1-join-ki-need-kyun-padti-hai)
+- [2. JOIN kya hota hai?](#2-join-kya-hota-hai)
+- [3. JOIN ka basic syntax](#3-join-ka-basic-syntax)
+- [4. Alias kya hota hai?](#4-alias-kya-hota-hai)
+- [5. `ON` kya karta hai?](#5-on-kya-karta-hai)
+- [6. INNER JOIN](#6-inner-join)
+- [7. INNER JOIN actually kya kar raha hai?](#7-inner-join-actually-kya-kar-raha-hai)
+- [8. Important: One-to-Many relationship](#8-important-one-to-many-relationship)
+- [9. LEFT JOIN](#9-left-join)
+- [10. INNER vs LEFT JOIN](#10-inner-vs-left-join)
+- [11. LEFT JOIN kab use karna hai?](#11-left-join-kab-use-karna-hai)
+- [12. INNER JOIN kab use karna hai?](#12-inner-join-kab-use-karna-hai)
+- [13. RIGHT JOIN](#13-right-join)
+- [14. FULL OUTER JOIN](#14-full-outer-join)
+- [15. JOIN ka visual](#15-join-ka-visual)
+- [16. Multiple JOIN kaise lagta hai?](#16-multiple-join-kaise-lagta-hai)
+- [17. JOIN + WHERE](#17-join-where)
+- [18. LEFT JOIN + WHERE mein important trap](#18-left-join-where-mein-important-trap)
+- [19. JOIN condition mein condition lagana](#19-join-condition-mein-condition-lagana)
+- [20. JOIN + GROUP BY](#20-join-group-by)
+- [21. `COUNT(*)` vs `COUNT(column)` yahan important hai](#21-count-vs-countcolumn-yahan-important-hai)
+- [22. JOIN + GROUP BY + HAVING](#22-join-group-by-having)
+- [23. JOIN mein `ON` aur `WHERE` ka difference](#23-join-mein-on-aur-where-ka-difference)
+- [24. JOIN aur Foreign Key ka relation](#24-join-aur-foreign-key-ka-relation)
+- [25. JOIN ke types ek baar](#25-join-ke-types-ek-baar)
+- [26. SELF JOIN kya hota hai?](#26-self-join-kya-hota-hai)
+
+---
+
 # 1. JOIN ki need kyun padti hai?
 
 Real database mein hum usually **saara data ek table mein nahi rakhte**.

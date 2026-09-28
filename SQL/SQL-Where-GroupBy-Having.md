@@ -2,6 +2,43 @@
 
 ---
 
+# Table of Contents
+
+- [1. Pehle hamara data samjho](#1-pehle-hamara-data-samjho)
+- [3. WHERE kya karta hai?](#3-where-kya-karta-hai)
+- [4. WHERE mein conditions](#4-where-mein-conditions)
+- [5. AND](#5-and)
+- [6. OR](#6-or)
+- [7. IN](#7-in)
+- [8. BETWEEN](#8-between)
+- [9. LIKE](#9-like)
+- [10. Ab GROUP BY samjho](#10-ab-group-by-samjho)
+- [GROUP BY ka actual meaning](#group-by-ka-actual-meaning)
+- [11. GROUP BY + SUM](#11-group-by-sum)
+- [12. GROUP BY + COUNT](#12-group-by-count)
+- [13. GROUP BY + SUM](#13-group-by-sum)
+- [14. Important Aggregate Functions](#14-important-aggregate-functions)
+- [15. Ab HAVING samjho](#15-ab-having-samjho)
+- [16. WHERE vs HAVING — Sabse important](#16-where-vs-having-sabse-important)
+- [17. Is query ko step-by-step execute karo](#17-is-query-ko-step-by-step-execute-karo)
+- [18. WHERE mein aggregate function kyun nahi?](#18-where-mein-aggregate-function-kyun-nahi)
+- [19. WHERE + GROUP BY + HAVING together](#19-where-group-by-having-together)
+- [20. ORDER BY kya karta hai?](#20-order-by-kya-karta-hai)
+- [21. SQL Query ka logical order](#21-sql-query-ka-logical-order)
+- [22. Ek real-world question solve karte hain](#22-ek-real-world-question-solve-karte-hain)
+- [23. WHERE kab use karna hai?](#23-where-kab-use-karna-hai)
+- [24. HAVING kab use karna hai?](#24-having-kab-use-karna-hai)
+- [25. WHERE + HAVING ka difference ek line mein](#25-where-having-ka-difference-ek-line-mein)
+- [26. Ek common mistake](#26-ek-common-mistake)
+- [27. WHERE, GROUP BY, HAVING ko yaad rakhne ka easiest example](#27-where-group-by-having-ko-yaad-rakhne-ka-easiest-example)
+- [28. Ek aur important cheez — JOIN](#28-ek-aur-important-cheez-join)
+- [29. JOIN + WHERE](#29-join-where)
+- [30. JOIN + GROUP BY](#30-join-group-by)
+- [31. JOIN + WHERE + GROUP BY + HAVING](#31-join-where-group-by-having)
+- [Final Cheat Sheet](#final-cheat-sheet)
+
+---
+
 # 1. Pehle hamara data samjho
 
 Maan lo hamare paas e-commerce database hai.
