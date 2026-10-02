@@ -34,6 +34,181 @@ for i ← 0 to n − 2:
 
 return none
 ```
+### Dry Run
+Sure. This is the **brute-force approach for Two Sum**. Let's dry-run your exact input.
+
+```text
+arr = [2,7,11,15]
+target = 9
+```
+
+Pseudocode:
+
+```text
+for i ← 0 to n − 2:
+    for j ← i + 1 to n − 1:
+        if arr[i] + arr[j] == target:
+            return (i, j)
+return none
+```
+
+---
+
+### 1. `for i ← 0 to n − 2`
+
+`n = 4`, so:
+
+```text
+n - 2 = 2
+```
+
+Therefore `i` will be:
+
+```text
+i = 0
+i = 1
+i = 2
+```
+
+Why don't we go to `i = 3`?
+
+Because we need another element after `i` to form a pair.
+
+---
+
+#### i = 0
+
+```text
+arr[0] = 2
+```
+
+Now the inner loop:
+
+```text
+for j ← i + 1 to n − 1
+```
+
+Since `i = 0`:
+
+```text
+j = 1 to 3
+```
+
+##### j = 1
+
+```text
+arr[0] + arr[1]
+= 2 + 7
+= 9
+```
+
+Check:
+
+```text
+9 == target
+9 == 9
+```
+
+✅ True!
+
+Therefore:
+
+```text
+return (i, j)
+```
+
+becomes:
+
+```text
+return (0,1)
+```
+
+And the algorithm **stops immediately**.
+
+---
+
+### Why don't we check the remaining elements?
+
+Because we already found the answer.
+
+We don't need to check:
+
+```text
+2 + 11
+2 + 15
+7 + 11
+...
+```
+
+The `return` exits the entire algorithm.
+
+---
+
+### Complete dry run
+
+| `i` | `j` | `arr[i]` | `arr[j]` |   Sum | Result  |
+| --: | --: | -------: | -------: | ----: | ------- |
+|   0 |   1 |        2 |        7 | **9** | ✅ Found |
+
+So:
+
+```text
+arr = [2,7,11,15]
+        ↑ ↑
+        0 1
+```
+
+```text
+2 + 7 = 9
+```
+
+### ✅ Final output
+
+```text
+(0, 1)
+```
+
+If the question expects an array instead of a tuple, the answer is usually:
+
+```text
+[0,1]
+```
+
+### 🧠 Why `j = i + 1`?
+
+This is very important.
+
+We don't want to compare an element with itself:
+
+```text
+arr[0] + arr[0]
+```
+
+And we don't want duplicate pairs:
+
+```text
+(0,1)
+(1,0)
+```
+
+So:
+
+```text
+j = i + 1
+```
+
+ensures that we only check **each pair once**.
+
+For example:
+
+```text
+i = 0 → j = 1,2,3
+i = 1 → j = 2,3
+i = 2 → j = 3
+```
+
+That's why the total number of comparisons is `O(n²)`.
+
 
 #### 2. Optimized (HashMap)
 Use a **HashMap** to store values and their indices. For each number, check whether `target - current` already exists.
@@ -54,6 +229,321 @@ for i ← 0 to n − 1:
 
 return none
 ```
+
+### Dry Run
+Sure. This is the **optimized Two Sum approach using a hash map**.
+
+Input:
+
+```text id="u2c7va"
+arr = [3,8,2,5]
+target = 10
+```
+
+Pseudocode:
+
+```text id="x1j5qp"
+seen ← {}   // value → index
+
+for i ← 0 to n − 1:
+    need ← target − arr[i]
+
+    if need in seen:
+        return (seen[need], i)
+
+    seen[arr[i]] ← i
+
+return none
+```
+
+The main idea is:
+
+> For every number, calculate what number you **need** to reach the target, then check whether you've already seen that number.
+
+---
+
+### 1. `seen ← {}`
+
+Create an empty hash map.
+
+```text id="y3g6q8"
+seen = {}
+```
+
+It will store:
+
+```text
+value → index
+```
+
+For example:
+
+```text
+3 → 0
+8 → 1
+```
+
+---
+
+### 2. `for i ← 0 to n − 1`
+
+Our array has 4 elements:
+
+```text id="j5q1nw"
+Index:  0  1  2  3
+Value:  3  8  2  5
+```
+
+So:
+
+```text id="l8k4sp"
+i = 0, 1, 2, 3
+```
+
+---
+
+#### 🔹 i = 0
+
+Current value:
+
+```text id="4p0y6x"
+arr[0] = 3
+```
+
+### Calculate `need`
+
+```text id="z8r2kc"
+need = target - arr[i]
+     = 10 - 3
+     = 7
+```
+
+So we're asking:
+
+> "Have I already seen `7`?"
+
+Check:
+
+```text id="n6f1ra"
+if 7 in seen
+```
+
+Currently:
+
+```text id="2m7k9p"
+seen = {}
+```
+
+❌ `7` is not there.
+
+So execute:
+
+```text id="k3v8ds"
+seen[arr[i]] ← i
+```
+
+That means:
+
+```text id="q4x1nm"
+seen[3] = 0
+```
+
+Now:
+
+```text id="f8z5cw"
+seen = {
+    3 → 0
+}
+```
+
+---
+
+#### 🔹 i = 1
+
+Current:
+
+```text id="w6p2qa"
+arr[1] = 8
+```
+
+Calculate:
+
+```text id="a9c3mv"
+need = 10 - 8
+     = 2
+```
+
+Ask:
+
+> Have we already seen `2`?
+
+```text id="k7v4ps"
+2 in seen?
+```
+
+Currently:
+
+```text id="e2n6xt"
+seen = {3 → 0}
+```
+
+❌ No.
+
+So store current value:
+
+```text id="j1r8zb"
+seen[8] = 1
+```
+
+Now:
+
+```text id="h5q9kd"
+seen = {
+    3 → 0,
+    8 → 1
+}
+```
+
+---
+
+#### 🔹 i = 2
+
+Current:
+
+```text id="u7m3px"
+arr[2] = 2
+```
+
+Calculate:
+
+```text id="v4k8sn"
+need = 10 - 2
+     = 8
+```
+
+Now ask:
+
+> Have we already seen `8`?
+
+```text id="b3n7qw"
+8 in seen?
+```
+
+Yes! ✅
+
+Our map contains:
+
+```text id="c6z2yt"
+8 → 1
+```
+
+Therefore:
+
+```text id="r5x9mk"
+return (seen[need], i)
+```
+
+Substitute:
+
+```text id="g2p6vc"
+return (seen[8], 2)
+```
+
+Since:
+
+```text id="w9s4ja"
+seen[8] = 1
+```
+
+we get:
+
+```text id="3h7k2q"
+return (1,2)
+```
+
+And the algorithm **stops here**.
+
+---
+
+### Why does `(1,2)` work?
+
+Look at those indexes:
+
+```text id="v1s8kx"
+Index:  0  1  2  3
+Value:  3  8  2  5
+           ↑  ↑
+           1  2
+```
+
+Values:
+
+```text id="5q2m8v"
+arr[1] + arr[2]
+= 8 + 2
+= 10
+```
+
+Exactly our target. ✅
+
+---
+
+### Complete dry run
+
+| `i` | `arr[i]` | `need = 10-arr[i]` | `seen` before | Found? | Action         |
+| --: | -------: | -----------------: | ------------- | ------ | -------------- |
+|   0 |        3 |                  7 | `{}`          | ❌      | Store `3 → 0`  |
+|   1 |        8 |                  2 | `{3→0}`       | ❌      | Store `8 → 1`  |
+|   2 |        2 |                  8 | `{3→0, 8→1}`  | ✅      | Return `(1,2)` |
+
+### ✅ Final output
+
+```text id="x8m2qa"
+(1,2)
+```
+
+or, if the problem expects an array:
+
+```text id="v5k9rw"
+[1,2]
+```
+
+### 🧠 The important trick
+
+Instead of checking every pair like the brute-force approach:
+
+```text
+3 + 8
+3 + 2
+3 + 5
+8 + 2
+...
+```
+
+we ask:
+
+```text
+current = 2
+target = 10
+
+need = 10 - 2
+     = 8
+```
+
+Then:
+
+> **"Have I seen 8 before?"**
+
+Yes → index `1`.
+
+Therefore:
+
+```text
+8 + 2 = 10
+```
+
+That's why the hash-map approach takes **O(n) average time** instead of **O(n²)** brute force.
+
 
 ### Complexity
 
