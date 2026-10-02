@@ -988,6 +988,356 @@ for iv in intervals:
 return removed
 ```
 
+### Dry Run
+Sure. This is the greedy logic for **Non-overlapping Intervals — LeetCode 435**.
+
+The goal is:
+
+> Remove the **minimum number of intervals** so that the remaining intervals do not overlap.
+
+Your input:
+
+```text
+[[0,2],[1,3],[2,4],[3,5],[4,6]]
+```
+
+---
+
+## 1. Sort intervals by `end`
+
+The pseudocode starts with:
+
+```text
+sort intervals by end
+```
+
+Your intervals are already sorted by their ending values:
+
+```text
+[0,2]  → end = 2
+[1,3]  → end = 3
+[2,4]  → end = 4
+[3,5]  → end = 5
+[4,6]  → end = 6
+```
+
+So no change:
+
+```text
+[[0,2],[1,3],[2,4],[3,5],[4,6]]
+```
+
+### Why sort by end?
+
+Because when two intervals overlap, we want to **keep the interval that ends earlier**.
+
+For example:
+
+```text
+[0,2]
+[1,3]
+```
+
+They overlap.
+
+Keeping `[0,2]` is better for future intervals because it finishes at `2`, giving us more room.
+
+---
+
+## 2. Initialize
+
+```text
+prevEnd ← −∞
+removed ← 0
+```
+
+### `prevEnd`
+
+This stores:
+
+> The ending point of the **last interval we decided to keep**.
+
+Initially, we haven't kept anything:
+
+```text
+prevEnd = -∞
+```
+
+### `removed`
+
+Counts how many intervals we remove:
+
+```text
+removed = 0
+```
+
+---
+
+## 3. First interval `[0,2]`
+
+```text
+iv = [0,2]
+```
+
+Check:
+
+```text
+iv.start >= prevEnd
+0 >= -∞
+```
+
+✅ True.
+
+So we **keep** `[0,2]`.
+
+```text
+prevEnd = iv.end
+        = 2
+```
+
+State:
+
+```text
+prevEnd = 2
+removed = 0
+```
+
+Kept:
+
+```text
+[0,2]
+```
+
+---
+
+## 4. Second interval `[1,3]`
+
+```text
+iv = [1,3]
+```
+
+Check:
+
+```text
+iv.start >= prevEnd
+
+1 >= 2
+```
+
+❌ False.
+
+That means `[1,3]` overlaps the previously kept `[0,2]`.
+
+```text
+[0,2]
+   [1,3]
+```
+
+So:
+
+```text
+removed += 1
+```
+
+Therefore:
+
+```text
+removed = 1
+```
+
+We **drop `[1,3]`**.
+
+### Why don't we change `prevEnd`?
+
+Because we kept `[0,2]`.
+
+```text
+prevEnd = 2
+```
+
+This is important.
+
+---
+
+## 5. Third interval `[2,4]`
+
+```text
+iv = [2,4]
+```
+
+Check:
+
+```text
+2 >= 2
+```
+
+✅ True.
+
+So it does **not** overlap `[0,2]`.
+
+Remember:
+
+```text
+end of previous = 2
+start of current = 2
+```
+
+Touching at `2` is allowed here.
+
+So keep `[2,4]`.
+
+Update:
+
+```text
+prevEnd = 4
+```
+
+State:
+
+```text
+prevEnd = 4
+removed = 1
+```
+
+Kept intervals:
+
+```text
+[0,2]
+[2,4]
+```
+
+---
+
+## 6. Fourth interval `[3,5]`
+
+```text
+iv = [3,5]
+```
+
+Check:
+
+```text
+3 >= 4
+```
+
+❌ False.
+
+So `[3,5]` overlaps `[2,4]`.
+
+```text
+[2,4]
+   [3,5]
+```
+
+Drop it:
+
+```text
+removed += 1
+```
+
+Now:
+
+```text
+removed = 2
+```
+
+`prevEnd` remains:
+
+```text
+prevEnd = 4
+```
+
+because we kept `[2,4]`.
+
+---
+
+## 7. Fifth interval `[4,6]`
+
+```text
+iv = [4,6]
+```
+
+Check:
+
+```text
+4 >= 4
+```
+
+✅ True.
+
+So `[4,6]` doesn't overlap `[2,4]`.
+
+Keep it:
+
+```text
+prevEnd = 6
+```
+
+Final:
+
+```text
+removed = 2
+```
+
+---
+
+## Complete dry run
+
+| Interval | `prevEnd` before | Check       | Action | `prevEnd` after | `removed` |
+| -------- | ---------------: | ----------- | ------ | --------------: | --------: |
+| `[0,2]`  |             `-∞` | `0 >= -∞` ✅ | Keep   |             `2` |       `0` |
+| `[1,3]`  |              `2` | `1 >= 2` ❌  | Remove |             `2` |       `1` |
+| `[2,4]`  |              `2` | `2 >= 2` ✅  | Keep   |             `4` |       `1` |
+| `[3,5]`  |              `4` | `3 >= 4` ❌  | Remove |             `4` |       `2` |
+| `[4,6]`  |              `4` | `4 >= 4` ✅  | Keep   |             `6` |       `2` |
+
+### ✅ Final output
+
+```text
+2
+```
+
+So we need to **remove 2 intervals**:
+
+```text
+[1,3]
+[3,5]
+```
+
+The remaining non-overlapping intervals are:
+
+```text
+[[0,2],[2,4],[4,6]]
+```
+
+### The main trick 🧠
+
+Remember this:
+
+```text
+if current.start >= prevEnd
+        ↓
+    no overlap
+        ↓
+       KEEP
+        ↓
+prevEnd = current.end
+```
+
+Otherwise:
+
+```text
+current.start < prevEnd
+        ↓
+      overlap
+        ↓
+      REMOVE
+        ↓
+removed++
+```
+
+And the **greedy idea** is: **sort by end and always keep the interval that finishes earliest**. This leaves the maximum possible room for the intervals that come later.
+
 ### Complexity
 
 | Approach | Time | Space |
