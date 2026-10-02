@@ -680,6 +680,175 @@ for i ← 0 to n − 1:
 return all groups
 ```
 
+### Dry Run
+Sure. This is a very simple way to check whether two strings are **anagrams**.
+
+### Input
+
+```text
+s = "anagram"
+t = "nagaram"
+```
+
+Code:
+
+```text
+// t anagram of s?
+return sorted(s) == sorted(t)
+```
+
+Let's understand it step by step.
+
+---
+
+### 1. `sorted(s)`
+
+We have:
+
+```text
+s = "anagram"
+```
+
+The letters are:
+
+```text
+a n a g r a m
+```
+
+`sorted(s)` puts the characters in alphabetical order:
+
+```text
+sorted("anagram")
+```
+
+Result:
+
+```text
+['a', 'a', 'a', 'g', 'm', 'n', 'r']
+```
+
+So:
+
+```text
+sorted(s) = ['a','a','a','g','m','n','r']
+```
+
+---
+
+### 2. `sorted(t)`
+
+Now:
+
+```text
+t = "nagaram"
+```
+
+Characters:
+
+```text
+n a g a r a m
+```
+
+Sort them:
+
+```text
+sorted("nagaram")
+```
+
+Result:
+
+```text
+['a', 'a', 'a', 'g', 'm', 'n', 'r']
+```
+
+So:
+
+```text
+sorted(t) = ['a','a','a','g','m','n','r']
+```
+
+---
+
+### 3. Compare them
+
+The code says:
+
+```text
+sorted(s) == sorted(t)
+```
+
+Substitute the values:
+
+```text
+['a','a','a','g','m','n','r']
+==
+['a','a','a','g','m','n','r']
+```
+
+They are exactly the same.
+
+Therefore:
+
+```text
+True
+```
+
+### ✅ Final output
+
+```text
+True
+```
+
+### Why does this prove they are anagrams?
+
+An **anagram** means both strings contain the **same characters with the same frequency**, just possibly in a different order.
+
+Here:
+
+```text
+anagram → a a a g m n r
+nagaram → a a a g m n r
+```
+
+Same characters ✅
+Same frequency ✅
+Different original order ✅
+
+Therefore:
+
+```text
+s = "anagram"
+t = "nagaram"
+
+Output → True
+```
+
+### 🧠 Easy trick to remember
+
+```text
+sorted(s) == sorted(t)
+```
+
+means:
+
+> **"If I arrange both strings in the same order, are they exactly equal?"**
+
+If yes → **anagram** → `True`
+If no → **not anagram** → `False`
+
+For example:
+
+```text
+s = "rat"
+t = "car"
+
+sorted(s) = ['a','r','t']
+sorted(t) = ['a','c','r']
+
+False
+```
+
+
 #### 2. Optimized (Signature Map)
 Sort each word to create a **signature**. Use a HashMap where the signature is the key and anagram words are stored in the same group.
 
@@ -695,6 +864,379 @@ for i ← 0 to n − 1:
 
 return groups.values()
 ```
+
+### Dry Run
+Sure. This is the **frequency-count / hash-map approach** to check whether two strings are anagrams.
+
+### Input
+
+```text
+s = "anagram"
+t = "nagaram"
+```
+
+Pseudocode:
+
+```text
+if len(s) != len(t): return false
+
+count ← {}
+
+for c in s:
+    count[c]++
+
+for c in t:
+    count[c]--
+    if count[c] < 0:
+        return false
+
+return true
+```
+
+---
+
+### 1. Check lengths
+
+```text
+if len(s) != len(t):
+    return false
+```
+
+Length of `s`:
+
+```text
+"anagram"
+```
+
+has **7 characters**.
+
+Length of `t`:
+
+```text
+"nagaram"
+```
+
+also has **7 characters**.
+
+So:
+
+```text
+len(s) != len(t)
+7 != 7
+```
+
+❌ False.
+
+Therefore, we **don't return false** and continue.
+
+---
+
+### 2. `count ← {}`
+
+Create an empty hash map:
+
+```text
+count = {}
+```
+
+It will store:
+
+```text
+character → frequency
+```
+
+For example:
+
+```text
+a → 3
+g → 1
+```
+
+---
+
+### 3. `for c in s: count[c]++`
+
+Now go through every character of:
+
+```text
+s = "anagram"
+```
+
+Characters:
+
+```text
+a n a g r a m
+```
+
+#### First `a`
+
+```text
+count[a]++
+```
+
+Since `a` doesn't exist yet, think of it as `0 + 1`:
+
+```text
+a → 1
+```
+
+---
+
+#### `n`
+
+```text
+count[n]++
+```
+
+```text
+a → 1
+n → 1
+```
+
+---
+
+#### Second `a`
+
+```text
+count[a]++
+```
+
+`a` was `1`, so:
+
+```text
+a → 2
+```
+
+Map:
+
+```text
+a → 2
+n → 1
+```
+
+---
+
+#### `g`
+
+```text
+g → 1
+```
+
+---
+
+#### `r`
+
+```text
+r → 1
+```
+
+---
+
+#### Third `a`
+
+```text
+a → 3
+```
+
+---
+
+#### `m`
+
+```text
+m → 1
+```
+
+So after processing all of `s`:
+
+```text
+count = {
+    a → 3,
+    n → 1,
+    g → 1,
+    r → 1,
+    m → 1
+}
+```
+
+This means:
+
+```text
+a appears 3 times
+n appears 1 time
+g appears 1 time
+r appears 1 time
+m appears 1 time
+```
+
+---
+
+### 4. `for c in t: count[c]--`
+
+Now process:
+
+```text
+t = "nagaram"
+```
+
+Characters:
+
+```text
+n a g a r a m
+```
+
+We **decrease** the count for each character.
+
+---
+
+#### First `n`
+
+Before:
+
+```text
+n → 1
+```
+
+Decrease:
+
+```text
+n → 0
+```
+
+---
+
+#### First `a`
+
+Before:
+
+```text
+a → 3
+```
+
+Decrease:
+
+```text
+a → 2
+```
+
+---
+
+#### `g`
+
+```text
+g: 1 → 0
+```
+
+---
+
+#### Second `a`
+
+```text
+a: 2 → 1
+```
+
+---
+
+#### `r`
+
+```text
+r: 1 → 0
+```
+
+---
+
+#### Third `a`
+
+```text
+a: 1 → 0
+```
+
+---
+
+#### `m`
+
+```text
+m: 1 → 0
+```
+
+Final map:
+
+```text
+count = {
+    a → 0,
+    n → 0,
+    g → 0,
+    r → 0,
+    m → 0
+}
+```
+
+---
+
+### 5. Check `count[c] < 0`
+
+After every character in `t`, the code checks:
+
+```text
+if count[c] < 0:
+    return false
+```
+
+But every count stayed at `0` or above.
+
+So we **never return false**.
+
+---
+
+### 6. `return true`
+
+We reach:
+
+```text
+return true
+```
+
+Therefore:
+
+### ✅ Final Output
+
+```text
+true
+```
+
+### Complete dry run
+
+| Character from `s` | Count after adding | Character from `t` | Count after subtracting |
+| ------------------ | ------------------ | ------------------ | ----------------------- |
+| `a`                | `a = 1`            | `n`                | `n = 0`                 |
+| `n`                | `n = 1`            | `a`                | `a = 2`                 |
+| `a`                | `a = 2`            | `g`                | `g = 0`                 |
+| `g`                | `g = 1`            | `a`                | `a = 1`                 |
+| `r`                | `r = 1`            | `r`                | `r = 0`                 |
+| `a`                | `a = 3`            | `a`                | `a = 0`                 |
+| `m`                | `m = 1`            | `m`                | `m = 0`                 |
+
+At the end, all frequencies balance to `0`.
+
+```text
+"anagram"
+   ↓ count
+"a": 3, "n": 1, "g": 1, "r": 1, "m": 1
+
+"nagaram"
+   ↓ subtract
+"a": 0, "n": 0, "g": 0, "r": 0, "m": 0
+```
+
+So:
+
+```text
+s = "anagram"
+t = "nagaram"
+
+Output = true ✅
+```
+
+**Core idea:** `s` **adds** character counts, `t` **subtracts** them. If `t` tries to use a character more times than `s` has, a count becomes negative → `false`.
 
 ### Complexity
 
