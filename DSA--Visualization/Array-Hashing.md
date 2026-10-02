@@ -1220,7 +1220,7 @@ for i ← 0 to n − 1:
 
 return all groups
 ```
-Dry RUn :
+### Dry Run
 Sure. This is the **Group Anagrams** brute-force approach.
 
 ### Input
@@ -1248,7 +1248,7 @@ The main idea is:
 
 ---
 
-# Step 1: `i = 0`
+### Step 1: `i = 0`
 
 Current word:
 
@@ -1264,7 +1264,7 @@ group = ["eat"]
 
 Now compare `"eat"` with every word after it.
 
-### Compare `"eat"` and `"tea"`
+#### Compare `"eat"` and `"tea"`
 
 ```text
 sorted("eat") = ['a','e','t']
@@ -1281,7 +1281,7 @@ group = ["eat","tea"]
 
 ---
 
-### Compare `"eat"` and `"tan"`
+#### Compare `"eat"` and `"tan"`
 
 ```text
 sorted("eat") = ['a','e','t']
@@ -1292,7 +1292,7 @@ sorted("tan") = ['a','n','t']
 
 ---
 
-### Compare `"eat"` and `"ate"`
+#### Compare `"eat"` and `"ate"`
 
 ```text
 sorted("eat") = ['a','e','t']
@@ -1307,7 +1307,7 @@ group = ["eat","tea","ate"]
 
 ---
 
-### Compare `"eat"` and `"nat"`
+#### Compare `"eat"` and `"nat"`
 
 ```text
 sorted("eat") = ['a','e','t']
@@ -1318,7 +1318,7 @@ sorted("nat") = ['a','n','t']
 
 ---
 
-### Compare `"eat"` and `"bat"`
+#### Compare `"eat"` and `"bat"`
 
 ```text
 sorted("eat") = ['a','e','t']
@@ -1335,7 +1335,7 @@ So our first group is:
 
 ---
 
-# Step 2: `i = 1`
+### Step 2: `i = 1`
 
 Normally we would reach `"tea"`.
 
@@ -1351,7 +1351,7 @@ So we skip `"tea"`.
 
 ---
 
-# Step 3: `i = 2`
+### Step 3: `i = 2`
 
 Current:
 
@@ -1367,7 +1367,7 @@ group = ["tan"]
 
 Now compare with words after it.
 
-### `"tan"` vs `"ate"`
+#### `"tan"` vs `"ate"`
 
 ```text
 sorted("tan") = ['a','n','t']
@@ -1376,7 +1376,7 @@ sorted("ate") = ['a','e','t']
 
 ❌ Different.
 
-### `"tan"` vs `"nat"`
+#### `"tan"` vs `"nat"`
 
 ```text
 sorted("tan") = ['a','n','t']
@@ -1391,7 +1391,7 @@ Add `"nat"`:
 group = ["tan","nat"]
 ```
 
-### `"tan"` vs `"bat"`
+#### `"tan"` vs `"bat"`
 
 ```text
 sorted("tan") = ['a','n','t']
@@ -1408,7 +1408,7 @@ So second group:
 
 ---
 
-# Step 4: `i = 3`
+### Step 4: `i = 3`
 
 ```text
 words[3] = "ate"
@@ -1424,7 +1424,7 @@ So skip it.
 
 ---
 
-# Step 5: `i = 4`
+### Step 5: `i = 4`
 
 ```text
 words[4] = "nat"
@@ -1440,7 +1440,7 @@ So skip it.
 
 ---
 
-# Step 6: `i = 5`
+### Step 6: `i = 5`
 
 Current:
 
@@ -1466,7 +1466,7 @@ So this group is:
 
 ---
 
-# Final groups
+### Final groups
 
 We have:
 
@@ -1478,7 +1478,7 @@ Group 2 = ["tan","nat"]
 Group 3 = ["bat"]
 ```
 
-## ✅ Final output
+### ✅ Final output
 
 ```text
 [
@@ -1568,6 +1568,339 @@ for i ← 0 to n − 1:
 
 return groups.values()
 ```
+
+### Dry Run
+Sure. This is the **optimized Hash Map approach for Group Anagrams**. Instead of comparing every word with every other word, we create a **signature** using the sorted characters.
+
+### Input
+
+```text
+words = ["eat","tea","tan","ate","nat","bat"]
+```
+
+Pseudocode:
+
+```text
+groups ← {}   // signature → list of words
+
+for i ← 0 to n − 1:
+    sig ← sorted(words[i])
+    groups[sig].append(words[i])
+
+return groups.values()
+```
+
+---
+
+### 1. `groups ← {}`
+
+Create an empty hash map.
+
+```text
+groups = {}
+```
+
+The comment tells us what it stores:
+
+```text
+signature → list of words
+```
+
+For example:
+
+```text
+"aet" → ["eat","tea","ate"]
+```
+
+Here `"aet"` is the **signature**.
+
+---
+
+### 2. Loop through every word
+
+```text
+for i ← 0 to n − 1:
+```
+
+There are 6 words, so:
+
+```text
+i = 0,1,2,3,4,5
+```
+
+---
+
+#### 🔹 i = 0
+
+```text
+words[0] = "eat"
+```
+
+##### `sig ← sorted(words[i])`
+
+Sort `"eat"`:
+
+```text
+sorted("eat") = "aet"
+```
+
+So:
+
+```text
+sig = "aet"
+```
+
+Now:
+
+```text
+groups[sig].append(words[i])
+```
+
+means:
+
+> Go to the `"aet"` group and add `"eat"`.
+
+Since `"aet"` doesn't exist yet, create it:
+
+```text
+groups = {
+    "aet": ["eat"]
+}
+```
+
+---
+
+#### 🔹 i = 1
+
+```text
+words[1] = "tea"
+```
+
+Sort:
+
+```text
+sorted("tea") = "aet"
+```
+
+So:
+
+```text
+sig = "aet"
+```
+
+The `"aet"` group already exists.
+
+Add `"tea"`:
+
+```text
+groups = {
+    "aet": ["eat","tea"]
+}
+```
+
+---
+
+#### 🔹 i = 2
+
+```text
+words[2] = "tan"
+```
+
+Sort:
+
+```text
+sorted("tan") = "ant"
+```
+
+So:
+
+```text
+sig = "ant"
+```
+
+No `"ant"` group exists, so create it:
+
+```text
+groups = {
+    "aet": ["eat","tea"],
+    "ant": ["tan"]
+}
+```
+
+---
+
+#### 🔹 i = 3
+
+```text
+words[3] = "ate"
+```
+
+Sort:
+
+```text
+sorted("ate") = "aet"
+```
+
+So:
+
+```text
+sig = "aet"
+```
+
+Add `"ate"` to the existing `"aet"` group:
+
+```text
+groups = {
+    "aet": ["eat","tea","ate"],
+    "ant": ["tan"]
+}
+```
+
+---
+
+#### 🔹 i = 4
+
+```text
+words[4] = "nat"
+```
+
+Sort:
+
+```text
+sorted("nat") = "ant"
+```
+
+So:
+
+```text
+sig = "ant"
+```
+
+Add `"nat"`:
+
+```text
+groups = {
+    "aet": ["eat","tea","ate"],
+    "ant": ["tan","nat"]
+}
+```
+
+---
+
+#### 🔹 i = 5
+
+```text
+words[5] = "bat"
+```
+
+Sort:
+
+```text
+sorted("bat") = "abt"
+```
+
+So:
+
+```text
+sig = "abt"
+```
+
+No `"abt"` group exists, so create it:
+
+```text
+groups = {
+    "aet": ["eat","tea","ate"],
+    "ant": ["tan","nat"],
+    "abt": ["bat"]
+}
+```
+
+---
+
+### 3. `return groups.values()`
+
+Now the map contains:
+
+```text
+"aet" → ["eat","tea","ate"]
+"ant" → ["tan","nat"]
+"abt" → ["bat"]
+```
+
+`groups.values()` means:
+
+> Give me only the values, not the keys/signatures.
+
+So we get:
+
+### ✅ Final output
+
+```text
+[
+    ["eat","tea","ate"],
+    ["tan","nat"],
+    ["bat"]
+]
+```
+
+---
+
+### 🧠 Understand the whole algorithm
+
+The important idea is:
+
+```text
+word
+ ↓
+sort it
+ ↓
+signature
+ ↓
+use signature as HashMap key
+```
+
+For your input:
+
+```text
+eat → aet ─┐
+tea → aet ─┤
+ate → aet ─┘  → ["eat","tea","ate"]
+
+tan → ant ─┐
+nat → ant ─┘  → ["tan","nat"]
+
+bat → abt ────→ ["bat"]
+```
+
+So instead of comparing every word against every other word, we simply ask:
+
+> **"What is the sorted signature of this word?"**
+
+If two words have the same signature, they belong to the same anagram group.
+
+### Final:
+
+```text
+groups = {
+    "aet": ["eat","tea","ate"],
+    "ant": ["tan","nat"],
+    "abt": ["bat"]
+}
+```
+
+and
+
+```text
+groups.values()
+```
+
+gives:
+
+```text
+[["eat","tea","ate"],["tan","nat"],["bat"]]
+```
+
+**Time complexity:** approximately `O(n × k log k)`, where `n` = number of words and `k` = average word length.
 
 
 ### Complexity
