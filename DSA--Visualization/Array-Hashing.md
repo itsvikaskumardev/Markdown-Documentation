@@ -8,6 +8,7 @@
 - [Product of Array Except Self](#product-of-array-except-self)
 - [Longest Consecutive Sequence](#longest-consecutive-sequence)
 - [Encode and Decode Strings](#encode-and-decode-strings)
+- [Majority Element](#majority-element)
 
 ---
 
