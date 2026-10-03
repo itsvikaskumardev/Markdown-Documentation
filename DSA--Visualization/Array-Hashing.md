@@ -3474,11 +3474,12 @@ decode(s):
 
 **LeetCode #169** · [LeetCode](https://leetcode.com/problems/majority-element/) · **Easy**
 
-**Array · Boyer-Moore Voting · One candidate + one counter**
+> **Array · Boyer-Moore Voting · One candidate + one counter**
 
-### Tip
+### Approaches
 
-**Brute Force · Hash Map:** Count the frequency of each element and return the element whose count is greater than `n / 2`.
+#### 1. Brute Force (Hash Map)
+Count the frequency of each element and return the element whose count is greater than `n / 2`.
 
 **Pseudo Code:**
 
@@ -3489,8 +3490,223 @@ for x in arr: count[x] ← count[x] + 1
 
 return the key whose count > n / 2
 ```
+### Dry Run
+Sure. This is the **Majority Element** approach using a frequency map.
 
-**Optimized · Boyer-Moore:** Maintain a candidate and counter; increase the counter for the same value, decrease it for a different value, and replace the candidate when the counter reaches `0`.
+### Input
+
+```text
+nums = [2,2,1,3,2,2,1,2,2]
+```
+
+Pseudocode:
+
+```text
+count ← {}
+
+for x in arr:
+    count[x] ← count[x] + 1
+
+return the key whose count > n / 2
+```
+
+---
+
+### 1. `count ← {}`
+
+Create an empty map:
+
+```text
+count = {}
+```
+
+It will store:
+
+```text
+number → frequency
+```
+
+For example:
+
+```text
+2 → 6
+1 → 2
+3 → 1
+```
+
+---
+
+### 2. `for x in arr`
+
+Go through every element:
+
+```text
+[2,2,1,3,2,2,1,2,2]
+```
+
+Let's count them one by one.
+
+#### First `2`
+
+```text
+count[2] = 1
+```
+
+#### Second `2`
+
+```text
+count[2] = 2
+```
+
+#### `1`
+
+```text
+count[1] = 1
+```
+
+#### `3`
+
+```text
+count[3] = 1
+```
+
+#### Third `2`
+
+```text
+count[2] = 3
+```
+
+#### Fourth `2`
+
+```text
+count[2] = 4
+```
+
+#### Second `1`
+
+```text
+count[1] = 2
+```
+
+#### Fifth `2`
+
+```text
+count[2] = 5
+```
+
+#### Sixth `2`
+
+```text
+count[2] = 6
+```
+
+So finally:
+
+```text
+count = {
+    2 → 6,
+    1 → 2,
+    3 → 1
+}
+```
+
+---
+
+### 3. `n / 2`
+
+There are 9 elements:
+
+```text
+n = 9
+```
+
+Calculate:
+
+```text
+n / 2 = 9 / 2 = 4.5
+```
+
+We need a number whose frequency is **greater than 4.5**.
+
+Check our counts:
+
+```text
+2 → 6   ✅ 6 > 4.5
+1 → 2   ❌
+3 → 1   ❌
+```
+
+So the key is:
+
+```text
+2
+```
+
+---
+
+### 4. Return the key
+
+Therefore:
+
+```text
+return 2
+```
+
+### ✅ Final Output
+
+```text
+2
+```
+
+### Quick dry-run table
+
+| Number | Count |
+| -----: | ----: |
+|    `2` | **6** |
+|    `1` |     2 |
+|    `3` |     1 |
+
+Since:
+
+```text
+6 > 9/2
+6 > 4.5
+```
+
+`2` is the **majority element**.
+
+### 🧠 Important point
+
+The condition is:
+
+```text
+count[x] > n / 2
+```
+
+Not:
+
+```text
+count[x] >= n / 2
+```
+
+For this input:
+
+```text
+n = 9
+n/2 = 4.5
+```
+
+So an element must appear **at least 5 times** to be the majority.
+
+Here `2` appears **6 times**.
+
+```text
+✅ Answer = 2
+```
+
+
+#### 2. Optimized (Boyer-Moore)
+Maintain a candidate and counter; increase the counter for the same value, decrease it for a different value, and replace the candidate when the counter reaches `0`.
 
 **Pseudo Code:**
 
@@ -3507,11 +3723,325 @@ for x in arr:
 
 return candidate
 ```
+### Dry Run
+Sure. This is **Boyer-Moore Majority Vote Algorithm**. It finds a candidate for the majority element using `O(1)` extra space.
 
-**Brute Force**
+### Input
 
-**Time:** **O(n)** · **Space:** **O(n)**
+```text
+nums = [2,2,1,3,2,2,1,2,2]
+```
 
-**Optimized**
+Pseudocode:
 
-**Time:** **O(n)** · **Space:** **O(1)**
+```text
+candidate ← none
+count ← 0
+
+for x in arr:
+    if count == 0:
+        candidate ← x
+        count ← 1
+    else if x == candidate:
+        count ← count + 1
+    else:
+        count ← count − 1
+
+return candidate
+```
+
+---
+
+### Initial state
+
+```text
+candidate = none
+count = 0
+```
+
+Now process each number one by one.
+
+---
+
+#### 🔹 x = 2
+
+Currently:
+
+```text
+count = 0
+```
+
+So:
+
+```text
+candidate ← 2
+count ← 1
+```
+
+State:
+
+```text
+candidate = 2
+count = 1
+```
+
+---
+
+#### 🔹 x = 2
+
+`count` is not 0.
+
+Check:
+
+```text
+x == candidate
+2 == 2
+```
+
+✅ True.
+
+So:
+
+```text
+count = count + 1
+      = 1 + 1
+      = 2
+```
+
+State:
+
+```text
+candidate = 2
+count = 2
+```
+
+---
+
+#### 🔹 x = 1
+
+Check:
+
+```text
+count == 0?
+2 == 0 → ❌
+```
+
+Then:
+
+```text
+x == candidate?
+1 == 2 → ❌
+```
+
+So:
+
+```text
+count = count - 1
+      = 2 - 1
+      = 1
+```
+
+State:
+
+```text
+candidate = 2
+count = 1
+```
+
+Think of this as `1` canceling one occurrence of candidate `2`.
+
+---
+
+#### 🔹 x = 3
+
+Again:
+
+```text
+3 == 2 → ❌
+```
+
+So:
+
+```text
+count = 1 - 1
+      = 0
+```
+
+State:
+
+```text
+candidate = 2
+count = 0
+```
+
+Now the current candidate has been completely cancelled.
+
+---
+
+#### 🔹 x = 2
+
+Now:
+
+```text
+count == 0
+```
+
+So choose a new candidate:
+
+```text
+candidate = 2
+count = 1
+```
+
+---
+
+#### 🔹 x = 2
+
+Check:
+
+```text
+2 == 2 → ✅
+```
+
+So:
+
+```text
+count = 1 + 1
+      = 2
+```
+
+State:
+
+```text
+candidate = 2
+count = 2
+```
+
+---
+
+#### 🔹 x = 1
+
+```text
+1 == 2 → ❌
+```
+
+So:
+
+```text
+count = 2 - 1
+      = 1
+```
+
+State:
+
+```text
+candidate = 2
+count = 1
+```
+
+---
+
+#### 🔹 x = 2
+
+```text
+2 == 2 → ✅
+```
+
+So:
+
+```text
+count = 1 + 1
+      = 2
+```
+
+---
+
+#### 🔹 x = 2
+
+Again:
+
+```text
+2 == 2 → ✅
+```
+
+So:
+
+```text
+count = 2 + 1
+      = 3
+```
+
+Final state:
+
+```text
+candidate = 2
+count = 3
+```
+
+---
+
+### Complete dry run
+
+| `x` | Condition                    | Candidate | Count |
+| --: | ---------------------------- | --------: | ----: |
+|   2 | `count == 0` → new candidate |         2 |     1 |
+|   2 | `x == candidate`             |         2 |     2 |
+|   1 | different → decrease         |         2 |     1 |
+|   3 | different → decrease         |         2 |     0 |
+|   2 | `count == 0` → new candidate |         2 |     1 |
+|   2 | `x == candidate`             |         2 |     2 |
+|   1 | different → decrease         |         2 |     1 |
+|   2 | `x == candidate`             |         2 |     2 |
+|   2 | `x == candidate`             |         2 |     3 |
+
+Therefore:
+
+### ✅ Final output
+
+```text
+2
+```
+
+### 🧠 What is `count` actually doing?
+
+It is **not the actual frequency of `2`**.
+
+Actual frequency:
+
+```text
+2 appears 6 times
+```
+
+But final:
+
+```text
+count = 3
+```
+
+because every different number cancels one candidate occurrence.
+
+The algorithm works because `2` is actually a majority:
+
+```text
+2 appears 6 times
+n = 9
+
+6 > 9/2
+6 > 4.5
+```
+
+So the final candidate is:
+
+```text
+✅ 2
+```
+
+**Important:** This pseudocode assumes that a majority element is guaranteed to exist. If the problem does **not** guarantee that, you should do a second pass to verify that the candidate actually occurs more than `n/2` times.
+
+
+### Complexity
+
+| Approach | Time | Space |
+| :--- | :---: | :---: |
+| **Brute Force** | **O(n)** | **O(n)** |
+| **Optimized** | **O(n)** | **O(1)** |
