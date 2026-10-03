@@ -3468,3 +3468,50 @@ decode(s):
 | :--- | :---: | :---: |
 | **Naive · Delimiter** | **O(N)** | **O(N)** |
 | **Optimized · Length Prefix** | **O(N)** | **O(N)** |
+
+---
+# Majority Element
+
+**LeetCode #169** · [LeetCode](https://leetcode.com/problems/majority-element/) · **Easy**
+
+**Array · Boyer-Moore Voting · One candidate + one counter**
+
+### Tip
+
+**Brute Force · Hash Map:** Count the frequency of each element and return the element whose count is greater than `n / 2`.
+
+**Pseudo Code:**
+
+```text
+count ← {}
+
+for x in arr: count[x] ← count[x] + 1
+
+return the key whose count > n / 2
+```
+
+**Optimized · Boyer-Moore:** Maintain a candidate and counter; increase the counter for the same value, decrease it for a different value, and replace the candidate when the counter reaches `0`.
+
+**Pseudo Code:**
+
+```text
+candidate ← none;  count ← 0
+
+for x in arr:
+
+    if count == 0: candidate ← x;  count ← 1
+
+    else if x == candidate: count ← count + 1
+
+    else: count ← count − 1
+
+return candidate
+```
+
+**Brute Force**
+
+**Time:** **O(n)** · **Space:** **O(n)**
+
+**Optimized**
+
+**Time:** **O(n)** · **Space:** **O(1)**
