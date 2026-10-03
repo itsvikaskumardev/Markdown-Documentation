@@ -2550,6 +2550,7 @@ That's why we don't explicitly sort the frequencies.
 
 > **Array · Prefix × Suffix · No Division**
 
+Soln : DSA 02->Special Algorithms -> Pg.no:24
 ### Approaches
 
 #### 1. Brute Force
@@ -2571,6 +2572,315 @@ for i ← 0 to n − 1:
 
 return output
 ```
+### Dry Run
+Sure. This is the **brute-force approach for Product of Array Except Self**.
+
+### Input
+
+```text id="t7l9p3"
+nums = [1,2,3,4]
+```
+
+---
+
+### 1. `output ← new array[n]`
+
+Our array has 4 elements:
+
+```text id="8bq2wa"
+n = 4
+```
+
+Create an output array of size 4:
+
+```text id="m1z8kp"
+output = [_, _, _, _]
+```
+
+`_` means we haven't calculated that position yet.
+
+---
+
+### 2. Outer loop
+
+```text id="c5r7vx"
+for i ← 0 to n − 1:
+```
+
+Since `n = 4`:
+
+```text id="k9v2ds"
+i = 0, 1, 2, 3
+```
+
+The important part is:
+
+> For every `i`, calculate the product of **all elements except `arr[i]`**.
+
+---
+
+#### 🔹 i = 0
+
+Current element:
+
+```text id="4s2j7q"
+arr[0] = 1
+```
+
+Initialize:
+
+```text id="g8n4wc"
+p = 1
+```
+
+Now:
+
+```text id="b0x6vr"
+for j = 0 to 3 where j ≠ 0
+```
+
+So we skip index `0`.
+
+##### j = 1
+
+```text id="v3p9la"
+p = p × arr[1]
+  = 1 × 2
+  = 2
+```
+
+##### j = 2
+
+```text id="n6c1fx"
+p = 2 × 3
+  = 6
+```
+
+##### j = 3
+
+```text id="q7m4zs"
+p = 6 × 4
+  = 24
+```
+
+Now:
+
+```text id="d1k8vy"
+output[0] = 24
+```
+
+Output:
+
+```text id="w3f6qp"
+[24, _, _, _]
+```
+
+Because:
+
+```text id="j5n9ca"
+2 × 3 × 4 = 24
+```
+
+---
+
+#### 🔹 i = 1
+
+Current:
+
+```text id="y2k7mx"
+arr[1] = 2
+```
+
+Reset:
+
+```text id="h8p3vw"
+p = 1
+```
+
+Now skip index `1`.
+
+##### j = 0
+
+```text id="d6r1qs"
+p = 1 × 1 = 1
+```
+
+##### j = 2
+
+```text id="a9f4kc"
+p = 1 × 3 = 3
+```
+
+##### j = 3
+
+```text id="s7n2lx"
+p = 3 × 4 = 12
+```
+
+Therefore:
+
+```text id="c4m8zp"
+output[1] = 12
+```
+
+Output:
+
+```text id="w5q1rv"
+[24,12,_,_]
+```
+
+Because:
+
+```text id="g9x3mt"
+1 × 3 × 4 = 12
+```
+
+---
+
+#### 🔹 i = 2
+
+Current:
+
+```text id="e6v1bn"
+arr[2] = 3
+```
+
+Reset:
+
+```text id="q8k4ws"
+p = 1
+```
+
+Skip index `2`.
+
+##### j = 0
+
+```text id="a1c7dz"
+p = 1 × 1 = 1
+```
+
+##### j = 1
+
+```text id="r5m9xk"
+p = 1 × 2 = 2
+```
+
+##### j = 3
+
+```text id="u3f6pq"
+p = 2 × 4 = 8
+```
+
+Therefore:
+
+```text id="k7n2vb"
+output[2] = 8
+```
+
+Output:
+
+```text id="q4w8mz"
+[24,12,8,_]
+```
+
+Because:
+
+```text id="x2c9la"
+1 × 2 × 4 = 8
+```
+
+---
+
+#### 🔹 i = 3
+
+Current:
+
+```text id="b8m4qy"
+arr[3] = 4
+```
+
+Reset:
+
+```text id="f2k7ns"
+p = 1
+```
+
+Skip index `3`.
+
+##### j = 0
+
+```text id="e9v1rc"
+p = 1 × 1 = 1
+```
+
+##### j = 1
+
+```text id="j3x6kp"
+p = 1 × 2 = 2
+```
+
+##### j = 2
+
+```text id="s8q2wd"
+p = 2 × 3 = 6
+```
+
+Therefore:
+
+```text id="m5c9za"
+output[3] = 6
+```
+
+Final output:
+
+```text id="r7v2kx"
+[24,12,8,6]
+```
+
+---
+
+### Complete dry run
+
+| `i` | Element excluded | Elements multiplied | `p` | `output[i]` |
+| --: | ---------------: | ------------------- | --: | ----------: |
+|   0 |              `1` | `2 × 3 × 4`         |  24 |          24 |
+|   1 |              `2` | `1 × 3 × 4`         |  12 |          12 |
+|   2 |              `3` | `1 × 2 × 4`         |   8 |           8 |
+|   3 |              `4` | `1 × 2 × 3`         |   6 |           6 |
+
+### ✅ Final output
+
+```text
+[24,12,8,6]
+```
+
+### 🧠 Easy way to understand it
+
+For every position, simply ask:
+
+```text
+output[i] = product of everything EXCEPT nums[i]
+```
+
+So:
+
+```text
+nums = [1, 2, 3, 4]
+
+index 0 → skip 1 → 2×3×4 = 24
+index 1 → skip 2 → 1×3×4 = 12
+index 2 → skip 3 → 1×2×4 = 8
+index 3 → skip 4 → 1×2×3 = 6
+```
+
+Therefore:
+
+```text
+✅ [24, 12, 8, 6]
+```
+
+This brute-force solution takes **O(n²)** time because for every `i`, we loop through the entire array again.
+
 
 #### 2. Optimized (Prefix × Suffix)
 Use two passes:
@@ -2597,6 +2907,435 @@ for i ← n − 1 down to 0:
 
 return output
 ```
+
+### Dry Run
+Sure. This is the **optimized Product of Array Except Self** approach using **prefix and suffix products**.
+
+### Input
+
+```text
+nums = [-1, 1, 0, -3, 3]
+```
+
+
+---
+
+### Part 1: Prefix — left → right
+
+The idea is:
+
+> `output[i]` first stores the product of everything **to the left** of `i`.
+
+Initially:
+
+```text
+prefix = 1
+output = [_, _, _, _, _]
+```
+
+Input:
+
+```text
+index:  0   1  2   3   4
+nums:  -1   1  0  -3   3
+```
+
+---
+
+#### i = 0
+
+```text
+output[0] = prefix
+          = 1
+```
+
+Then update:
+
+```text
+prefix = prefix × arr[0]
+       = 1 × (-1)
+       = -1
+```
+
+Now:
+
+```text
+output = [1, _, _, _, _]
+prefix = -1
+```
+
+---
+
+#### i = 1
+
+```text
+output[1] = prefix
+          = -1
+```
+
+Update:
+
+```text
+prefix = -1 × arr[1]
+       = -1 × 1
+       = -1
+```
+
+Now:
+
+```text
+output = [1, -1, _, _, _]
+prefix = -1
+```
+
+---
+
+#### i = 2
+
+```text
+output[2] = prefix
+          = -1
+```
+
+Update:
+
+```text
+prefix = -1 × arr[2]
+       = -1 × 0
+       = 0
+```
+
+Now:
+
+```text
+output = [1, -1, -1, _, _]
+prefix = 0
+```
+
+⚠️ This is important: after encountering `0`, the prefix becomes `0`.
+
+---
+
+#### i = 3
+
+```text
+output[3] = prefix
+          = 0
+```
+
+Update:
+
+```text
+prefix = 0 × (-3)
+       = 0
+```
+
+Now:
+
+```text
+output = [1, -1, -1, 0, _]
+```
+
+---
+
+#### i = 4
+
+```text
+output[4] = prefix
+          = 0
+```
+
+Update:
+
+```text
+prefix = 0 × 3
+       = 0
+```
+
+So after the first pass:
+
+```text
+output = [1, -1, -1, 0, 0]
+```
+
+But this is **not the final answer yet**.
+
+It currently contains only the **left-side products**.
+
+---
+
+### Part 2: Suffix — right → left
+
+Now we calculate the product of everything **to the right**.
+
+Initialize:
+
+```text
+suffix = 1
+```
+
+We go from index `4` down to `0`.
+
+---
+
+#### i = 4
+
+Current:
+
+```text
+arr[4] = 3
+```
+
+First:
+
+```text
+output[4] = output[4] × suffix
+          = 0 × 1
+          = 0
+```
+
+Then update:
+
+```text
+suffix = suffix × arr[4]
+       = 1 × 3
+       = 3
+```
+
+Now:
+
+```text
+output = [1, -1, -1, 0, 0]
+suffix = 3
+```
+
+---
+
+#### i = 3
+
+Current:
+
+```text
+arr[3] = -3
+```
+
+First:
+
+```text
+output[3] = output[3] × suffix
+          = 0 × 3
+          = 0
+```
+
+Then:
+
+```text
+suffix = 3 × (-3)
+       = -9
+```
+
+Now:
+
+```text
+output = [1, -1, -1, 0, 0]
+suffix = -9
+```
+
+---
+
+#### i = 2
+
+Current:
+
+```text
+arr[2] = 0
+```
+
+First:
+
+```text
+output[2] = output[2] × suffix
+          = -1 × (-9)
+          = 9
+```
+
+Then:
+
+```text
+suffix = -9 × 0
+       = 0
+```
+
+Now:
+
+```text
+output = [1, -1, 9, 0, 0]
+suffix = 0
+```
+
+This is an important step.
+
+For index `2`, we exclude the `0` itself:
+
+```text
+(-1) × 1 × (-3) × 3
+```
+
+Calculate:
+
+```text
+-1 × 1 × -3 × 3 = 9
+```
+
+So `output[2] = 9`.
+
+---
+
+#### i = 1
+
+Current:
+
+```text
+arr[1] = 1
+```
+
+```text
+output[1] = output[1] × suffix
+          = -1 × 0
+          = 0
+```
+
+Then:
+
+```text
+suffix = 0 × 1
+       = 0
+```
+
+Now:
+
+```text
+output = [1, 0, 9, 0, 0]
+```
+
+---
+
+#### i = 0
+
+Current:
+
+```text
+arr[0] = -1
+```
+
+```text
+output[0] = output[0] × suffix
+          = 1 × 0
+          = 0
+```
+
+Then:
+
+```text
+suffix = 0 × (-1)
+       = 0
+```
+
+Final:
+
+```text
+output = [0, 0, 9, 0, 0]
+```
+
+### ✅ Final Output
+
+```text
+[0, 0, 9, 0, 0]
+```
+
+### Verify manually
+
+For every index, multiply everything except that index:
+
+```text
+[-1, 1, 0, -3, 3]
+```
+
+**Index 0:** exclude `-1`
+
+```text
+1 × 0 × -3 × 3 = 0
+```
+
+**Index 1:** exclude `1`
+
+```text
+-1 × 0 × -3 × 3 = 0
+```
+
+**Index 2:** exclude `0`
+
+```text
+-1 × 1 × -3 × 3 = 9
+```
+
+**Index 3:** exclude `-3`
+
+```text
+-1 × 1 × 0 × 3 = 0
+```
+
+**Index 4:** exclude `3`
+
+```text
+-1 × 1 × 0 × -3 = 0
+```
+
+Therefore:
+
+```text
+nums   = [-1, 1, 0, -3, 3]
+output = [ 0, 0, 9,  0, 0]
+```
+
+### 🧠 The key concept
+
+The algorithm splits the answer into two parts:
+
+```text
+answer[i] = LEFT PRODUCT × RIGHT PRODUCT
+```
+
+First pass calculates:
+
+```text
+LEFT PRODUCT
+```
+
+Second pass calculates:
+
+```text
+RIGHT PRODUCT
+```
+
+For index `2`:
+
+```text
+[-1, 1]  [0]  [-3, 3]
+   ↓            ↓
+  -1            -9
+
+-1 × -9 = 9
+```
+
+That's how we get the only non-zero answer:
+
+```text
+✅ [0, 0, 9, 0, 0]
+```
+
+And unlike the previous brute-force solution, this takes **O(n) time** because we make only two passes through the array.
+
 
 ### Complexity
 
