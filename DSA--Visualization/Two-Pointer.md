@@ -94,6 +94,136 @@ clean ← lowercase alphanumeric characters of s
 return clean == reverse(clean)
 ```
 
+### Dry Run
+Sure. This is checking whether a string is a **palindrome** after removing spaces/special characters and converting uppercase letters to lowercase.
+
+### Input
+
+```text
+s = "race a car"
+```
+
+Pseudocode:
+
+```text
+clean ← lowercased alphanumerics of s
+return clean == reverse(clean)
+```
+
+---
+
+### 1. `clean ← lowercased alphanumerics of s`
+
+This means:
+
+> Take only letters (`a-z`) and numbers (`0-9`), convert letters to lowercase, and remove spaces/special characters.
+
+Original:
+
+```text
+"race a car"
+```
+
+Characters:
+
+```text
+r a c e   a   c a r
+```
+
+There are spaces, so remove them:
+
+```text
+"raceacar"
+```
+
+All characters are already lowercase.
+
+Therefore:
+
+```text
+clean = "raceacar"
+```
+
+---
+
+### 2. `reverse(clean)`
+
+Reverse:
+
+```text
+clean = "raceacar"
+```
+
+From right to left:
+
+```text
+r a c a e c a r
+```
+
+So:
+
+```text
+reverse(clean) = "racaecar"
+```
+
+Let's carefully compare:
+
+```text
+clean:
+r a c e a c a r
+```
+
+Reverse:
+
+```text
+r a c a e c a r
+```
+
+Therefore:
+
+```text
+"raceacar" != "racaecar"
+```
+
+---
+
+### 3. `return clean == reverse(clean)`
+
+We compare:
+
+```text
+"raceacar" == "racaecar"
+```
+
+❌ False.
+
+### ✅ Final Output
+
+```text
+false
+```
+
+### Quick visualization
+
+```text
+race a car
+    ↓
+remove space
+    ↓
+raceacar
+    ↓
+reverse
+    ↓
+racaecar
+```
+
+They are **not the same**, so `"race a car"` is **not a palindrome**.
+
+```text
+Output = false
+```
+
+
 #### 2. Optimized (Two Pointers)
 Use `left` and `right` pointers. Skip non-alphanumeric characters, compare characters ignoring case, then move both pointers toward the center.
 
@@ -119,6 +249,339 @@ while l < r:
     r--
 
 return true
+```
+
+### Dry Run
+Sure. This is the **two-pointer approach** for checking whether a string is a palindrome.
+
+### Input
+
+```text id="0rj8hx"
+s = "A man, a plan, a canal: Panama"
+```
+
+Pseudocode:
+
+```text id="p9v7ku"
+l ← 0
+r ← n − 1
+
+while l < r:
+    if not alnum(s[l]): l++; continue
+    if not alnum(s[r]): r−−; continue
+    if lower(s[l]) != lower(s[r]): return false
+    l++; r−−
+
+return true
+```
+
+---
+
+### 1. `l ← 0`
+
+`l` is the **left pointer**.
+
+It starts at the first character:
+
+```text id="8o9y5k"
+A
+↑
+l = 0
+```
+
+---
+
+### 2. `r ← n − 1`
+
+`r` is the **right pointer**.
+
+It starts at the last character:
+
+```text id="0w2c7f"
+A man, a plan, a canal: Panama
+                              ↑
+                              r
+```
+
+So:
+
+```text id="p9t6wq"
+l = 0
+r = last index
+```
+
+---
+
+### Now enter the `while` loop
+
+```text id="gq3x4j"
+while l < r
+```
+
+We continue while the two pointers haven't crossed.
+
+---
+
+#### 🔹 Comparison 1
+
+Left:
+
+```text id="9t4q2x"
+s[l] = 'A'
+```
+
+Right:
+
+```text id="j1m8zv"
+s[r] = 'a'
+```
+
+Both are alphanumeric, so we don't skip either.
+
+Compare lowercase:
+
+```text id="e7v5n3"
+lower('A') = 'a'
+lower('a') = 'a'
+```
+
+They match ✅
+
+Move both pointers:
+
+```text id="x4p8kd"
+l++
+r--
+```
+
+---
+
+#### 🔹 Comparison 2
+
+Now left reaches:
+
+```text id="8m2q7c"
+'m'
+```
+
+Right reaches:
+
+```text id="n4v6sy"
+'m'
+```
+
+Compare:
+
+```text id="r8k1wp"
+lower('m') == lower('m')
+```
+
+✅ Match.
+
+Move:
+
+```text id="s5x9qa"
+l++
+r--
+```
+
+---
+
+#### 🔹 Comparison 3
+
+Left:
+
+```text id="k3f7zm"
+'a'
+```
+
+Right:
+
+```text id="u6n2pc"
+'a'
+```
+
+Match ✅
+
+Move both.
+
+---
+
+#### 🔹 Comparison 4
+
+Left:
+
+```text id="t8q4yb"
+'n'
+```
+
+Right:
+
+```text id="n9w3ks"
+'n'
+```
+
+Match ✅
+
+Move both.
+
+---
+
+#### 🔹 Comparison 5
+
+Left reaches:
+
+```text id="h2m7vx"
+','
+```
+
+`,` is **not alphanumeric**.
+
+So:
+
+```text id="z5c1pr"
+if not alnum(s[l]):
+    l++
+    continue
+```
+
+We move `l` forward and **skip the comma**.
+
+---
+
+#### 🔹 Continue
+
+The left pointer encounters spaces and punctuation such as:
+
+```text id="0y5z8w"
+' '
+','
+' '
+```
+
+These are not alphanumeric, so the algorithm simply skips them.
+
+Similarly, if the right pointer encounters punctuation:
+
+```text id="4j7n2a"
+':'
+' '
+```
+
+it moves `r` backward.
+
+The algorithm effectively ignores:
+
+```text id="e7n0qp"
+spaces
+commas
+colon
+```
+
+and compares only letters/numbers.
+
+---
+
+#### What characters are actually compared?
+
+The original string:
+
+```text id="q4f7yc"
+A man, a plan, a canal: Panama
+```
+
+After ignoring spaces and punctuation and converting to lowercase:
+
+```text id="n5m8ws"
+amanaplanacanalpanama
+```
+
+Now look at the two ends:
+
+```text id="6k2p4v"
+a m a n a p l a n a c a n a l p a n a m a
+↑                                     ↑
+a                                     a
+```
+
+They match.
+
+Continue inward:
+
+```text id="7r3x8c"
+a == a
+m == m
+a == a
+n == n
+a == a
+p == p
+l == l
+...
+```
+
+Every corresponding character matches.
+
+Eventually:
+
+```text id="q0d4sm"
+l >= r
+```
+
+The loop ends.
+
+---
+
+### 3. `return true`
+
+Since we never found a mismatch:
+
+```text id="w8n2ka"
+return true
+```
+
+### ✅ Final Output
+
+```text id="j3x6qp"
+true
+```
+
+### 🧠 Main idea
+
+The algorithm **doesn't actually create a cleaned string**.
+
+It uses two pointers:
+
+```text id="v7k2ms"
+LEFT →  A man, a plan, a canal: Panama  ← RIGHT
+          ↓                         ↓
+      skip symbols              skip symbols
+          ↓                         ↓
+       compare letters
+```
+
+It ignores:
+
+* spaces
+* commas
+* colon
+* other non-alphanumeric characters
+
+and compares letters **case-insensitively**.
+
+Therefore:
+
+```text id="7y1n4q"
+"A man, a plan, a canal: Panama"
+
+                ↓
+
+"amanaplanacanalpanama"
+
+                ↓
+
+Palindrome ✅
+
+Output = true
 ```
 
 ### Complexity
