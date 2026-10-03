@@ -1939,6 +1939,236 @@ result ← first k values of entries
 return result
 ```
 
+### Dry Run
+Sure. This is the **Top K Frequent Elements** approach using a frequency map.
+
+### Input
+
+```text
+nums = [1,2,1,2,1,2,3,1,3,2]
+k = 2
+```
+
+
+---
+
+### 1. `count ← {}`
+
+Create an empty map:
+
+```text
+count = {}
+```
+
+It will store:
+
+```text
+number → frequency
+```
+
+For example:
+
+```text
+1 → 4
+2 → 5
+3 → 2
+```
+
+---
+
+### 2. Count each number
+
+```text
+for v in arr:
+    count[v] ← count[v] + 1
+```
+
+We go through:
+
+```text
+[1,2,1,2,1,2,3,1,3,2]
+```
+
+#### `v = 1`
+
+```text
+count[1] = 1
+```
+
+#### `v = 2`
+
+```text
+count[2] = 1
+```
+
+#### `v = 1`
+
+```text
+count[1] = 2
+```
+
+#### `v = 2`
+
+```text
+count[2] = 2
+```
+
+#### `v = 1`
+
+```text
+count[1] = 3
+```
+
+#### `v = 2`
+
+```text
+count[2] = 3
+```
+
+#### `v = 3`
+
+```text
+count[3] = 1
+```
+
+#### `v = 1`
+
+```text
+count[1] = 4
+```
+
+#### `v = 3`
+
+```text
+count[3] = 2
+```
+
+#### `v = 2`
+
+```text
+count[2] = 4
+```
+
+So according to the sequence, we get:
+
+```text
+count = {
+    1 → 4,
+    2 → 4,
+    3 → 2
+}
+```
+
+⚠️ **Important:** `1` appears 4 times and `2` appears 4 times — not 5 times.
+
+Let's verify:
+
+```text
+1 → positions 1,3,5,8 = 4 times
+2 → positions 2,4,6,10 = 4 times
+3 → positions 7,9 = 2 times
+```
+
+---
+
+### 3. `entries ← sort count by frequency desc`
+
+Now sort the numbers according to their frequency from **highest to lowest**.
+
+Before sorting:
+
+```text
+1 → 4
+2 → 4
+3 → 2
+```
+
+After sorting:
+
+```text
+[(1,4), (2,4), (3,2)]
+```
+
+Since `1` and `2` have the same frequency, their order can depend on the sorting implementation.
+
+The important thing is:
+
+```text
+1 and 2 → frequency 4
+3       → frequency 2
+```
+
+---
+
+### 4. `result ← first k values of entries`
+
+We have:
+
+```text
+k = 2
+```
+
+So take the first **2 numbers**:
+
+```text
+result = [1,2]
+```
+
+---
+
+### 5. `return result`
+
+Therefore:
+
+### ✅ Final output
+
+```text
+[1,2]
+```
+
+or potentially:
+
+```text
+[2,1]
+```
+
+depending on how ties are ordered.
+
+Both are correct because **1 and 2 are the two most frequent elements**, each appearing 4 times.
+
+### Complete dry run
+
+| Number | Frequency |
+| -----: | --------: |
+|    `1` |       `4` |
+|    `2` |       `4` |
+|    `3` |       `2` |
+
+`k = 2`, so:
+
+```text
+Top 2 = [1,2]
+```
+
+### 🧠 Main idea
+
+```text
+Array
+  ↓
+Count frequencies
+  ↓
+{1:4, 2:4, 3:2}
+  ↓
+Sort by frequency ↓
+  ↓
+Take first k
+  ↓
+[1,2]
+```
+
+**Output: `[1,2]`** (order between `1` and `2` is interchangeable because they are tied).
+
+
 #### 2. Optimized (Bucket Sort)
 Count frequencies and place values into buckets based on their frequency. Traverse buckets from highest to lowest frequency and collect `k` elements.
 
@@ -1960,6 +2190,349 @@ for f ← n down to 1:
 
 return result
 ```
+
+### Dry Run
+Sure. This is the **Bucket Sort approach for Top K Frequent Elements**.
+
+Input:
+
+```text
+nums = [1,1,1,2,2,3]
+k = 2
+```
+
+```
+
+---
+
+### 1. `count ← {}`
+
+Create an empty frequency map:
+
+```text
+count = {}
+```
+
+It will store:
+
+```text
+value → frequency
+```
+
+---
+
+### 2. Count every value
+
+```text
+for v in arr:
+    count[v] ← count[v] + 1
+```
+
+Go through:
+
+```text
+[1,1,1,2,2,3]
+```
+
+#### First `1`
+
+```text
+count[1] = 1
+```
+
+#### Second `1`
+
+```text
+count[1] = 2
+```
+
+#### Third `1`
+
+```text
+count[1] = 3
+```
+
+#### First `2`
+
+```text
+count[2] = 1
+```
+
+#### Second `2`
+
+```text
+count[2] = 2
+```
+
+#### `3`
+
+```text
+count[3] = 1
+```
+
+So:
+
+```text
+count = {
+    1 → 3,
+    2 → 2,
+    3 → 1
+}
+```
+
+---
+
+### 3. Create buckets
+
+```text
+buckets[f] ← values with frequency f
+```
+
+Here `n = 6`, so conceptually we have buckets for frequencies `1` through `6`:
+
+```text
+frequency 1 → [3]
+frequency 2 → [2]
+frequency 3 → [1]
+frequency 4 → []
+frequency 5 → []
+frequency 6 → []
+```
+
+Visualize it like:
+
+```text
+Bucket
+  ↓
+6 → []
+5 → []
+4 → []
+3 → [1]
+2 → [2]
+1 → [3]
+```
+
+The important thing is:
+
+```text
+1 occurs 3 times → bucket[3] = [1]
+2 occurs 2 times → bucket[2] = [2]
+3 occurs 1 time  → bucket[1] = [3]
+```
+
+---
+
+### 4. `result ← []`
+
+Create an empty result:
+
+```text
+result = []
+```
+
+We need:
+
+```text
+k = 2
+```
+
+So we need **2 elements**.
+
+---
+
+### 5. Loop from highest frequency to lowest
+
+```text
+for f ← n down to 1:
+```
+
+Since `n = 6`, we check:
+
+```text
+f = 6
+f = 5
+f = 4
+f = 3
+f = 2
+f = 1
+```
+
+We start from the **highest frequency** because we want the most frequent elements.
+
+---
+
+#### `f = 6`
+
+```text
+buckets[6] = []
+```
+
+Nothing to add.
+
+```text
+result = []
+```
+
+---
+
+#### `f = 5`
+
+```text
+buckets[5] = []
+```
+
+Nothing.
+
+```text
+result = []
+```
+
+---
+
+#### `f = 4`
+
+```text
+buckets[4] = []
+```
+
+Nothing.
+
+```text
+result = []
+```
+
+---
+
+#### `f = 3`
+
+```text
+buckets[3] = [1]
+```
+
+Add `1`:
+
+```text
+result = [1]
+```
+
+Current size:
+
+```text
+|result| = 1
+```
+
+But we need:
+
+```text
+k = 2
+```
+
+So continue.
+
+---
+
+#### `f = 2`
+
+```text
+buckets[2] = [2]
+```
+
+Add `2`:
+
+```text
+result = [1,2]
+```
+
+Now:
+
+```text
+|result| = 2
+```
+
+And:
+
+```text
+k = 2
+```
+
+So we have enough elements.
+
+Stop.
+
+---
+
+### 6. `return result`
+
+Therefore:
+
+```text
+result = [1,2]
+```
+
+### ✅ Final Output
+
+```text
+[1,2]
+```
+
+---
+
+### Complete dry run
+
+| Frequency `f` | Bucket | Result     |
+| ------------: | ------ | ---------- |
+|             6 | `[]`   | `[]`       |
+|             5 | `[]`   | `[]`       |
+|             4 | `[]`   | `[]`       |
+|             3 | `[1]`  | `[1]`      |
+|             2 | `[2]`  | `[1,2]`    |
+|          Stop | —      | Size = `k` |
+
+### Why is `[1,2]` the answer?
+
+Frequencies:
+
+```text
+1 → 3 times
+2 → 2 times
+3 → 1 time
+```
+
+Therefore the top 2 frequent elements are:
+
+```text
+1 → 3
+2 → 2
+```
+
+So:
+
+```text
+✅ Output = [1,2]
+```
+
+### 🧠 The main difference from the previous approach
+
+Instead of:
+
+```text
+count → sort frequencies → take k
+```
+
+Bucket approach does:
+
+```text
+count
+  ↓
+put values into frequency buckets
+  ↓
+start from highest frequency
+  ↓
+take k values
+```
+
+That's why we don't explicitly sort the frequencies.
+
 
 ### Complexity
 
