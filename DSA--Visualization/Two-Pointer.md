@@ -617,6 +617,425 @@ for i ← 0 to n − 3:
 
 dedupe results    // use a Set → O(n) extra space
 ```
+### Dry Run
+Sure. This is the **brute-force approach for 3Sum**. It checks every possible combination of **3 different indices** and records the ones whose sum is `0`.
+
+### Input
+
+```text
+nums = [-1, 0, 1, 2, -1, -4]
+```
+
+Pseudocode:
+
+```text
+for i ← 0 to n − 3:
+    for j ← i + 1 to n − 2:
+        for k ← j + 1 to n − 1:
+            if arr[i] + arr[j] + arr[k] == 0:
+                record (i, j, k)
+
+dedupe results
+```
+
+Here:
+
+```text
+n = 6
+```
+
+---
+
+### 1. Outer loop
+
+```text
+for i ← 0 to n − 3
+```
+
+Since:
+
+```text
+n − 3 = 3
+```
+
+So:
+
+```text
+i = 0, 1, 2, 3
+```
+
+`i` chooses the **first element**.
+
+---
+
+### 2. `i = 0`
+
+```text
+arr[0] = -1
+```
+
+Now `j` starts from `i + 1`:
+
+```text
+j = 1 to 4
+```
+
+#### j = 1
+
+```text
+arr[1] = 0
+```
+
+Now `k` starts from `j + 1 = 2`.
+
+##### k = 2
+
+```text
+arr[0] + arr[1] + arr[2]
+
+= -1 + 0 + 1
+= 0
+```
+
+✅ Record:
+
+```text
+(-1, 0, 1)
+```
+
+---
+
+##### k = 3
+
+```text
+-1 + 0 + 2 = 1
+```
+
+❌ Not 0.
+
+---
+
+##### k = 4
+
+```text
+-1 + 0 + (-1) = -2
+```
+
+❌
+
+---
+
+##### k = 5
+
+```text
+-1 + 0 + (-4) = -5
+```
+
+❌
+
+---
+
+#### j = 2
+
+```text
+arr[2] = 1
+```
+
+Now `k = 3,4,5`.
+
+##### k = 3
+
+```text
+-1 + 1 + 2 = 2
+```
+
+❌
+
+##### k = 4
+
+```text
+-1 + 1 + (-1) = -1
+```
+
+❌
+
+##### k = 5
+
+```text
+-1 + 1 + (-4) = -4
+```
+
+❌
+
+---
+
+#### j = 3
+
+```text
+arr[3] = 2
+```
+
+##### k = 4
+
+```text
+-1 + 2 + (-1) = 0
+```
+
+✅ Record:
+
+```text
+(-1, 2, -1)
+```
+
+This corresponds to the values:
+
+```text
+[-1, -1, 2]
+```
+
+##### k = 5
+
+```text
+-1 + 2 + (-4) = -3
+```
+
+❌
+
+---
+
+#### j = 4
+
+```text
+arr[4] = -1
+```
+
+##### k = 5
+
+```text
+-1 + (-1) + (-4) = -6
+```
+
+❌
+
+---
+
+### 3. `i = 1`
+
+```text
+arr[1] = 0
+```
+
+Now `j = 2`.
+
+#### j = 2
+
+```text
+arr[2] = 1
+```
+
+##### k = 3
+
+```text
+0 + 1 + 2 = 3
+```
+
+❌
+
+##### k = 4
+
+```text
+0 + 1 + (-1) = 0
+```
+
+✅ Record:
+
+```text
+[0, 1, -1]
+```
+
+This is the same combination as:
+
+```text
+[-1,0,1]
+```
+
+but in a different index order.
+
+##### k = 5
+
+```text
+0 + 1 + (-4) = -3
+```
+
+❌
+
+---
+
+#### j = 3
+
+```text
+0 + 2 + (-1) = 1
+```
+
+❌
+
+```text
+0 + 2 + (-4) = -2
+```
+
+❌
+
+---
+
+#### j = 4
+
+```text
+0 + (-1) + (-4) = -5
+```
+
+❌
+
+---
+
+### 4. `i = 2`
+
+```text
+arr[2] = 1
+```
+
+Possible combinations:
+
+```text
+1 + 2 + (-1) = 2
+1 + 2 + (-4) = -1
+1 + (-1) + (-4) = -4
+```
+
+None are `0`.
+
+So no new result.
+
+---
+
+### 5. `i = 3`
+
+```text
+arr[3] = 2
+```
+
+Only possible combination:
+
+```text
+2 + (-1) + (-4) = -3
+```
+
+❌ No result.
+
+---
+
+### 6. Results before deduplication
+
+We found:
+
+```text
+[-1, 0, 1]
+[-1, 2, -1]
+[0, 1, -1]
+```
+
+But notice:
+
+```text
+[-1, 0, 1]
+```
+
+and
+
+```text
+[0, 1, -1]
+```
+
+contain the **same three values**.
+
+They are duplicates, just discovered through different indices/order.
+
+---
+
+### 7. `dedupe results`
+
+Remove duplicate triplets.
+
+Normalize/sort each triplet:
+
+```text
+[-1, 0, 1] → [-1, 0, 1]
+
+[-1, 2, -1] → [-1, -1, 2]
+
+[0, 1, -1] → [-1, 0, 1]
+```
+
+Now remove the duplicate:
+
+```text
+[-1, 0, 1]
+```
+
+appears twice, so keep only one.
+
+---
+
+### ✅ Final Output
+
+```text
+[
+    [-1, -1, 2],
+    [-1, 0, 1]
+]
+```
+
+The order of the two triplets may vary.
+
+### Verify
+
+First triplet:
+
+```text
+-1 + -1 + 2 = 0
+```
+
+Second:
+
+```text
+-1 + 0 + 1 = 0
+```
+
+So the final answer is:
+
+```text
+✅ [[-1,-1,2],[-1,0,1]]
+```
+
+### 🧠 What the three loops are doing
+
+```text
+i → choose first element
+j → choose second element
+k → choose third element
+```
+
+For example:
+
+```text
+i = 0 → -1
+j = 3 → 2
+k = 4 → -1
+
+-1 + 2 + -1 = 0
+```
+
+That's why this brute-force approach checks **every possible triplet**.
+
 
 #### 2. Optimized (Sort + Two Pointers)
 Sort the array first. Fix one element, then use `left` and `right` pointers for the remaining two elements. Skip duplicates to ensure unique triplets.
@@ -649,6 +1068,469 @@ for i ← 0 to n − 3:
         else:
             right--
 ```
+### Dry Run
+Sure. This is the **optimized Two-Pointer approach for 3Sum**.
+
+### Input
+
+```text
+arr = [-4, -1, -1, 0, 1, 2]
+```
+
+The array is already sorted.
+
+```text
+index:  0   1   2   3  4  5
+arr:   -4  -1  -1   0  1  2
+```
+
+Pseudocode:
+
+```text
+sort arr
+
+for i ← 0 to n − 3:
+    if i > 0 and arr[i] == arr[i − 1]: skip
+    left ← i + 1
+    right ← n − 1
+
+    while left < right:
+        sum = arr[i] + arr[left] + arr[right]
+
+        if sum == 0 → record; advance; skip dups
+        else if sum < 0 → left++
+        else             → right--
+```
+
+---
+
+### 1. `sort arr`
+
+Sorting puts the numbers in increasing order.
+
+Here it is already:
+
+```text
+[-4, -1, -1, 0, 1, 2]
+```
+
+Sorting is important because it allows us to use the **two-pointer technique**.
+
+---
+
+### 2. `for i ← 0 to n − 3`
+
+There are 6 elements:
+
+```text
+n = 6
+```
+
+So:
+
+```text
+i = 0, 1, 2, 3
+```
+
+`i` represents the **first number** of our triplet.
+
+---
+
+#### 🔹 i = 0
+
+```text
+arr[i] = -4
+```
+
+No duplicate check is needed because `i = 0`.
+
+Set:
+
+```text
+left = 1
+right = 5
+```
+
+So:
+
+```text
+        i   L           R
+        ↓   ↓           ↓
+arr = [-4, -1, -1, 0, 1, 2]
+```
+
+---
+
+##### While `left < right`
+
+##### First calculation
+
+```text
+sum = -4 + (-1) + 2
+    = -3
+```
+
+Since:
+
+```text
+sum < 0
+```
+
+we need a **larger sum**.
+
+Because the array is sorted, move `left` right:
+
+```text
+left++
+```
+
+Now:
+
+```text
+left = 2
+right = 5
+```
+
+---
+
+##### Second calculation
+
+```text
+sum = -4 + (-1) + 2
+    = -3
+```
+
+Still negative.
+
+Move `left`:
+
+```text
+left = 3
+```
+
+---
+
+##### Third calculation
+
+```text
+sum = -4 + 0 + 2
+    = -2
+```
+
+Still negative.
+
+```text
+left = 4
+```
+
+---
+
+##### Fourth calculation
+
+```text
+sum = -4 + 1 + 2
+    = -1
+```
+
+Still negative.
+
+```text
+left = 5
+```
+
+Now:
+
+```text
+left == right
+```
+
+Stop.
+
+No triplet with `-4` gives sum `0`.
+
+---
+
+#### 🔹 i = 1
+
+Now:
+
+```text
+arr[1] = -1
+```
+
+Set:
+
+```text
+left = 2
+right = 5
+```
+
+Visual:
+
+```text
+             i   L           R
+             ↓   ↓           ↓
+arr = [-4, -1, -1, 0, 1, 2]
+```
+
+---
+
+##### First calculation
+
+```text
+sum = -1 + (-1) + 2
+    = 0
+```
+
+✅ Found a triplet!
+
+Record:
+
+```text
+[-1, -1, 2]
+```
+
+So:
+
+```text
+result = [[-1,-1,2]]
+```
+
+Now:
+
+```text
+advance left and right
+```
+
+Therefore:
+
+```text
+left = 3
+right = 4
+```
+
+There are no duplicate values immediately around these pointers, so continue.
+
+---
+
+##### Second calculation
+
+```text
+sum = -1 + 0 + 1
+    = 0
+```
+
+✅ Found another triplet.
+
+Record:
+
+```text
+[-1, 0, 1]
+```
+
+Now:
+
+```text
+result = [
+    [-1,-1,2],
+    [-1,0,1]
+]
+```
+
+Advance:
+
+```text
+left = 4
+right = 3
+```
+
+Now:
+
+```text
+left > right
+```
+
+Stop this iteration.
+
+---
+
+#### 🔹 i = 2
+
+Now:
+
+```text
+arr[2] = -1
+```
+
+Check:
+
+```text
+if i > 0 and arr[i] == arr[i-1]
+```
+
+We have:
+
+```text
+arr[2] = -1
+arr[1] = -1
+```
+
+They are equal.
+
+Therefore:
+
+```text
+skip
+```
+
+We skip this `i`.
+
+##### Why?
+
+Because we already processed `-1` at `i = 1`.
+
+Processing the second `-1` would produce duplicate triplets.
+
+---
+
+#### 🔹 i = 3
+
+Now:
+
+```text
+arr[3] = 0
+```
+
+Set:
+
+```text
+left = 4
+right = 5
+```
+
+Calculate:
+
+```text
+sum = 0 + 1 + 2
+    = 3
+```
+
+Since:
+
+```text
+sum > 0
+```
+
+we need a **smaller sum**.
+
+So move `right` left:
+
+```text
+right--
+```
+
+Now:
+
+```text
+right = 4
+```
+
+Therefore:
+
+```text
+left == right
+```
+
+Stop.
+
+No triplet starting with `0` gives sum `0`.
+
+---
+
+### Final result
+
+We found only two unique triplets:
+
+```text
+[-1, -1, 2]
+[-1, 0, 1]
+```
+
+### ✅ Output
+
+```text
+[[-1,-1,2],[-1,0,1]]
+```
+
+---
+
+### 🧠 Why does `left++` or `right--` work?
+
+This is the important part of the optimized approach.
+
+Because the array is sorted:
+
+```text
+[-4, -1, -1, 0, 1, 2]
+```
+
+If:
+
+```text
+sum < 0
+```
+
+the sum is too small.
+
+So increase `left` to get a larger number:
+
+```text
+left++
+```
+
+If:
+
+```text
+sum > 0
+```
+
+the sum is too large.
+
+So decrease `right` to get a smaller number:
+
+```text
+right--
+```
+
+If:
+
+```text
+sum == 0
+```
+
+we found our triplet:
+
+```text
+record
+left++
+right--
+```
+
+For this input:
+
+```text
+-1 + -1 + 2 = 0
+-1 +  0 + 1 = 0
+```
+
+Therefore:
+
+```text
+✅ [[-1,-1,2],[-1,0,1]]
+```
+
+The optimized solution takes **O(n²)** time after sorting, compared with the previous brute-force **O(n³)** approach.
+
 
 ### Complexity
 
