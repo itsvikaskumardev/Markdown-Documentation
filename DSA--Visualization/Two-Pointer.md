@@ -1563,6 +1563,240 @@ for x in arr:
 
 return unique.length
 ```
+### Dry Run
+Sure. This is the **Remove Duplicates from Sorted Array** approach.
+
+### Input
+
+```text
+arr = [0,0,1,1,1,2,2,3,3,4]
+```
+
+Pseudocode:
+
+```text
+unique ← []
+
+for x in arr:
+    if unique is empty or unique.last ≠ x:
+        unique.append(x)
+
+return unique.length
+```
+
+The important idea is: **because the array is sorted, duplicate values are next to each other.** We only add `x` when it is different from the last value we added.
+
+---
+
+### 1. `unique ← []`
+
+Create an empty array:
+
+```text
+unique = []
+```
+
+---
+
+### 2. First `x = 0`
+
+`unique` is empty, so add `0`.
+
+```text
+unique = [0]
+```
+
+---
+
+### 3. Second `x = 0`
+
+Check:
+
+```text
+unique.last = 0
+x = 0
+```
+
+They are equal ❌, so don't add.
+
+```text
+unique = [0]
+```
+
+---
+
+### 4. `x = 1`
+
+Check:
+
+```text
+unique.last = 0
+x = 1
+```
+
+Different ✅, so add.
+
+```text
+unique = [0,1]
+```
+
+---
+
+### 5. `x = 1`
+
+```text
+unique.last = 1
+x = 1
+```
+
+Same ❌ → don't add.
+
+```text
+unique = [0,1]
+```
+
+---
+
+### 6. `x = 1`
+
+Again:
+
+```text
+unique.last = 1
+x = 1
+```
+
+Same ❌.
+
+```text
+unique = [0,1]
+```
+
+---
+
+### 7. `x = 2`
+
+```text
+unique.last = 1
+x = 2
+```
+
+Different ✅.
+
+```text
+unique = [0,1,2]
+```
+
+---
+
+### 8. `x = 2`
+
+Same as last value ❌:
+
+```text
+unique = [0,1,2]
+```
+
+---
+
+### 9. `x = 3`
+
+Different from `2` ✅:
+
+```text
+unique = [0,1,2,3]
+```
+
+---
+
+### 10. `x = 3`
+
+Same as last value ❌:
+
+```text
+unique = [0,1,2,3]
+```
+
+---
+
+### 11. `x = 4`
+
+Different from `3` ✅:
+
+```text
+unique = [0,1,2,3,4]
+```
+
+---
+
+### Complete dry run
+
+| `x` | `unique` after processing |
+| --: | ------------------------- |
+|   0 | `[0]`                     |
+|   0 | `[0]`                     |
+|   1 | `[0,1]`                   |
+|   1 | `[0,1]`                   |
+|   1 | `[0,1]`                   |
+|   2 | `[0,1,2]`                 |
+|   2 | `[0,1,2]`                 |
+|   3 | `[0,1,2,3]`               |
+|   3 | `[0,1,2,3]`               |
+|   4 | `[0,1,2,3,4]`             |
+
+So finally:
+
+```text
+unique = [0,1,2,3,4]
+```
+
+Then:
+
+```text
+return unique.length
+```
+
+There are **5** unique elements.
+
+### ✅ Final Output
+
+```text
+5
+```
+
+The unique array is:
+
+```text
+[0,1,2,3,4]
+```
+
+### 🧠 Remember
+
+The condition:
+
+```text
+unique.last ≠ x
+```
+
+means:
+
+> **"Is the current number different from the last unique number?"**
+
+If yes → add it.
+If no → skip it.
+
+So:
+
+```text
+[0,0,1,1,1,2,2,3,3,4]
+ ↓
+[0,1,2,3,4]
+ ↓
+length = 5
+```
+
+**Answer = `5`**.
+
 
 #### 2. Optimized (Write Index)
 Use a **write index** to place each new unique value in the next position. Since the array is sorted, duplicates are next to each other.
@@ -1579,6 +1813,125 @@ for i ← 1 to n − 1:
 
 return k
 ```
+### Dry Run
+This pseudocode is used to **remove duplicates from a sorted array in-place**.
+
+### Pseudocode
+
+```text
+k ← 1
+for i ← 1 to n − 1:
+    if arr[i] ≠ arr[k − 1]:
+        arr[k] ← arr[i]
+        k ← k + 1
+return k
+```
+
+Input:
+
+```text
+arr = [1,1,2,2,2,3,4,4]
+```
+
+`n = 8`
+
+### Line-by-line explanation
+
+### 1. `k ← 1`
+
+`k` tells us the position where the **next unique element** should be placed.
+
+Initially:
+
+```text
+k = 1
+```
+
+The first element `arr[0] = 1` is already unique, so we keep it.
+
+---
+
+### 2. `for i ← 1 to n − 1`
+
+We start checking from index `1` because index `0` is already considered.
+
+```text
+i = 1, 2, 3, 4, 5, 6, 7
+```
+
+---
+
+### 3. `if arr[i] ≠ arr[k − 1]`
+
+We compare the current element with the **last unique element**.
+
+If they are different, it means we found a new unique element.
+
+---
+
+#### Dry Run Table
+
+| i | arr[i] |  k | arr[k-1] | Comparison | Action            |
+| - | -----: | -: | -------: | ---------- | ----------------- |
+| 1 |      1 |  1 |        1 | 1 ≠ 1 ❌    | Skip              |
+| 2 |      2 |  1 |        1 | 2 ≠ 1 ✅    | `arr[1]=2`, `k=2` |
+| 3 |      2 |  2 |        2 | 2 ≠ 2 ❌    | Skip              |
+| 4 |      2 |  2 |        2 | 2 ≠ 2 ❌    | Skip              |
+| 5 |      3 |  2 |        2 | 3 ≠ 2 ✅    | `arr[2]=3`, `k=3` |
+| 6 |      4 |  3 |        3 | 4 ≠ 3 ✅    | `arr[3]=4`, `k=4` |
+| 7 |      4 |  4 |        4 | 4 ≠ 4 ❌    | Skip              |
+
+After the operations, the beginning of the array becomes:
+
+```text
+[1, 2, 3, 4, ...]
+```
+
+The remaining elements after index `k-1` are irrelevant.
+
+So:
+
+```text
+k = 4
+```
+
+### ✅ Final Output
+
+```text
+return k
+```
+
+**Output:**
+
+```text
+4
+```
+
+The unique elements are:
+
+```text
+[1, 2, 3, 4]
+```
+
+### 🧠 Main idea
+
+`k` is the **count of unique elements**.
+
+For this input:
+
+```text
+[1,1,2,2,2,3,4,4]
+```
+
+there are **4 unique elements**, so the answer is:
+
+```text
+4
+```
+
+Time complexity: **O(n)**
+Extra space: **O(1)**
+
 
 ### Complexity
 
