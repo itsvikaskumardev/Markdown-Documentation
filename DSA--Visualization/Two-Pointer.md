@@ -4231,6 +4231,151 @@ repeat k times:
 
 return arr
 ```
+### Dry Run
+This pseudocode is used to **rotate an array to the right by `k` positions**.
+
+Given:
+
+```text
+arr = [1,2,3,4,5,6,7]
+k = 3
+```
+
+We have to move the **last element to the front** 3 times.
+
+---
+
+### Pseudocode
+
+```text id="5x5q8w"
+repeat k times:
+    move the last element to the front, shifting the rest right
+return arr
+```
+
+### Line 1
+
+```text id="7v1m3k"
+repeat k times:
+```
+
+Since:
+
+```text id="f7h2x9"
+k = 3
+```
+
+we perform the operation **3 times**.
+
+---
+
+### 🔹 1st repetition
+
+Current array:
+
+```text id="7o8v2m"
+[1,2,3,4,5,6,7]
+```
+
+Last element is:
+
+```text id="3g9x1a"
+7
+```
+
+Move `7` to the front and shift everything else one position right:
+
+```text id="2s6k4p"
+[7,1,2,3,4,5,6]
+```
+
+---
+
+### 🔹 2nd repetition
+
+Current:
+
+```text id="h4j8q2"
+[7,1,2,3,4,5,6]
+```
+
+Last element:
+
+```text id="p3m7x1"
+6
+```
+
+Move `6` to the front:
+
+```text id="q8v2n5"
+[6,7,1,2,3,4,5]
+```
+
+---
+
+### 🔹 3rd repetition
+
+Current:
+
+```text id="r5k9w3"
+[6,7,1,2,3,4,5]
+```
+
+Last element:
+
+```text id="m2z6p8"
+5
+```
+
+Move `5` to the front:
+
+```text id="a7c4x1"
+[5,6,7,1,2,3,4]
+```
+
+---
+
+### Final `return arr`
+
+```text id="j9q3v7"
+return arr
+```
+
+So the final output is:
+
+```text id="w2n6k8"
+[5,6,7,1,2,3,4]
+```
+
+### Complete dry run
+
+| Rotation | Array             |
+| -------- | ----------------- |
+| Initial  | `[1,2,3,4,5,6,7]` |
+| 1st      | `[7,1,2,3,4,5,6]` |
+| 2nd      | `[6,7,1,2,3,4,5]` |
+| 3rd      | `[5,6,7,1,2,3,4]` |
+
+### ✅ Final Output
+
+```text
+[5,6,7,1,2,3,4]
+```
+
+### 🧠 Main idea
+
+Every repetition does:
+
+```text
+Last element → Front
+Everything else → shift right
+```
+
+Since `k = 3`, we do it 3 times.
+
+**Time complexity:** `O(n × k)`
+**Extra space:** `O(1)` if the shifting is done in-place.
+
 
 #### 2. Optimized (Reverse Three Times)
 * First, calculate `k = k % n`.
@@ -4251,6 +4396,201 @@ reverse(arr, k, n − 1)
 
 return arr
 ```
+### Dry Run
+This is the **optimized method to rotate an array to the right by `k` positions** using the **reversal algorithm**.
+
+Given:
+
+```text
+arr = [1,2,3,4,5,6,7]
+k = 3
+```
+
+`n = 7`
+
+---
+
+### 1. `k ← k mod n`
+
+```text id="y6kq2m"
+k ← k mod n
+```
+
+This makes `k` smaller than `n`.
+
+Here:
+
+```text
+k = 3
+n = 7
+
+k = 3 mod 7
+k = 3
+```
+
+So `k` remains:
+
+```text id="q3v8x1"
+k = 3
+```
+
+#### Why do we do this?
+
+If `k` was `10`, rotating by 10 positions in an array of 7 is the same as rotating by:
+
+```text
+10 mod 7 = 3
+```
+
+---
+
+### 2. Reverse the entire array
+
+```text id="m7r2p4"
+reverse(arr, 0, n − 1)
+```
+
+Here:
+
+```text
+0 to n − 1
+= 0 to 6
+```
+
+So reverse:
+
+```text id="d8w5q1"
+[1,2,3,4,5,6,7]
+```
+
+After reversing:
+
+```text id="z4c9n2"
+[7,6,5,4,3,2,1]
+```
+
+---
+
+### 3. Reverse the first `k` elements
+
+```text id="p2x7m6"
+reverse(arr, 0, k − 1)
+```
+
+Since:
+
+```text
+k = 3
+```
+
+we get:
+
+```text
+reverse(arr, 0, 2)
+```
+
+So reverse the first 3 elements:
+
+```text id="v6n3q8"
+[7,6,5 | 4,3,2,1]
+```
+
+Reverse `[7,6,5]`:
+
+```text id="h1k5r9"
+[5,6,7,4,3,2,1]
+```
+
+---
+
+### 4. Reverse the remaining elements
+
+```text id="x8m4p2"
+reverse(arr, k, n − 1)
+```
+
+Substitute:
+
+```text
+k = 3
+n − 1 = 6
+```
+
+So:
+
+```text id="w3q7j1"
+reverse(arr, 3, 6)
+```
+
+We reverse:
+
+```text
+[5,6,7 | 4,3,2,1]
+             ↑
+          indices 3–6
+```
+
+Reverse `[4,3,2,1]`:
+
+```text id="c5v9k2"
+[5,6,7,1,2,3,4]
+```
+
+---
+
+### Complete Dry Run
+
+| Step                 | Array             |
+| -------------------- | ----------------- |
+| Initial              | `[1,2,3,4,5,6,7]` |
+| Reverse entire array | `[7,6,5,4,3,2,1]` |
+| Reverse first 3      | `[5,6,7,4,3,2,1]` |
+| Reverse remaining    | `[5,6,7,1,2,3,4]` |
+
+### ✅ Final Output
+
+```text
+[5,6,7,1,2,3,4]
+```
+
+---
+
+### 🧠 Why does this work?
+
+We want:
+
+```text
+[1,2,3,4 | 5,6,7]
+```
+
+Right rotation by `3` means:
+
+```text
+[5,6,7 | 1,2,3,4]
+```
+
+The three reversals achieve exactly that:
+
+```text
+Original:
+[1,2,3,4,5,6,7]
+
+① Reverse everything:
+[7,6,5,4,3,2,1]
+
+② Reverse first 3:
+[5,6,7,4,3,2,1]
+
+③ Reverse remaining:
+[5,6,7,1,2,3,4]
+```
+
+### Complexity
+
+**Time:** `O(n)` because each element is reversed a constant number of times.
+
+**Extra space:** `O(1)` because we reverse the array **in-place**.
+
 
 ### Complexity
 
