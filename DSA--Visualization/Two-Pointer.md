@@ -2640,6 +2640,304 @@ for i ← 0 to n − 1:
 
 copy aux back into arr
 ```
+### Dry Run
+This pseudocode is for **Move Zeroes**. It moves all non-zero elements to the front while keeping their original order, and the remaining positions stay `0`.
+
+### Input
+
+```text
+arr = [0,1,0,3,12]
+```
+
+`n = 5`
+
+---
+
+### 1. Create auxiliary array
+
+```text
+aux ← new array of size n filled with 0
+```
+
+Create a new array of size `5`, initially filled with zero:
+
+```text
+aux = [0,0,0,0,0]
+```
+
+---
+
+### 2. Initialize `write`
+
+```text
+write ← 0
+```
+
+`write` tells us **where to put the next non-zero element**.
+
+```text
+write = 0
+```
+
+---
+
+### 3. Loop through the array
+
+```text
+for i ← 0 to n − 1:
+```
+
+Since `n = 5`, `i` goes:
+
+```text
+0, 1, 2, 3, 4
+```
+
+---
+
+#### i = 0
+
+```text
+arr[0] = 0
+```
+
+Check:
+
+```text
+if arr[i] ≠ 0
+```
+
+```text
+0 ≠ 0 ❌
+```
+
+So we **don't copy** it.
+
+```text
+aux = [0,0,0,0,0]
+write = 0
+```
+
+---
+
+#### i = 1
+
+```text
+arr[1] = 1
+```
+
+Check:
+
+```text
+1 ≠ 0 ✅
+```
+
+So:
+
+```text
+aux[write++] = arr[i]
+```
+
+Currently:
+
+```text
+write = 0
+```
+
+Therefore:
+
+```text
+aux[0] = arr[1]
+aux[0] = 1
+```
+
+Then `write++` means increase `write` by 1:
+
+```text
+write = 1
+```
+
+Now:
+
+```text
+aux = [1,0,0,0,0]
+```
+
+---
+
+#### i = 2
+
+```text
+arr[2] = 0
+```
+
+Check:
+
+```text
+0 ≠ 0 ❌
+```
+
+Skip it.
+
+```text
+aux = [1,0,0,0,0]
+write = 1
+```
+
+---
+
+#### i = 3
+
+```text
+arr[3] = 3
+```
+
+Check:
+
+```text
+3 ≠ 0 ✅
+```
+
+So:
+
+```text
+aux[write++] = arr[i]
+```
+
+Currently:
+
+```text
+write = 1
+```
+
+Therefore:
+
+```text
+aux[1] = 3
+```
+
+Then:
+
+```text
+write = 2
+```
+
+Now:
+
+```text
+aux = [1,3,0,0,0]
+```
+
+---
+
+#### i = 4
+
+```text
+arr[4] = 12
+```
+
+Check:
+
+```text
+12 ≠ 0 ✅
+```
+
+Currently:
+
+```text
+write = 2
+```
+
+So:
+
+```text
+aux[2] = 12
+```
+
+Then:
+
+```text
+write = 3
+```
+
+Now:
+
+```text
+aux = [1,3,12,0,0]
+```
+
+---
+
+### 4. Copy auxiliary array back
+
+```text
+copy aux back into arr
+```
+
+Currently:
+
+```text
+aux = [1,3,12,0,0]
+arr = [0,1,0,3,12]
+```
+
+Copy `aux` into `arr`:
+
+```text
+arr = [1,3,12,0,0]
+```
+
+### ✅ Final Output
+
+```text
+[1,3,12,0,0]
+```
+
+### Complete dry run
+
+| `i` | `arr[i]` | Action   | `aux`          | `write` |
+| --: | -------: | -------- | -------------- | ------: |
+|   0 |        0 | Skip     | `[0,0,0,0,0]`  |       0 |
+|   1 |        1 | Put `1`  | `[1,0,0,0,0]`  |       1 |
+|   2 |        0 | Skip     | `[1,0,0,0,0]`  |       1 |
+|   3 |        3 | Put `3`  | `[1,3,0,0,0]`  |       2 |
+|   4 |       12 | Put `12` | `[1,3,12,0,0]` |       3 |
+
+Then copy:
+
+```text
+aux → arr
+```
+
+Result:
+
+```text
+[1,3,12,0,0]
+```
+
+### 🧠 Main idea
+
+The important line is:
+
+```text
+aux[write++] = arr[i]
+```
+
+It means:
+
+> "If the current element is non-zero, put it at the next available position in `aux`."
+
+So the non-zero elements:
+
+```text
+1 → 3 → 12
+```
+
+come to the front **in the same order**, and because `aux` was initially filled with zeros, the remaining positions automatically stay `0`.
+
+**Time:** `O(n)`
+**Extra space:** `O(n)` because we created `aux`.
+
 
 #### 2. Optimized (Same-Direction Two Pointers)
 Use a **write index** (`slow`) to place non-zero elements at the front while scanning the array with `fast`. Swapping preserves the relative order of non-zero elements.
@@ -2656,6 +2954,307 @@ for fast ← 0 to n − 1:
         swap(arr[slow], arr[fast])
         slow ← slow + 1
 ```
+
+### Dry Run
+This is the **optimized Move Zeroes** approach. Unlike the previous pseudocode, this one works **in-place**, so it does not need an extra array.
+
+### Input
+
+```text
+arr = [0,1,0,3,12]
+```
+
+`n = 5`
+
+---
+
+### 1. Initialize `slow`
+
+```text
+slow ← 0
+```
+
+`slow` points to the position where the **next non-zero element** should go.
+
+```text
+slow = 0
+```
+
+---
+
+### 2. Start the `fast` loop
+
+```text
+for fast ← 0 to n − 1:
+```
+
+Since `n = 5`:
+
+```text
+fast = 0, 1, 2, 3, 4
+```
+
+`fast` scans every element.
+
+---
+
+### The Loop
+
+#### 🔹 fast = 0
+
+```text
+arr[fast] = arr[0] = 0
+```
+
+Check:
+
+```text
+arr[fast] ≠ 0
+0 ≠ 0 ❌
+```
+
+So nothing happens.
+
+```text
+arr  = [0,1,0,3,12]
+slow = 0
+```
+
+---
+
+#### 🔹 fast = 1
+
+```text
+arr[fast] = arr[1] = 1
+```
+
+Check:
+
+```text
+1 ≠ 0 ✅
+```
+
+So we execute:
+
+```text
+swap(arr[slow], arr[fast])
+```
+
+Currently:
+
+```text
+slow = 0
+fast = 1
+```
+
+So:
+
+```text
+swap(arr[0], arr[1])
+```
+
+Before:
+
+```text
+[0,1,0,3,12]
+ ↑ ↑
+slow fast
+```
+
+After swap:
+
+```text
+[1,0,0,3,12]
+```
+
+Then:
+
+```text
+slow++
+```
+
+So:
+
+```text
+slow = 1
+```
+
+---
+
+#### 🔹 fast = 2
+
+```text
+arr[fast] = arr[2] = 0
+```
+
+Check:
+
+```text
+0 ≠ 0 ❌
+```
+
+Skip.
+
+```text
+arr  = [1,0,0,3,12]
+slow = 1
+```
+
+---
+
+#### 🔹 fast = 3
+
+```text
+arr[fast] = arr[3] = 3
+```
+
+Check:
+
+```text
+3 ≠ 0 ✅
+```
+
+Swap:
+
+```text
+swap(arr[slow], arr[fast])
+```
+
+Currently:
+
+```text
+slow = 1
+fast = 3
+```
+
+So:
+
+```text
+swap(arr[1], arr[3])
+```
+
+Before:
+
+```text
+[1,0,0,3,12]
+   ↑     ↑
+ slow   fast
+```
+
+After:
+
+```text
+[1,3,0,0,12]
+```
+
+Then:
+
+```text
+slow++
+```
+
+```text
+slow = 2
+```
+
+---
+
+#### 🔹 fast = 4
+
+```text
+arr[fast] = arr[4] = 12
+```
+
+Check:
+
+```text
+12 ≠ 0 ✅
+```
+
+Swap:
+
+```text
+swap(arr[slow], arr[fast])
+```
+
+Currently:
+
+```text
+slow = 2
+fast = 4
+```
+
+So:
+
+```text
+swap(arr[2], arr[4])
+```
+
+Before:
+
+```text
+[1,3,0,0,12]
+     ↑     ↑
+    slow  fast
+```
+
+After:
+
+```text
+[1,3,12,0,0]
+```
+
+Then:
+
+```text
+slow++
+```
+
+```text
+slow = 3
+```
+
+---
+
+### ✅ Final Output
+
+```text
+[1,3,12,0,0]
+```
+
+### Complete Dry Run
+
+| `fast` | `arr[fast]` | Action           | Array          | `slow` |
+| -----: | ----------: | ---------------- | -------------- | -----: |
+|      0 |           0 | Skip             | `[0,1,0,3,12]` |      0 |
+|      1 |           1 | Swap index 0 & 1 | `[1,0,0,3,12]` |      1 |
+|      2 |           0 | Skip             | `[1,0,0,3,12]` |      1 |
+|      3 |           3 | Swap index 1 & 3 | `[1,3,0,0,12]` |      2 |
+|      4 |          12 | Swap index 2 & 4 | `[1,3,12,0,0]` |      3 |
+
+### 🧠 Main idea
+
+Think of the pointers like this:
+
+```text
+slow → position where next non-zero should go
+fast → scans the entire array
+```
+
+Whenever `fast` finds a non-zero:
+
+```text
+swap(arr[slow], arr[fast])
+slow++
+```
+
+So all non-zero values gradually move to the **left**, while zeroes move to the **right**.
+
+**Time:** `O(n)`
+**Extra Space:** `O(1)` ✅
+
+This is better than the previous approach because the previous one used an `aux` array requiring `O(n)` extra space.
+
 
 ### Complexity
 
