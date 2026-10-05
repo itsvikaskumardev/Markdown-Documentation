@@ -3292,6 +3292,248 @@ then write count[2] twos
 
 return arr
 ```
+### Dry Run
+This pseudocode is for **Sort Colors / Dutch National Flag problem**, but this version uses a **counting approach**.
+
+The array contains only:
+
+```text
+0, 1, 2
+```
+
+### Input
+
+```text id="q3kq8w"
+arr = [2,0,2,1,1,0]
+```
+
+---
+
+### 1. Create count array
+
+```text id="l8k0h4"
+count ← [0, 0, 0]
+```
+
+Here:
+
+```text
+count[0] → number of 0s
+count[1] → number of 1s
+count[2] → number of 2s
+```
+
+Initially:
+
+```text id="2w1h7d"
+count = [0,0,0]
+```
+
+---
+
+### 2. Count each element
+
+```text id="1ocd1k"
+for v in arr:
+    count[v]++
+```
+
+This means:
+
+> Go through every element `v` in `arr` and increase its corresponding count.
+
+#### Iterations
+
+Input:
+
+```text id="qfj2su"
+[2,0,2,1,1,0]
+```
+
+##### First element: `2`
+
+```text
+count[2]++
+```
+
+```text id="bq7v5g"
+count = [0,0,1]
+```
+
+##### Second element: `0`
+
+```text
+count[0]++
+```
+
+```text id="x7rqg3"
+count = [1,0,1]
+```
+
+##### Third element: `2`
+
+```text
+count[2]++
+```
+
+```text id="3w8g9p"
+count = [1,0,2]
+```
+
+##### Fourth element: `1`
+
+```text
+count[1]++
+```
+
+```text id="8sg2gq"
+count = [1,1,2]
+```
+
+##### Fifth element: `1`
+
+```text
+count[1]++
+```
+
+```text id="j4p3m1"
+count = [1,2,2]
+```
+
+##### Sixth element: `0`
+
+```text
+count[0]++
+```
+
+```text id="u0r8dh"
+count = [2,2,2]
+```
+
+So finally:
+
+```text id="h6e6mi"
+count[0] = 2
+count[1] = 2
+count[2] = 2
+```
+
+---
+
+### 3. Write the zeroes
+
+```text id="s8h7vf"
+write count[0] zeros
+```
+
+Since:
+
+```text id="h8g0h4"
+count[0] = 2
+```
+
+write two `0`s:
+
+```text id="9smw7e"
+[0,0]
+```
+
+---
+
+### 4. Write the ones
+
+```text id="v5y8iq"
+then count[1] ones
+```
+
+Since:
+
+```text id="zjv1xk"
+count[1] = 2
+```
+
+write two `1`s:
+
+```text id="q6b9z1"
+[0,0,1,1]
+```
+
+---
+
+### 5. Write the twos
+
+```text id="p9c2qk"
+then count[2] twos
+```
+
+Since:
+
+```text id="8z7j4p"
+count[2] = 2
+```
+
+write two `2`s:
+
+```text id="d0n8qu"
+[0,0,1,1,2,2]
+```
+
+---
+
+### 6. Return the array
+
+```text id="v5h7xw"
+return arr
+```
+
+So the final sorted array is:
+
+```text id="5n0q7r"
+[0,0,1,1,2,2]
+```
+
+### Complete Dry Run
+
+| Element | `count`   |
+| ------: | --------- |
+|       2 | `[0,0,1]` |
+|       0 | `[1,0,1]` |
+|       2 | `[1,0,2]` |
+|       1 | `[1,1,2]` |
+|       1 | `[1,2,2]` |
+|       0 | `[2,2,2]` |
+
+Then:
+
+```text
+2 zeros → [0,0]
+2 ones  → [0,0,1,1]
+2 twos  → [0,0,1,1,2,2]
+```
+
+### ✅ Final Output
+
+```text
+[0,0,1,1,2,2]
+```
+
+### 🧠 Main idea
+
+The algorithm **doesn't compare elements with each other**.
+
+It simply:
+
+```text
+Count how many 0s
+Count how many 1s
+Count how many 2s
+        ↓
+Write them back in order
+```
+
+**Time:** `O(n)`
+**Extra space:** `O(1)` because `count` always has only 3 elements.
+
 
 #### 2. Better (Two-Pass Partition)
 Move `0`s to the front and `2`s to the end using swaps. The remaining elements are `1`s.
@@ -3322,6 +3564,605 @@ while i ≤ back:
 
 return arr
 ```
+
+### Dry Run
+This is a **two-pass approach for Sort Colors**. It sorts the array containing only `0`, `1`, and `2`:
+
+* **Pass 1:** Move all `0`s to the front.
+* **Pass 2:** Move all `2`s to the back.
+* Whatever remains in the middle will automatically be `1`s.
+
+### Input
+
+```text
+arr = [2,0,1,0,1,2,0]
+```
+
+`n = 7`
+
+---
+
+### Pass 1: Move all 0s to the front
+
+#### 1. Initialize `write`
+
+```text
+write ← 0
+```
+
+`write` tells us where the **next 0** should be placed.
+
+```text
+write = 0
+```
+
+---
+
+#### 2. Loop through the array
+
+```text
+for i ← 0 to n − 1:
+```
+
+So:
+
+```text
+i = 0,1,2,3,4,5,6
+```
+
+We check every element.
+
+---
+
+##### i = 0
+
+```text
+arr[0] = 2
+```
+
+Check:
+
+```text
+arr[i] == 0
+2 == 0 ❌
+```
+
+Nothing happens.
+
+```text
+arr = [2,0,1,0,1,2,0]
+write = 0
+```
+
+---
+
+##### i = 1
+
+```text
+arr[1] = 0
+```
+
+Check:
+
+```text
+0 == 0 ✅
+```
+
+Execute:
+
+```text
+swap(arr[write], arr[i])
+```
+
+Currently:
+
+```text
+write = 0
+i = 1
+```
+
+So:
+
+```text
+swap(arr[0], arr[1])
+```
+
+Before:
+
+```text
+[2,0,1,0,1,2,0]
+ ↑ ↑
+ w i
+```
+
+After:
+
+```text
+[0,2,1,0,1,2,0]
+```
+
+Then:
+
+```text
+write++
+```
+
+```text
+write = 1
+```
+
+---
+
+##### i = 2
+
+```text
+arr[2] = 1
+```
+
+```text
+1 == 0 ❌
+```
+
+Skip.
+
+```text
+arr = [0,2,1,0,1,2,0]
+write = 1
+```
+
+---
+
+##### i = 3
+
+```text
+arr[3] = 0
+```
+
+`0 == 0` ✅
+
+Swap:
+
+```text
+swap(arr[1], arr[3])
+```
+
+Before:
+
+```text
+[0,2,1,0,1,2,0]
+   ↑     ↑
+ write   i
+```
+
+After:
+
+```text
+[0,0,1,2,1,2,0]
+```
+
+Then:
+
+```text
+write = 2
+```
+
+---
+
+##### i = 4
+
+```text
+arr[4] = 1
+```
+
+```text
+1 == 0 ❌
+```
+
+Skip.
+
+```text
+arr = [0,0,1,2,1,2,0]
+write = 2
+```
+
+---
+
+##### i = 5
+
+```text
+arr[5] = 2
+```
+
+```text
+2 == 0 ❌
+```
+
+Skip.
+
+---
+
+##### i = 6
+
+```text
+arr[6] = 0
+```
+
+`0 == 0` ✅
+
+Swap:
+
+```text
+swap(arr[2], arr[6])
+```
+
+Before:
+
+```text
+[0,0,1,2,1,2,0]
+     ↑         ↑
+   write       i
+```
+
+After:
+
+```text
+[0,0,0,2,1,2,1]
+```
+
+Then:
+
+```text
+write = 3
+```
+
+---
+
+#### After Pass 1
+
+```text
+arr = [0,0,0,2,1,2,1]
+```
+
+The comment:
+
+```text
+// 0s settled at [0, write)
+```
+
+means indices:
+
+```text
+[0, 1, 2]
+```
+
+contain all the zeros.
+
+Because `write = 3`, the range `[0,3)` means:
+
+```text
+index 0 → 0
+index 1 → 0
+index 2 → 0
+```
+
+So:
+
+```text
+[0,0,0 | 2,1,2,1]
+```
+
+---
+
+### Pass 2: Move all 2s to the back
+
+#### 1. Initialize `back`
+
+```text
+back ← n − 1
+```
+
+Since:
+
+```text
+n = 7
+```
+
+we get:
+
+```text
+back = 6
+```
+
+`back` tells us where the **next 2** should go.
+
+---
+
+#### 2. Initialize `i`
+
+```text
+i ← write
+```
+
+Since:
+
+```text
+write = 3
+```
+
+we get:
+
+```text
+i = 3
+```
+
+We start checking from index `3` because indices `0–2` already contain the sorted zeros.
+
+Current array:
+
+```text
+[0,0,0,2,1,2,1]
+       ↑       ↑
+       i      back
+```
+
+---
+
+#### 3. While loop
+
+```text
+while i ≤ back:
+```
+
+We continue while `i` has not crossed `back`.
+
+---
+
+##### Iteration 1
+
+```text
+i = 3
+back = 6
+```
+
+```text
+arr[3] = 2
+```
+
+Condition:
+
+```text
+if arr[i] == 2
+```
+
+`2 == 2` ✅
+
+So:
+
+```text
+swap(arr[i], arr[back])
+```
+
+Swap:
+
+```text
+swap(arr[3], arr[6])
+```
+
+Before:
+
+```text
+[0,0,0,2,1,2,1]
+       ↑       ↑
+       i      back
+```
+
+After:
+
+```text
+[0,0,0,1,1,2,2]
+```
+
+Then:
+
+```text
+back--
+```
+
+So:
+
+```text
+back = 5
+```
+
+##### Important
+
+We **do not increase `i`** here.
+
+Why?
+
+Because after swapping, we don't yet know what came into `arr[i]`. We need to check it again.
+
+Now:
+
+```text
+i = 3
+back = 5
+```
+
+---
+
+##### Iteration 2
+
+```text
+arr[3] = 1
+```
+
+So:
+
+```text
+arr[i] == 2
+1 == 2 ❌
+```
+
+Go to `else`:
+
+```text
+i++
+```
+
+Therefore:
+
+```text
+i = 4
+```
+
+Array remains:
+
+```text
+[0,0,0,1,1,2,2]
+```
+
+---
+
+##### Iteration 3
+
+```text
+arr[4] = 1
+```
+
+Again:
+
+```text
+1 == 2 ❌
+```
+
+So:
+
+```text
+i++
+```
+
+```text
+i = 5
+```
+
+---
+
+##### Iteration 4
+
+```text
+arr[5] = 2
+```
+
+`2 == 2` ✅
+
+Swap:
+
+```text
+swap(arr[5], arr[back])
+```
+
+Currently:
+
+```text
+i = 5
+back = 5
+```
+
+So we're swapping the same position:
+
+```text
+swap(arr[5], arr[5])
+```
+
+Array remains:
+
+```text
+[0,0,0,1,1,2,2]
+```
+
+Then:
+
+```text
+back--
+```
+
+```text
+back = 4
+```
+
+---
+
+Now:
+
+```text
+i = 5
+back = 4
+```
+
+Check:
+
+```text
+i ≤ back
+5 ≤ 4 ❌
+```
+
+Loop stops.
+
+---
+
+### Final Output
+
+```text
+[0,0,0,1,1,2,2]
+```
+
+### Complete dry run
+
+#### Pass 1 — move `0`s
+
+| `i` | `arr[i]` | Action     | Array             | `write` |
+| --: | -------: | ---------- | ----------------- | ------: |
+|   0 |        2 | Skip       | `[2,0,1,0,1,2,0]` |       0 |
+|   1 |        0 | Swap 0 & 1 | `[0,2,1,0,1,2,0]` |       1 |
+|   2 |        1 | Skip       | `[0,2,1,0,1,2,0]` |       1 |
+|   3 |        0 | Swap 1 & 3 | `[0,0,1,2,1,2,0]` |       2 |
+|   4 |        1 | Skip       | `[0,0,1,2,1,2,0]` |       2 |
+|   5 |        2 | Skip       | `[0,0,1,2,1,2,0]` |       2 |
+|   6 |        0 | Swap 2 & 6 | `[0,0,0,2,1,2,1]` |       3 |
+
+#### Pass 2 — move `2`s
+
+| `i` | `back` | `arr[i]` | Action     | Array             |
+| --: | -----: | -------: | ---------- | ----------------- |
+|   3 |      6 |        2 | Swap 3 & 6 | `[0,0,0,1,1,2,2]` |
+|   3 |      5 |        1 | `i++`      | `[0,0,0,1,1,2,2]` |
+|   4 |      5 |        1 | `i++`      | `[0,0,0,1,1,2,2]` |
+|   5 |      5 |        2 | Swap 5 & 5 | `[0,0,0,1,1,2,2]` |
+
+### ✅ Final Answer
+
+```text
+arr = [0,0,0,1,1,2,2]
+```
+
+### 🧠 Main idea
+
+Think of the two passes as:
+
+```text
+Pass 1:
+[anything] → [0s | anything]
+
+Pass 2:
+[0s | anything] → [0s | 1s | 2s]
+```
+
+So we don't need counting and don't need an extra array.
+
+**Time:** `O(n)`
+**Extra space:** `O(1)` ✅
+
 
 #### 3. Optimized (Dutch National Flag)
 Use three pointers:
