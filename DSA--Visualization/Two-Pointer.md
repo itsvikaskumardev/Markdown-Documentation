@@ -1963,6 +1963,215 @@ for j ← 0 to n − 1:
 
 sort(nums1)
 ```
+### Dry Run
+This pseudocode is for **Merge Sorted Array**. The idea is to first copy all elements of `nums2` into the empty spaces at the end of `nums1`, then sort the complete array.
+
+### Given input
+
+```text
+nums1 = [1,4,7,0,0,0]
+m = 3
+
+nums2 = [2,3,6]
+n = 3
+```
+
+Here:
+
+* `m = 3` → first **3 elements** of `nums1` are actual values: `[1,4,7]`
+* The `0`s are empty spaces.
+* `n = 3` → `nums2` has 3 actual values.
+
+---
+
+### Line 1
+
+```text
+# copy nums2 into the tail of nums1
+```
+
+This is just a **comment**. It tells us what the next line is going to do.
+
+We want to put:
+
+```text
+nums2 = [2,3,6]
+```
+
+into the empty portion of `nums1`.
+
+Current:
+
+```text
+nums1 = [1,4,7,0,0,0]
+                 ↑ ↑ ↑
+               empty
+```
+
+---
+
+### Line 2
+
+```text
+for j ← 0 to n − 1:
+```
+
+Since:
+
+```text
+n = 3
+```
+
+the loop runs:
+
+```text
+j = 0
+j = 1
+j = 2
+```
+
+---
+
+### Line 3
+
+```text
+nums1[m + j] ← nums2[j]
+```
+
+This copies each element of `nums2` into the tail of `nums1`.
+
+#### When `j = 0`
+
+```text
+nums1[m + j]
+= nums1[3 + 0]
+= nums1[3]
+
+nums2[0] = 2
+```
+
+So:
+
+```text
+nums1[3] = 2
+```
+
+Array becomes:
+
+```text
+[1,4,7,2,0,0]
+```
+
+---
+
+#### When `j = 1`
+
+```text
+nums1[m + j]
+= nums1[3 + 1]
+= nums1[4]
+
+nums2[1] = 3
+```
+
+So:
+
+```text
+nums1[4] = 3
+```
+
+Array:
+
+```text
+[1,4,7,2,3,0]
+```
+
+---
+
+#### When `j = 2`
+
+```text
+nums1[m + j]
+= nums1[3 + 2]
+= nums1[5]
+
+nums2[2] = 6
+```
+
+So:
+
+```text
+nums1[5] = 6
+```
+
+Array:
+
+```text
+[1,4,7,2,3,6]
+```
+
+So after the loop:
+
+```text
+nums1 = [1,4,7,2,3,6]
+```
+
+---
+
+### Line 4
+
+```text
+sort(nums1)
+```
+
+Now sort the complete `nums1`:
+
+```text
+[1,4,7,2,3,6]
+```
+
+After sorting:
+
+```text
+[1,2,3,4,6,7]
+```
+
+### ✅ Final Output
+
+```text
+[1,2,3,4,6,7]
+```
+
+### Complete dry run
+
+| j | `nums2[j]` | Position `m+j` | nums1           |
+| - | ---------: | -------------: | --------------- |
+| 0 |          2 |              3 | `[1,4,7,2,0,0]` |
+| 1 |          3 |              4 | `[1,4,7,2,3,0]` |
+| 2 |          6 |              5 | `[1,4,7,2,3,6]` |
+
+Then:
+
+```text
+sort(nums1)
+```
+
+gives:
+
+```text
+[1,2,3,4,6,7]
+```
+
+**Final answer: `nums1 = [1,2,3,4,6,7]`**
+
+The important part to understand is:
+
+```text
+nums1[m + j] = nums2[j]
+```
+
+`m` tells us **where the empty portion of `nums1` starts**. Here `m = 3`, so copying starts at index `3`.
+
 
 #### 2. Optimized (Merge Backwards)
 Use three pointers:
@@ -1989,6 +2198,412 @@ while j ≥ 0:
 
     k ← k − 1
 ```
+### Dry Run
+This is the **optimized Merge Sorted Array** approach. Instead of copying `nums2` and then sorting, we merge both arrays **from right to left**.
+
+### Given input
+
+```text
+nums1 = [1,4,7,0,0,0]
+m = 3
+
+nums2 = [2,3,6]
+n = 3
+```
+
+The actual elements are:
+
+```text
+nums1 → [1,4,7,_,_,_]
+nums2 → [2,3,6]
+```
+
+We fill `nums1` from the **back** so that we don't overwrite its existing elements.
+
+---
+
+### 1. Initialize `i`
+
+```text
+i ← m − 1
+```
+
+Since:
+
+```text
+m = 3
+```
+
+we get:
+
+```text
+i = 3 − 1 = 2
+```
+
+So `i` points to the last actual element of `nums1`:
+
+```text
+nums1 = [1,4,7,0,0,0]
+           ↑
+          i=2
+```
+
+`nums1[i] = 7`
+
+---
+
+### 2. Initialize `j`
+
+```text
+j ← n − 1
+```
+
+Since:
+
+```text
+n = 3
+```
+
+we get:
+
+```text
+j = 2
+```
+
+So `j` points to the last element of `nums2`:
+
+```text
+nums2 = [2,3,6]
+           ↑
+          j=2
+```
+
+`nums2[j] = 6`
+
+---
+
+### 3. Initialize `w`
+
+```text
+w ← m + n − 1
+```
+
+```text
+w = 3 + 3 − 1
+w = 5
+```
+
+`w` tells us **where to put the largest element**.
+
+```text
+nums1 = [1,4,7,0,0,0]
+                  ↑
+                 w=5
+```
+
+---
+
+### 4. The while loop
+
+```text
+while j ≥ 0:
+```
+
+We continue until all elements of `nums2` have been placed.
+
+Initially:
+
+```text
+j = 2
+```
+
+So loop starts.
+
+---
+
+#### Iteration 1
+
+Current:
+
+```text
+i = 2 → nums1[i] = 7
+j = 2 → nums2[j] = 6
+w = 5
+```
+
+Condition:
+
+```text
+i ≥ 0 and nums1[i] > nums2[j]
+```
+
+becomes:
+
+```text
+2 ≥ 0 AND 7 > 6
+```
+
+✅ True.
+
+So we choose `7`.
+
+```text
+nums1[w] ← nums1[i]
+```
+
+Therefore:
+
+```text
+nums1[5] = 7
+```
+
+Then `i--`:
+
+```text
+i = 1
+```
+
+And:
+
+```text
+w = w - 1
+w = 4
+```
+
+Array:
+
+```text
+[1,4,7,0,0,7]
+```
+
+---
+
+#### Iteration 2
+
+Current:
+
+```text
+i = 1 → nums1[i] = 4
+j = 2 → nums2[j] = 6
+w = 4
+```
+
+Check:
+
+```text
+4 > 6
+```
+
+❌ False.
+
+So we choose `nums2[j]`, which is `6`.
+
+```text
+nums1[4] = 6
+```
+
+Then `j--`:
+
+```text
+j = 1
+```
+
+And:
+
+```text
+w = 3
+```
+
+Array:
+
+```text
+[1,4,7,0,6,7]
+```
+
+---
+
+#### Iteration 3
+
+Current:
+
+```text
+i = 1 → 4
+j = 1 → 3
+w = 3
+```
+
+Check:
+
+```text
+4 > 3
+```
+
+✅ True.
+
+Choose `4`:
+
+```text
+nums1[3] = 4
+```
+
+Then:
+
+```text
+i = 0
+w = 2
+```
+
+Array:
+
+```text
+[1,4,7,4,6,7]
+```
+
+---
+
+#### Iteration 4
+
+Current:
+
+```text
+i = 0 → 1
+j = 1 → 3
+w = 2
+```
+
+Check:
+
+```text
+1 > 3
+```
+
+❌ False.
+
+Choose `3`:
+
+```text
+nums1[2] = 3
+```
+
+Then:
+
+```text
+j = 0
+w = 1
+```
+
+Array:
+
+```text
+[1,4,3,4,6,7]
+```
+
+---
+
+#### Iteration 5
+
+Current:
+
+```text
+i = 0 → 1
+j = 0 → 2
+w = 1
+```
+
+Check:
+
+```text
+1 > 2
+```
+
+❌ False.
+
+Choose `2`:
+
+```text
+nums1[1] = 2
+```
+
+Then:
+
+```text
+j = -1
+w = 0
+```
+
+Array:
+
+```text
+[1,2,3,4,6,7]
+```
+
+---
+
+### Why does the loop stop?
+
+We have:
+
+```text
+j = -1
+```
+
+So:
+
+```text
+while j ≥ 0
+```
+
+becomes:
+
+```text
+-1 ≥ 0
+```
+
+❌ False.
+
+Loop ends.
+
+### ✅ Final Output
+
+```text
+nums1 = [1,2,3,4,6,7]
+```
+
+### Complete dry run
+
+| Step | `i` | `j` | `w` | Compare | Put |
+| ---- | --: | --: | --: | ------- | --- |
+| 1    |   2 |   2 |   5 | 7 > 6 ✅ | 7   |
+| 2    |   1 |   2 |   4 | 4 > 6 ❌ | 6   |
+| 3    |   1 |   1 |   3 | 4 > 3 ✅ | 4   |
+| 4    |   0 |   1 |   2 | 1 > 3 ❌ | 3   |
+| 5    |   0 |   0 |   1 | 1 > 2 ❌ | 2   |
+
+Final:
+
+```text
+[1,2,3,4,6,7]
+```
+
+### 🧠 Main idea
+
+There are **three pointers**:
+
+```text
+i → last actual element in nums1
+j → last element in nums2
+w → last empty position in nums1
+```
+
+We always put the **larger element at `w`** and move backward.
+
+That's why this approach is efficient:
+
+* **Time:** `O(m + n)`
+* **Extra space:** `O(1)`
+
+No separate array and **no sorting** is required.
+
 
 ### Complexity
 
