@@ -4621,6 +4621,385 @@ for i < j < k < l:
 
 de-duplicate the results
 ```
+### Dry Run
+This pseudocode is for **4Sum using brute force**. We choose **4 different indices** `i, j, k, l` such that:
+
+```text
+i < j < k < l
+```
+
+and check whether their sum equals `target`.
+
+### Input
+
+```text
+arr = [1,0,-1,0,-2,2]
+target = 0
+```
+
+There are 6 elements, so we check every possible combination of 4 elements.
+
+---
+
+### 1. `for i < j < k < l`
+
+```text
+for i < j < k < l:
+```
+
+This means we choose 4 indices in increasing order.
+
+For example:
+
+```text
+i=0, j=1, k=2, l=3
+```
+
+is valid.
+
+But:
+
+```text
+i=2, j=0, k=1, l=3
+```
+
+is not valid because the indices are not increasing.
+
+This also prevents using the **same index twice**.
+
+---
+
+### 2. Check the sum
+
+```text
+if arr[i] + arr[j] + arr[k] + arr[l] == target:
+```
+
+For every group of 4 elements, calculate their sum.
+
+Since:
+
+```text
+target = 0
+```
+
+we are looking for four numbers whose sum is `0`.
+
+---
+
+### 3. `record it`
+
+```text
+record it
+```
+
+If the sum is `0`, save that group of four values.
+
+---
+
+### Let's check the combinations
+
+For:
+
+```text
+arr = [1,0,-1,0,-2,2]
+```
+
+#### Combination 1
+
+```text
+[1,0,-1,0]
+```
+
+Sum:
+
+```text
+1 + 0 + (-1) + 0 = 0
+```
+
+✅ Record:
+
+```text
+[1,0,-1,0]
+```
+
+---
+
+#### Combination 2
+
+```text
+[1,0,-1,-2]
+```
+
+Sum:
+
+```text
+1 + 0 - 1 - 2 = -2
+```
+
+❌ Not recorded.
+
+---
+
+#### Combination 3
+
+```text
+[1,0,-1,2]
+```
+
+Sum:
+
+```text
+1 + 0 - 1 + 2 = 2
+```
+
+❌
+
+---
+
+#### Combination 4
+
+```text
+[1,0,0,-2]
+```
+
+Sum:
+
+```text
+1 + 0 + 0 - 2 = -1
+```
+
+❌
+
+---
+
+#### Combination 5
+
+```text
+[1,0,0,2]
+```
+
+Sum:
+
+```text
+1 + 0 + 0 + 2 = 3
+```
+
+❌
+
+---
+
+#### Combination 6
+
+```text
+[1,0,-2,2]
+```
+
+Sum:
+
+```text
+1 + 0 - 2 + 2 = 1
+```
+
+❌
+
+---
+
+#### Combination 7
+
+```text
+[1,-1,0,-2]
+```
+
+Sum:
+
+```text
+1 - 1 + 0 - 2 = -2
+```
+
+❌
+
+---
+
+#### Combination 8
+
+```text
+[1,-1,0,2]
+```
+
+Sum:
+
+```text
+1 - 1 + 0 + 2 = 2
+```
+
+❌
+
+---
+
+#### Combination 9
+
+```text
+[1,-1,-2,2]
+```
+
+Sum:
+
+```text
+1 - 1 - 2 + 2 = 0
+```
+
+✅ Record:
+
+```text
+[1,-1,-2,2]
+```
+
+---
+
+#### Combination 10
+
+```text
+[1,0,-2,2]
+```
+
+Sum:
+
+```text
+1 + 0 - 2 + 2 = 1
+```
+
+❌
+
+---
+
+#### Combination 11
+
+```text
+[0,-1,0,-2]
+```
+
+Sum:
+
+```text
+0 - 1 + 0 - 2 = -3
+```
+
+❌
+
+---
+
+#### Combination 12
+
+```text
+[0,-1,0,2]
+```
+
+Sum:
+
+```text
+0 - 1 + 0 + 2 = 1
+```
+
+❌
+
+---
+
+#### Combination 13
+
+```text
+[0,-1,-2,2]
+```
+
+Sum:
+
+```text
+0 - 1 - 2 + 2 = -1
+```
+
+❌
+
+---
+
+#### Combination 14
+
+```text
+[0,0,-2,2]
+```
+
+Sum:
+
+```text
+0 + 0 - 2 + 2 = 0
+```
+
+✅ Record:
+
+```text
+[0,0,-2,2]
+```
+
+---
+
+### 4. De-duplicate the results
+
+```text
+de-duplicate the results
+```
+
+This means if the same **value combination** is found more than once, keep only one copy.
+
+A common way is to sort each quadruplet:
+
+```text
+[1,0,-1,0] → [-1,0,0,1]
+[1,-1,-2,2] → [-2,-1,1,2]
+[0,0,-2,2] → [-2,0,0,2]
+```
+
+So the unique 4Sum results are:
+
+```text
+[
+  [-2,-1,1,2],
+  [-2,0,0,2],
+  [-1,0,0,1]
+]
+```
+
+### ✅ Final Output
+
+```text
+[[-2,-1,1,2],
+ [-2,0,0,2],
+ [-1,0,0,1]]
+```
+
+### 🧠 Main idea
+
+The brute-force approach checks **every possible group of 4 elements**:
+
+```text
+i < j < k < l
+       ↓
+4 elements
+       ↓
+sum == target?
+       ↓
+yes → record
+```
+
+For `n = 6`, there are:
+
+```text
+C(6,4) = 15
+```
+
+possible combinations.
+
+**Time complexity:** `O(n⁴)`
+**Extra space:** depends on how we store/de-duplicate the results.
+
 
 #### 2. Optimized (Sort + Two Pointers)
 Sort the array, fix the first two elements using two loops, then use `lo` and `hi` pointers for the remaining two elements. Skip duplicates to avoid duplicate quadruples.
@@ -4651,6 +5030,465 @@ for i:
 
 return quadruples
 ```
+### Dry Run
+This is the **optimized 4Sum approach** using **sorting + two pointers**.
+
+Input:
+
+```text id="8f1zqa"
+arr = [-2,-1,0,0,1,2]
+target = 0
+```
+
+We want **4 numbers whose sum is 0**.
+
+---
+
+### 1. Sort the array
+
+```text id="q7m3ax"
+sort(arr)
+```
+
+The array is already sorted:
+
+```text id="4p8y2w"
+[-2,-1,0,0,1,2]
+```
+
+---
+
+### 2. First loop: choose `i`
+
+```text id="v9x5kt"
+for i:
+    skip if arr[i] == arr[i − 1]
+```
+
+`i` chooses the **first number** of our quadruple.
+
+We will then choose a second number `j`, and use two pointers `lo` and `hi` to find the remaining two.
+
+---
+
+### 3. Second loop: choose `j`
+
+```text id="2g7q1m"
+for j > i:
+```
+
+`j` chooses the **second number**.
+
+Then:
+
+```text id="h4x8nd"
+lo ← j + 1
+hi ← n − 1
+```
+
+So `lo` starts immediately after `j`, while `hi` starts at the end.
+
+---
+
+### 4. Check the sum
+
+We calculate:
+
+```text id="x1c6v9"
+sum = arr[i] + arr[j] + arr[lo] + arr[hi]
+```
+
+Then:
+
+```text
+sum == target
+```
+
+If the sum is:
+
+* `0` → record quadruple
+* `< 0` → increase `lo`
+* `> 0` → decrease `hi`
+
+Because the array is sorted, these pointer movements help us find the answer efficiently.
+
+---
+
+### Complete Dry Run
+
+Array:
+
+```text id="h7s3kp"
+[-2,-1,0,0,1,2]
+```
+
+Indices:
+
+```text id="5v0n8x"
+  0   1 2 3 4 5
+ -2  -1 0 0 1 2
+```
+
+---
+
+#### 🔹 i = 0
+
+```text id="y6p2rm"
+arr[i] = -2
+```
+
+Now `j` starts at `1`.
+
+##### j = 1
+
+```text id="m5w9q3"
+arr[j] = -1
+lo = 2
+hi = 5
+```
+
+Values:
+
+```text
+-2 + (-1) + 0 + 2
+```
+
+Sum:
+
+```text id="x2k7av"
+-1
+```
+
+Since:
+
+```text
+sum < target
+```
+
+we increase `lo`:
+
+```text id="j3p8cd"
+lo = 3
+```
+
+---
+
+##### Now `lo = 3`
+
+Values:
+
+```text id="7n4q1b"
+-2 + (-1) + 0 + 2 = -1
+```
+
+Still `< 0`.
+
+So:
+
+```text id="s8d2kf"
+lo = 4
+```
+
+Now:
+
+```text id="m0r6xy"
+-2 + (-1) + 1 + 2 = 0
+```
+
+✅ Found a quadruple:
+
+```text id="q4v7mz"
+[-2,-1,1,2]
+```
+
+Record it.
+
+Then:
+
+```text id="z5c9la"
+lo++
+hi--
+```
+
+So:
+
+```text id="k8n3wp"
+lo = 5
+hi = 4
+```
+
+Now:
+
+```text
+lo < hi
+5 < 4 ❌
+```
+
+Stop this `j`.
+
+---
+
+##### j = 2
+
+Now:
+
+```text id="u2f6qa"
+arr[j] = 0
+lo = 3
+hi = 5
+```
+
+Calculate:
+
+```text id="r3x9kc"
+-2 + 0 + 0 + 2 = 0
+```
+
+✅ Found:
+
+```text id="w6p1nz"
+[-2,0,0,2]
+```
+
+Record it.
+
+Move both:
+
+```text
+lo = 4
+hi = 4
+```
+
+Stop because:
+
+```text
+lo < hi
+4 < 4 ❌
+```
+
+---
+
+##### j = 3
+
+`arr[3] = 0`.
+
+But:
+
+```text
+arr[3] == arr[2]
+```
+
+Both are `0`.
+
+So:
+
+```text id="e8t4vq"
+skip duplicate j
+```
+
+This prevents finding the same value combination again.
+
+---
+
+##### j = 4
+
+```text
+arr[j] = 1
+lo = 5
+hi = 5
+```
+
+Since:
+
+```text
+lo < hi
+5 < 5 ❌
+```
+
+No possible pair.
+
+So `i = 0` is finished.
+
+---
+
+#### 🔹 i = 1
+
+Now:
+
+```text id="c1k8ds"
+arr[1] = -1
+```
+
+`j` starts at `2`.
+
+##### j = 2
+
+```text id="z9m4hx"
+arr[j] = 0
+lo = 3
+hi = 5
+```
+
+Calculate:
+
+```text id="p3x7kc"
+-1 + 0 + 0 + 2 = 1
+```
+
+`sum > 0`, so:
+
+```text id="b6q2mn"
+hi--
+```
+
+```text id="r8v4za"
+hi = 4
+```
+
+Now:
+
+```text
+-1 + 0 + 0 + 1 = 0
+```
+
+✅ Found:
+
+```text id="n5w2qt"
+[-1,0,0,1]
+```
+
+Record it.
+
+Move both:
+
+```text id="k7c3px"
+lo = 4
+hi = 3
+```
+
+Stop.
+
+---
+
+##### j = 3
+
+`arr[3] = 0`, but:
+
+```text
+arr[3] == arr[2]
+```
+
+So skip duplicate `j`.
+
+---
+
+#### 🔹 i = 2
+
+```text
+arr[2] = 0
+```
+
+`j = 3`.
+
+```text
+lo = 4
+hi = 5
+```
+
+Calculate:
+
+```text id="q6n1bz"
+0 + 0 + 1 + 2 = 3
+```
+
+`sum > 0`, so:
+
+```text
+hi--
+```
+
+```text
+hi = 4
+```
+
+Now:
+
+```text
+lo < hi
+4 < 4 ❌
+```
+
+Stop.
+
+---
+
+#### 🔹 i = 3
+
+Now:
+
+```text
+arr[3] = 0
+```
+
+But:
+
+```text
+arr[3] == arr[2]
+```
+
+So we **skip duplicate `i`**.
+
+---
+
+### Final quadruples
+
+We found:
+
+```text
+[-2,-1,1,2]
+[-2,0,0,2]
+[-1,0,0,1]
+```
+
+Therefore:
+
+### ✅ Final Output
+
+```text
+[[-2,-1,1,2],
+ [-2,0,0,2],
+ [-1,0,0,1]]
+```
+
+---
+
+### 🧠 Most important part
+
+For every `i` and `j`, we use:
+
+```text
+lo → moves right when sum is too small
+hi → moves left when sum is too large
+```
+
+Because the array is sorted:
+
+```text
+sum < 0  → lo++
+sum > 0  → hi--
+sum == 0 → record + move both
+```
+
+### Complexity
+
+```text
+Sorting       → O(n log n)
+Four-pointer  → O(n³)
+Total         → O(n³)
+```
+
+Extra space is approximately **O(1)** apart from the space needed to store the answer.
+
 
 ### Complexity
 
