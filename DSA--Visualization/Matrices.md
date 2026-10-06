@@ -1320,6 +1320,232 @@ for each cell:
     if row or col flagged:
         cell = 0
 ```
+### Dry Run
+This pseudocode is for **Set Matrix Zeroes**.
+
+### 🧠 Main idea
+
+If any cell contains `0`, make its **entire row and entire column `0`**.
+
+Given:
+
+```text
+matrix =
+[
+ [1,1,1],
+ [1,0,1],
+ [1,1,1]
+]
+```
+
+---
+
+### Pseudocode
+
+```text
+zeroRows = {}
+zeroCols = {}
+
+for each cell:
+    if it is 0:
+        add its row, its col
+
+// second pass
+for each cell:
+    if row or col flagged:
+        cell = 0
+```
+
+---
+
+### Step 1: Create `zeroRows` and `zeroCols`
+
+```text
+zeroRows = {}
+zeroCols = {}
+```
+
+These are sets used to remember which rows and columns contain a zero.
+
+Initially:
+
+```text
+zeroRows = {}
+zeroCols = {}
+```
+
+---
+
+### Step 2: First pass through every cell
+
+```text
+for each cell:
+    if it is 0:
+        add its row, its col
+```
+
+We check every element.
+
+Matrix with indices:
+
+```text
+       col
+       0 1 2
+      -------
+row 0 |1 1 1
+row 1 |1 0 1
+row 2 |1 1 1
+```
+
+We find:
+
+```text
+matrix[1][1] = 0
+```
+
+So its:
+
+```text
+row = 1
+col = 1
+```
+
+Add them:
+
+```text
+zeroRows = {1}
+zeroCols = {1}
+```
+
+#### Important
+
+We **don't immediately make the row/column zero**.
+
+We only remember them.
+
+This prevents newly-created zeroes from incorrectly affecting other rows/columns.
+
+---
+
+### Step 3: Second pass
+
+Now:
+
+```text
+for each cell:
+    if row or col flagged:
+        cell = 0
+```
+
+Meaning:
+
+> If the cell's row is in `zeroRows` OR its column is in `zeroCols`, make it `0`.
+
+We have:
+
+```text
+zeroRows = {1}
+zeroCols = {1}
+```
+
+---
+
+#### Row 0
+
+```text
+[1,1,1]
+```
+
+* `(0,0)` → row 0 not flagged, column 0 not flagged → keep `1`
+* `(0,1)` → column 1 flagged → `0`
+* `(0,2)` → not flagged → keep `1`
+
+Row becomes:
+
+```text
+[1,0,1]
+```
+
+---
+
+#### Row 1
+
+Original:
+
+```text
+[1,0,1]
+```
+
+Row `1` is flagged, so **every cell becomes `0`**:
+
+```text
+[0,0,0]
+```
+
+---
+
+#### Row 2
+
+```text
+[1,1,1]
+```
+
+* `(2,0)` → keep `1`
+* `(2,1)` → column 1 flagged → `0`
+* `(2,2)` → keep `1`
+
+Row becomes:
+
+```text
+[1,0,1]
+```
+
+---
+
+### Final Matrix
+
+```text
+[
+ [1,0,1],
+ [0,0,0],
+ [1,0,1]
+]
+```
+
+### ✅ Final Output
+
+```text
+[[1,0,1],
+ [0,0,0],
+ [1,0,1]]
+```
+
+### 🧠 Visual understanding
+
+Original:
+
+```text
+1  1  1
+1  0  1
+1  1  1
+```
+
+The `0` is at **row 1, column 1**.
+
+So:
+
+```text
+        ↓
+1  0  1
+0  0  0  ← entire row
+1  0  1
+        ↑
+     column
+```
+
+**Time Complexity:** `O(R × C)`
+**Space Complexity:** `O(R + C)` for `zeroRows` and `zeroCols`.
+
 
 #### 2. Optimized (First Row/Column Markers)
 Use the **first row and first column** to mark which rows and columns should become `0`. Handle the first row and first column separately to avoid losing their original information.
@@ -1348,6 +1574,375 @@ if firstColZero:
 
 done
 ```
+
+### Dry Run
+This is the **optimized Set Matrix Zeroes** approach.
+
+The key idea is to use the **first row and first column as markers**, so we don't need separate `zeroRows` and `zeroCols` sets.
+
+Given:
+
+```text
+matrix =
+[
+ [0,1,2,0],
+ [3,4,5,2],
+ [1,3,1,5]
+]
+```
+
+---
+
+### 1. `firstRowZero = any 0 in row 0`
+
+Check the first row:
+
+```text
+[0,1,2,0]
+```
+
+There are zeroes at column `0` and column `3`.
+
+Therefore:
+
+```text
+firstRowZero = true
+```
+
+We remember this because later the first row itself needs to become zero.
+
+---
+
+### 2. `firstColZero = any 0 in col 0`
+
+Check the first column:
+
+```text
+0
+3
+1
+```
+
+There is a `0` at:
+
+```text
+M[0][0]
+```
+
+Therefore:
+
+```text
+firstColZero = true
+```
+
+So currently:
+
+```text
+firstRowZero = true
+firstColZero = true
+```
+
+---
+
+### 3. First interior pass
+
+```text
+for r,c in interior:
+    if M[r][c] == 0:
+        M[r][0] = 0
+        M[0][c] = 0
+```
+
+#### What is "interior"?
+
+We don't process the first row or first column here.
+
+For our `3 × 4` matrix:
+
+```text
+       0  1  2  3
+     ------------
+0 |   0  1  2  0
+1 |   3  4  5  2
+2 |   1  3  1  5
+```
+
+Interior is:
+
+```text
+M[1][1], M[1][2], M[1][3]
+M[2][1], M[2][2], M[2][3]
+```
+
+Notice there are **no zeroes** in the interior.
+
+So nothing is changed during this pass.
+
+Matrix remains:
+
+```text
+[
+ [0,1,2,0],
+ [3,4,5,2],
+ [1,3,1,5]
+]
+```
+
+---
+
+### 4. Second interior pass
+
+```text
+for r,c in interior:
+    if M[r][0] == 0 or M[0][c] == 0:
+        M[r][c] = 0
+```
+
+Now we use the **first row and first column as markers**.
+
+Currently:
+
+```text
+First row:
+[0, 1, 2, 0]
+
+First column:
+[0,
+ 3,
+ 1]
+```
+
+---
+
+#### Row 1
+
+##### `M[1][1]`
+
+Check:
+
+```text
+M[1][0] = 3
+M[0][1] = 1
+```
+
+Neither is zero.
+
+So:
+
+```text
+M[1][1] = 4
+```
+
+---
+
+##### `M[1][2]`
+
+Check:
+
+```text
+M[1][0] = 3
+M[0][2] = 2
+```
+
+Neither is zero.
+
+Keep:
+
+```text
+M[1][2] = 5
+```
+
+---
+
+##### `M[1][3]`
+
+Check:
+
+```text
+M[1][0] = 3
+M[0][3] = 0
+```
+
+Column `3` is marked because the original first row had a zero there.
+
+Therefore:
+
+```text
+M[1][3] = 0
+```
+
+Row 1 becomes:
+
+```text
+[3,4,5,0]
+```
+
+---
+
+#### Row 2
+
+##### `M[2][1]`
+
+Check:
+
+```text
+M[2][0] = 1
+M[0][1] = 1
+```
+
+Neither zero.
+
+Keep:
+
+```text
+3
+```
+
+---
+
+##### `M[2][2]`
+
+Check:
+
+```text
+M[2][0] = 1
+M[0][2] = 2
+```
+
+Neither zero.
+
+Keep:
+
+```text
+1
+```
+
+---
+
+##### `M[2][3]`
+
+Check:
+
+```text
+M[2][0] = 1
+M[0][3] = 0
+```
+
+Column `3` is marked.
+
+Therefore:
+
+```text
+M[2][3] = 0
+```
+
+Row 2 becomes:
+
+```text
+[1,3,1,0]
+```
+
+---
+
+### 5. `if firstRowZero: zero row 0`
+
+We already found:
+
+```text
+firstRowZero = true
+```
+
+So make the **entire first row zero**.
+
+Before:
+
+```text
+[0,1,2,0]
+```
+
+After:
+
+```text
+[0,0,0,0]
+```
+
+---
+
+### 6. `if firstColZero: zero col 0`
+
+We also found:
+
+```text
+firstColZero = true
+```
+
+So make the **entire first column zero**.
+
+Before:
+
+```text
+0
+3
+1
+```
+
+After:
+
+```text
+0
+0
+0
+```
+
+---
+
+### Final Matrix
+
+Therefore:
+
+```text
+[
+ [0,0,0,0],
+ [0,4,5,0],
+ [0,3,1,0]
+]
+```
+
+### ✅ Final Output
+
+```text
+[[0,0,0,0],
+ [0,4,5,0],
+ [0,3,1,0]]
+```
+
+### 🧠 Why we need `firstRowZero` and `firstColZero`
+
+The first row and first column are being used as **storage/markers**.
+
+For example, the original:
+
+```text
+[0,1,2,0]
+```
+
+contains zeroes that tell us:
+
+* **Column 0 → zero**
+* **Column 3 → zero**
+* **Row 0 → zero**
+
+We save these facts in:
+
+```text
+firstRowZero = true
+firstColZero = true
+```
+
+Otherwise, using the first row/column as markers could make us lose information about whether they originally contained zeroes.
+
+**Time Complexity:** `O(R × C)`
+**Extra Space:** `O(1)` — no separate row/column arrays or sets.
 
 ### Complexity
 
