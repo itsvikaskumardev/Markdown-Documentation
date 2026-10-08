@@ -2013,6 +2013,191 @@ on findMedian():
     return middle (or avg of two middles)
 ```
 
+### Dry Run
+Sure. This is the **simple sorted-array approach to Median Finder**.
+
+### Pseudocode
+
+```text
+sorted = []
+
+on addNum(x):
+    insert x keeping sorted order   // O(n)
+
+on findMedian():
+    return middle (or avg of two middles)
+```
+
+The idea is:
+
+* Keep all numbers in `sorted` order.
+* When adding a number, insert it at the correct position.
+* Since the array is always sorted, finding the median is easy.
+
+### Input
+
+```text
+["MedianFinder", "addNum", "addNum", "findMedian", "addNum", "findMedian"]
+
+[[], [1], [2], [], [3], []]
+```
+
+Let's execute each operation.
+
+---
+
+#### 1. `MedianFinder`
+
+```text
+sorted = []
+```
+
+No number has been added yet.
+
+```text
+sorted = []
+```
+
+Output:
+
+```text
+null
+```
+
+---
+
+#### 2. `addNum(1)`
+
+Add `1` while keeping sorted order.
+
+```text
+sorted = [1]
+```
+
+Output:
+
+```text
+null
+```
+
+---
+
+#### 3. `addNum(2)`
+
+Add `2`.
+
+Since `2 > 1`, it goes after `1`.
+
+```text
+sorted = [1,2]
+```
+
+Output:
+
+```text
+null
+```
+
+---
+
+#### 4. `findMedian()`
+
+Current array:
+
+```text
+[1,2]
+```
+
+There are **2 elements**, so we take the average of the two middle elements.
+
+```text
+median = (1 + 2) / 2
+       = 3 / 2
+       = 1.5
+```
+
+Output:
+
+```text
+1.5
+```
+
+---
+
+#### 5. `addNum(3)`
+
+Insert `3` in sorted order:
+
+```text
+[1,2] → [1,2,3]
+```
+
+Output:
+
+```text
+null
+```
+
+---
+
+#### 6. `findMedian()`
+
+Current array:
+
+```text
+[1,2,3]
+```
+
+There are **3 elements**, so we take the middle element.
+
+Middle index:
+
+```text
+n / 2 = 3 / 2 = 1
+```
+
+`sorted[1] = 2`.
+
+Therefore:
+
+```text
+median = 2
+```
+
+Output:
+
+```text
+2
+```
+
+---
+
+### ✅ Final Output
+
+```text
+[null, null, null, 1.5, null, 2]
+```
+
+### Dry run summary
+
+| Operation      | `sorted`  | Output |
+| -------------- | --------- | ------ |
+| `MedianFinder` | `[]`      | `null` |
+| `addNum(1)`    | `[1]`     | `null` |
+| `addNum(2)`    | `[1,2]`   | `null` |
+| `findMedian()` | `[1,2]`   | `1.5`  |
+| `addNum(3)`    | `[1,2,3]` | `null` |
+| `findMedian()` | `[1,2,3]` | `2`    |
+
+**Final answer:**
+
+```text
+[null, null, null, 1.5, null, 2]
+```
+
+**Complexity:** `addNum` is **O(n)** because inserting into the middle of an array may require shifting elements. `findMedian` is **O(1)** because the array is already sorted.
+
+
 #### 2. Optimized (Max-Heap + Min-Heap)
 Use a max-heap for the smaller half and a min-heap for the larger half; keep their sizes balanced so the median is always at the tops.
 
@@ -2037,6 +2222,406 @@ on findMedian():
 
     equal sizes → (lo.top + hi.top)/2  else lo.top
 ```
+### Dry Run
+Sure. This is the **two-heap approach for Median Finder**. It is much more efficient than keeping one sorted array.
+
+### 🧠 Main idea
+
+We divide the numbers into two halves:
+
+```text
+lo = max-heap → lower half
+hi = min-heap → upper half
+```
+
+* `lo.top` = **largest value in the lower half**
+* `hi.top` = **smallest value in the upper half**
+
+The heaps are kept balanced so their sizes differ by at most 1.
+
+---
+
+### Pseudocode
+
+```text id="m9x2ka"
+lo = max-heap (lower half)
+hi = min-heap (upper half)
+
+on addNum(x):
+    if x ≤ lo.top:
+        lo.push(x)
+    else:
+        hi.push(x)
+
+    // rebalance sizes (differ by ≤ 1)
+    if lo.size > hi.size + 1:
+        hi.push(lo.pop)
+    elif hi.size > lo.size:
+        lo.push(hi.pop)
+
+on findMedian():
+    equal sizes → (lo.top + hi.top)/2
+    else → lo.top
+```
+
+Input:
+
+```text
+[5,3,8,1,9]
+```
+
+We'll add them **one by one**.
+
+> For the very first element, `lo` is empty, so we directly put `5` into `lo`.
+
+---
+
+### 1. `addNum(5)`
+
+Initially:
+
+```text
+lo = []
+hi = []
+```
+
+Add `5` to `lo`.
+
+```text
+lo = [5]
+hi = []
+```
+
+Conceptually:
+
+```text
+lo → [5] | hi → []
+       ↑
+    lo.top
+```
+
+Median currently:
+
+```text
+5
+```
+
+---
+
+### 2. `addNum(3)`
+
+Compare `3` with `lo.top`:
+
+```text
+3 ≤ 5
+```
+
+So put `3` into `lo`.
+
+```text
+lo = [5,3]    // max-heap, top = 5
+hi = []
+```
+
+Now sizes:
+
+```text
+lo.size = 2
+hi.size = 0
+```
+
+Difference is `2`, which is too large.
+
+So:
+
+```text
+if lo.size > hi.size + 1
+```
+
+means:
+
+```text
+2 > 0 + 1
+2 > 1  ✓
+```
+
+Move `lo.top` to `hi`.
+
+`lo.top = 5`.
+
+```text
+lo.pop() → 5
+hi.push(5)
+```
+
+Now:
+
+```text
+lo = [3]
+hi = [5]
+```
+
+---
+
+### 3. `addNum(8)`
+
+Current:
+
+```text
+lo.top = 3
+```
+
+Compare:
+
+```text
+8 ≤ 3  ❌
+```
+
+Therefore:
+
+```text
+hi.push(8)
+```
+
+Now:
+
+```text
+lo = [3]
+hi = [5,8]
+```
+
+Since `hi` is a **min-heap**:
+
+```text
+hi.top = 5
+```
+
+Sizes:
+
+```text
+lo.size = 1
+hi.size = 2
+```
+
+`hi` has one more element, which is allowed.
+
+So no rebalancing is needed.
+
+---
+
+### 4. `addNum(1)`
+
+Current:
+
+```text
+lo.top = 3
+```
+
+Compare:
+
+```text
+1 ≤ 3 ✓
+```
+
+So:
+
+```text
+lo.push(1)
+```
+
+Now:
+
+```text
+lo = [3,1]
+hi = [5,8]
+```
+
+Both have size 2.
+
+```text
+lo.size = hi.size
+```
+
+So they are balanced.
+
+---
+
+### 5. `addNum(9)`
+
+Current:
+
+```text
+lo.top = 3
+```
+
+Compare:
+
+```text
+9 ≤ 3 ❌
+```
+
+So:
+
+```text
+hi.push(9)
+```
+
+Now:
+
+```text
+lo = [3,1]
+hi = [5,8,9]
+```
+
+Sizes:
+
+```text
+lo.size = 2
+hi.size = 3
+```
+
+This is allowed because `hi` can have **one more** element.
+
+But notice the pseudocode says:
+
+```text
+elif hi.size > lo.size:
+    lo.push(hi.pop)
+```
+
+Since:
+
+```text
+3 > 2 ✓
+```
+
+we move the smallest element from `hi` to `lo`.
+
+`hi.top = 5`.
+
+So:
+
+```text
+hi.pop() → 5
+lo.push(5)
+```
+
+Final heaps:
+
+```text
+lo = [5,1,3]    → top = 5
+hi = [8,9]      → top = 8
+```
+
+Conceptually:
+
+```text
+       LOWER HALF       UPPER HALF
+
+          1  3  5 | 8  9
+                 ↑   ↑
+              lo.top hi.top
+```
+
+All values in `lo` are ≤ values in `hi`.
+
+---
+
+### Find Median
+
+We now have:
+
+```text
+lo = [5,1,3]
+hi = [8,9]
+```
+
+Sizes:
+
+```text
+lo.size = 3
+hi.size = 2
+```
+
+They are **not equal**.
+
+According to:
+
+```text
+equal sizes → (lo.top + hi.top)/2
+else → lo.top
+```
+
+we return:
+
+```text
+lo.top = 5
+```
+
+### ✅ Final Median
+
+```text
+5
+```
+
+This also matches the sorted array:
+
+```text
+[1,3,5,8,9]
+      ↑
+    median
+```
+
+### Complete dry run
+
+| Added | `lo` lower half | `hi` upper half | Median |
+| ----: | --------------- | --------------- | -----: |
+|     5 | `[5]`           | `[]`            |      5 |
+|     3 | `[3]`           | `[5]`           |      4 |
+|     8 | `[3]`           | `[5,8]`         |      5 |
+|     1 | `[3,1]`         | `[5,8]`         |      4 |
+|     9 | `[5,3,1]`       | `[8,9]`         |  **5** |
+
+### Important point
+
+For the final numbers:
+
+```text
+[5,3,8,1,9]
+```
+
+Sorted:
+
+```text
+[1,3,5,8,9]
+```
+
+The middle value is:
+
+```text
+5
+```
+
+### 🧠 Why two heaps?
+
+```text
+lo = max-heap
+        ↓
+largest value of lower half
+
+hi = min-heap
+        ↓
+smallest value of upper half
+```
+
+Therefore, the median is always available at the **top of one or both heaps**.
+
+**Complexity:**
+
+* `addNum()` → **O(log n)**
+* `findMedian()` → **O(1)**
+* Space → **O(n)**
+
 
 ### Complexity
 
