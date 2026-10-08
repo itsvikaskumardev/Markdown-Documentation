@@ -502,6 +502,144 @@ sort points by dist²
 
 return the first k
 ```
+### Dry Run
+This pseudocode finds the **`k` points closest to the origin `(0,0)`**.
+
+The important thing is that we use:
+
+```text
+distance² = x² + y²
+```
+
+We don't need the actual square root because comparing squared distances gives the same order.
+
+Given:
+
+```text
+points = [[1,3],[-2,2]]
+k = 1
+```
+
+---
+
+### Pseudocode
+
+```text
+compute dist² = x² + y² for each
+sort points by dist²
+return the first k
+```
+
+### 1. Calculate distance² for each point
+
+#### Point 1: `[1,3]`
+
+Here:
+
+```text
+x = 1
+y = 3
+```
+
+Calculate:
+
+```text
+dist² = x² + y²
+      = 1² + 3²
+      = 1 + 9
+      = 10
+```
+
+So:
+
+```text
+[1,3] → distance² = 10
+```
+
+---
+
+#### Point 2: `[-2,2]`
+
+Here:
+
+```text
+x = -2
+y = 2
+```
+
+Calculate:
+
+```text
+dist² = (-2)² + 2²
+      = 4 + 4
+      = 8
+```
+
+So:
+
+```text
+[-2,2] → distance² = 8
+```
+
+---
+
+### 2. `sort points by dist²`
+
+We have:
+
+```text
+[1,3]  → 10
+[-2,2] → 8
+```
+
+Ascending order:
+
+```text
+[-2,2] → 8
+[1,3]  → 10
+```
+
+So sorted points:
+
+```text
+[[-2,2], [1,3]]
+```
+
+---
+
+### 3. `return the first k`
+
+We have:
+
+```text
+k = 1
+```
+
+Therefore, return the first **1 point**:
+
+```text
+[-2,2]
+```
+
+### ✅ Final Output
+
+```text
+[[-2,2]]
+```
+
+### 🧠 Quick comparison
+
+```text
+Point       dist²
+[1,3]         10
+[-2,2]         8   ← closer
+```
+
+So `[-2,2]` is the closest point to `(0,0)`.
+
+**Time Complexity:** `O(n log n)` because of sorting.
+**Space Complexity:** `O(n)` if distances are stored separately.
+
 
 #### 2. Optimized (Size-K Max-Heap)
 Maintain a **max-heap of size `K`** using squared distance. If the heap exceeds `K`, remove the farthest point. The heap contains the `K` closest points.
@@ -522,6 +660,252 @@ for p in points:
 
 return heap contents
 ```
+### Dry Run
+This pseudocode finds the **`k` closest points to the origin `(0,0)`** using a **max-heap**.
+
+Given:
+
+```text id="x8g6q2"
+points = [[3,3],[5,-1],[-2,4]]
+k = 2
+```
+
+We need the **2 closest points**.
+
+---
+
+### Pseudocode
+
+```text id="0qf5vz"
+heap = empty max-heap on dist²
+
+for p in points:
+    if heap.size < k: push p
+    else if dist(p) < heap.top:
+        pop the farthest
+        and push p
+    else: skip
+
+return heap contents
+```
+
+The important idea is:
+
+> A **max-heap** keeps the **farthest point among our current `k` points at the top**.
+
+So if a new point is closer, we can remove the farthest one.
+
+---
+
+### 1. `heap = empty max-heap on dist²`
+
+Initially:
+
+```text id="a2p7m9"
+heap = []
+```
+
+We compare points using:
+
+```text id="m7n4x1"
+dist² = x² + y²
+```
+
+No square root is needed.
+
+---
+
+### 2. `p = [3,3]`
+
+Calculate its squared distance:
+
+```text id="v9q3w5"
+dist² = 3² + 3²
+      = 9 + 9
+      = 18
+```
+
+Heap size:
+
+```text id="c8k1z4"
+0 < k
+0 < 2
+```
+
+So push `[3,3]`.
+
+```text id="2h7xq6"
+heap = [[3,3]]
+```
+
+Its distance is `18`.
+
+---
+
+### 3. `p = [5,-1]`
+
+Calculate:
+
+```text id="j4p8s2"
+dist² = 5² + (-1)²
+      = 25 + 1
+      = 26
+```
+
+Current heap size:
+
+```text id="r5m2v8"
+1 < 2
+```
+
+So push `[5,-1]`.
+
+```text id="n6c3y7"
+heap = [[3,3], [5,-1]]
+```
+
+Distances:
+
+```text id="x2k9p1"
+[3,3]  → 18
+[5,-1] → 26
+```
+
+Because this is a **max-heap**, the largest distance is at the top:
+
+```text id="e7w4q0"
+heap.top = 26
+```
+
+So `[5,-1]` is currently the **farthest** of our 2 selected points.
+
+---
+
+### 4. `p = [-2,4]`
+
+Calculate its squared distance:
+
+```text id="q1m6z8"
+dist² = (-2)² + 4²
+      = 4 + 16
+      = 20
+```
+
+Now the heap is already full:
+
+```text id="b5r9t2"
+heap.size = 2
+k = 2
+```
+
+So check:
+
+```text id="k8v3n6"
+dist(p) < heap.top
+20 < 26
+```
+
+This is **true** ✅
+
+That means `[-2,4]` is closer than the current farthest point `[5,-1]`.
+
+---
+
+### 5. `pop the farthest`
+
+Remove the heap top:
+
+```text id="q6d2x9"
+[5,-1] → distance² = 26
+```
+
+Heap now contains:
+
+```text id="f3m7a1"
+[[3,3]]
+```
+
+---
+
+### 6. `and push p`
+
+Push `[-2,4]`:
+
+```text id="r8c5k3"
+heap = [[3,3],[-2,4]]
+```
+
+Distances:
+
+```text id="z4n2v7"
+[3,3]   → 18
+[-2,4]  → 20
+```
+
+Because it's a max-heap:
+
+```text id="d9p1x6"
+heap.top = [-2,4]  // distance² = 20
+```
+
+---
+
+### Complete Dry Run
+
+| Point    | dist² | Action             | Heap after action |
+| -------- | ----: | ------------------ | ----------------- |
+| `[3,3]`  |    18 | Push               | `[[3,3]]`         |
+| `[5,-1]` |    26 | Push               | `[[3,3],[5,-1]]`  |
+| `[-2,4]` |    20 | Remove 26, push 20 | `[[3,3],[-2,4]]`  |
+
+The final two closest points are:
+
+```text id="b7m4q9"
+[3,3]    → 18
+[-2,4]   → 20
+```
+
+The point `[5,-1]` has:
+
+```text id="v2k8s5"
+26
+```
+
+so it is removed.
+
+### ✅ Final Output
+
+```text id="g6x1p4"
+[[3,3],[-2,4]]
+```
+
+The **order of points in the heap is not guaranteed**, so:
+
+```text
+[[-2,4],[3,3]]
+```
+
+would also be a valid output.
+
+### 🧠 Main idea
+
+For **k closest points**:
+
+```text id="h4z9c2"
+Use a MAX-HEAP
+        ↓
+Keep k points
+        ↓
+Top = farthest among those k
+        ↓
+New point closer?
+        ↓
+Remove farthest + add new point
+```
+
+**Time Complexity:** `O(n log k)`
+**Space Complexity:** `O(k)`
+
 
 ### Complexity
 
