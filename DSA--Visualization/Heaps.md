@@ -30,6 +30,126 @@ sort arr ascending
 return arr[n − k]
 ```
 
+### Dry Run
+This pseudocode finds the **k-th largest element** in the array.
+
+Given:
+
+```text id="3x9wq2"
+arr = [3,2,1,5,6,4]
+k = 2
+```
+
+### Pseudocode
+
+```text id="2h0p8a"
+given arr, k
+
+sort arr ascending
+
+return arr[n − k]
+```
+
+### Line-by-line explanation
+
+#### 1. `given arr, k`
+
+We are given:
+
+```text id="b8z7y1"
+arr = [3,2,1,5,6,4]
+k = 2
+```
+
+`k = 2` means we want the **2nd largest element**.
+
+---
+
+#### 2. `sort arr ascending`
+
+Arrange the array from **smallest → largest**:
+
+Before:
+
+```text id="r7c1m4"
+[3,2,1,5,6,4]
+```
+
+After sorting:
+
+```text id="5q2v8k"
+[1,2,3,4,5,6]
+```
+
+There are:
+
+```text id="n4t6p0"
+n = 6
+```
+
+The indices are:
+
+```text id="c1y8v3"
+Index:  0  1  2  3  4  5
+Value:  1  2  3  4  5  6
+```
+
+---
+
+#### 3. `return arr[n − k]`
+
+Now calculate:
+
+```text id="j5r2w9"
+n - k
+= 6 - 2
+= 4
+```
+
+So we need:
+
+```text id="x3m7q1"
+arr[4]
+```
+
+From the sorted array:
+
+```text id="z9k4p6"
+arr[4] = 5
+```
+
+Therefore:
+
+### ✅ Final Output
+
+```text id="a6v2r8"
+5
+```
+
+### 🧠 Why `n - k`?
+
+For ascending array:
+
+```text
+[1, 2, 3, 4, 5, 6]
+ ↑           ↑  ↑
+smallest     2nd largest
+```
+
+* Largest = index `n-1` = `5` → `6`
+* 2nd largest = index `n-2` = `4` → `5`
+* 3rd largest = index `n-3` = `3` → `4`
+
+So generally:
+
+```text
+k-th largest → arr[n - k]
+```
+
+**Time Complexity:** `O(n log n)` because of sorting.
+**Extra Space:** depends on the sorting algorithm, typically `O(log n)` for in-place comparison sort.
+
+
 #### 2. Optimized (Size-K Min-Heap)
 Maintain a **min-heap of size `K`**. Add each element and remove the smallest when the heap exceeds `K`. The heap's top is the **Kth largest** element.
 
@@ -49,6 +169,307 @@ for x in arr:
 
 return heap.top    // the k-th largest
 ```
+### Dry Run
+This pseudocode finds the **k-th largest element** using a **min-heap**.
+
+Given:
+
+```text
+arr = [3,2,3,1,2,4,5,5,6]
+k = 4
+```
+
+We need to find the **4th largest element**.
+
+### Pseudocode
+
+```text
+heap = empty min-heap
+
+for x in arr:
+    if heap.size < k:
+        push x
+    else if x > heap.top:
+        pop the smallest
+        push x
+    else:
+        skip
+
+return heap.top
+```
+
+### 1. `heap = empty min-heap`
+
+Initially:
+
+```text
+heap = []
+```
+
+A **min-heap** always keeps the **smallest element at the top**.
+
+So:
+
+```text
+heap.top = smallest element in heap
+```
+
+We only want to keep the **largest 4 elements**, so the heap size will never exceed `k = 4`.
+
+---
+
+### 2. Process each element
+
+#### `x = 3`
+
+Heap size is `0`, which is less than `k = 4`.
+
+```text
+push 3
+```
+
+```text
+heap = [3]
+```
+
+---
+
+#### `x = 2`
+
+Size `1 < 4`.
+
+Push:
+
+```text
+heap = [2,3]
+```
+
+Because it is a min-heap:
+
+```text
+heap.top = 2
+```
+
+---
+
+#### `x = 3`
+
+Size `2 < 4`.
+
+Push:
+
+```text
+heap = [2,3,3]
+```
+
+---
+
+#### `x = 1`
+
+Size `3 < 4`.
+
+Push:
+
+```text
+heap = [1,2,3,3]
+```
+
+Now heap size is `4`.
+
+The smallest element is:
+
+```text
+heap.top = 1
+```
+
+---
+
+#### `x = 2`
+
+Now:
+
+```text
+heap.size = 4
+k = 4
+```
+
+So `heap.size < k` is false.
+
+Check:
+
+```text
+x > heap.top
+2 > 1
+```
+
+True ✅
+
+So:
+
+```text
+pop the smallest → remove 1
+push 2
+```
+
+Heap now contains:
+
+```text
+[2,2,3,3]
+```
+
+---
+
+#### `x = 4`
+
+Check:
+
+```text
+4 > heap.top
+4 > 2
+```
+
+True.
+
+Remove smallest `2`:
+
+```text
+[2,3,3]
+```
+
+Push `4`:
+
+```text
+[2,3,3,4]
+```
+
+Now the smallest of these 4 largest candidates is `2`.
+
+---
+
+#### `x = 5`
+
+Check:
+
+```text
+5 > 2
+```
+
+True.
+
+Pop `2`:
+
+```text
+[3,3,4]
+```
+
+Push `5`:
+
+```text
+[3,3,4,5]
+```
+
+---
+
+#### `x = 5`
+
+Check:
+
+```text
+5 > 3
+```
+
+True.
+
+Pop smallest `3`:
+
+```text
+[3,4,5]
+```
+
+Push `5`:
+
+```text
+[3,4,5,5]
+```
+
+---
+
+#### `x = 6`
+
+Check:
+
+```text
+6 > 3
+```
+
+True.
+
+Pop smallest `3`:
+
+```text
+[4,5,5]
+```
+
+Push `6`:
+
+```text
+[4,5,5,6]
+```
+
+---
+
+### Complete Dry Run
+
+| `x` | Action        | Heap after action | `heap.top` |
+| --: | ------------- | ----------------- | ---------: |
+|   3 | push          | `[3]`             |          3 |
+|   2 | push          | `[2,3]`           |          2 |
+|   3 | push          | `[2,3,3]`         |          2 |
+|   1 | push          | `[1,2,3,3]`       |          1 |
+|   2 | pop 1, push 2 | `[2,2,3,3]`       |          2 |
+|   4 | pop 2, push 4 | `[2,3,3,4]`       |          2 |
+|   5 | pop 2, push 5 | `[3,3,4,5]`       |          3 |
+|   5 | pop 3, push 5 | `[3,4,5,5]`       |          3 |
+|   6 | pop 3, push 6 | `[4,5,5,6]`       |          4 |
+
+At the end:
+
+```text
+heap = [4,5,5,6]
+```
+
+These are the **4 largest elements**:
+
+```text
+6 → largest
+5 → 2nd largest
+5 → 3rd largest
+4 → 4th largest
+```
+
+Therefore:
+
+```text
+heap.top = 4
+```
+
+### ✅ Final Output
+
+```text
+4
+```
+
+### 🧠 Main idea
+
+The trick is:
+
+> Keep only the **k largest elements** in a min-heap.
+
+For `k = 4`, the heap always contains the best 4 candidates, and the **smallest among those 4** is exactly the **4th largest element**.
+
+**Time Complexity:** `O(n log k)`
+**Space Complexity:** `O(k)`
+
 
 ### Complexity
 

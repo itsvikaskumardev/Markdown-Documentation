@@ -13,6 +13,7 @@
 
 > **Matrix · Four Shrinking Boundaries · Spiral Order**
 
+Soln : DSA 01-Page No 79
 ### Approaches
 
 #### 1. Boundary Simulation
@@ -607,6 +608,7 @@ left++
 **LeetCode #48** · [LeetCode](https://leetcode.com/problems/rotate-image/) · **Medium**
 
 > **Matrix · 90° Clockwise Rotation · In-place**
+Soln : DSA 01-Page No 66
 
 ### Approaches
 
