@@ -1347,6 +1347,269 @@ repeat until all empty:
 
     advance that list
 ```
+### Dry Run
+Sure. This pseudocode is the **brute-force approach to merge `k` sorted lists**. We look at the first/current element (head) of every list, choose the smallest one, put it into the output, and then move that list's pointer forward.
+
+### Pseudocode
+
+```text id="k7m3px"
+given k sorted lists
+
+repeat until all empty:
+    scan the ≤ k current heads
+    move the minimum to output
+    advance that list
+```
+
+### Input
+
+```text id="z9q4hd"
+lists = [
+    [1,4,5],
+    [1,3,4],
+    [2,6]
+]
+```
+
+There are **3 sorted lists**, so at most 3 heads are checked at a time.
+
+---
+
+### Step 1
+
+Current heads:
+
+```text id="d4y1qk"
+List 1 → 1
+List 2 → 1
+List 3 → 2
+```
+
+Minimum = `1`.
+
+There are two `1`s. We can take either one.
+
+Take List 1's `1`:
+
+```text id="r8k2vz"
+output = [1]
+```
+
+Advance List 1:
+
+```text id="p3n7wa"
+[1,4,5]
+ ↓
+[4,5]
+```
+
+---
+
+### Step 2
+
+Current heads:
+
+```text id="w2f8mc"
+List 1 → 4
+List 2 → 1
+List 3 → 2
+```
+
+Minimum = `1`.
+
+```text id="g5x1ra"
+output = [1,1]
+```
+
+Advance List 2:
+
+```text id="u6m9pt"
+[1,3,4]
+   ↓
+[3,4]
+```
+
+---
+
+### Step 3
+
+Current heads:
+
+```text id="v3k7ds"
+List 1 → 4
+List 2 → 3
+List 3 → 2
+```
+
+Minimum = `2`.
+
+```text id="j8q4lm"
+output = [1,1,2]
+```
+
+Advance List 3:
+
+```text id="a2w6nc"
+[2,6]
+ ↓
+[6]
+```
+
+---
+
+### Step 4
+
+Current heads:
+
+```text id="h7r2kp"
+List 1 → 4
+List 2 → 3
+List 3 → 6
+```
+
+Minimum = `3`.
+
+```text id="c5n8bx"
+output = [1,1,2,3]
+```
+
+Advance List 2:
+
+```text id="m4q9zs"
+[3,4]
+   ↓
+[4]
+```
+
+---
+
+### Step 5
+
+Current heads:
+
+```text id="e1v6ty"
+List 1 → 4
+List 2 → 4
+List 3 → 6
+```
+
+Minimum = `4`.
+
+Take either `4`.
+
+```text id="x9p3ka"
+output = [1,1,2,3,4]
+```
+
+Suppose we take List 1's `4`.
+
+List 1 becomes:
+
+```text id="n6b2rw"
+[4,5]
+   ↓
+[5]
+```
+
+---
+
+### Step 6
+
+Current heads:
+
+```text id="q2c7mf"
+List 1 → 5
+List 2 → 4
+List 3 → 6
+```
+
+Minimum = `4`.
+
+```text id="y8d1hs"
+output = [1,1,2,3,4,4]
+```
+
+Advance List 2:
+
+```text id="s5k9je"
+[4]
+ ↓
+[]
+```
+
+List 2 is now empty.
+
+---
+
+### Step 7
+
+Current heads:
+
+```text id="b3m7qx"
+List 1 → 5
+List 3 → 6
+```
+
+Minimum = `5`.
+
+```text id="t4w8nc"
+output = [1,1,2,3,4,4,5]
+```
+
+Advance List 1:
+
+```text id="r1p6vz"
+[5]
+ ↓
+[]
+```
+
+---
+
+### Step 8
+
+Only List 3 remains:
+
+```text id="f7k2md"
+List 3 → 6
+```
+
+Take `6`:
+
+```text id="u9c4xa"
+output = [1,1,2,3,4,4,5,6]
+```
+
+List 3 becomes empty.
+
+Now **all lists are empty**, so the loop stops.
+
+### ✅ Final Output
+
+```text id="n2h6qs"
+[1,1,2,3,4,4,5,6]
+```
+
+### 🧠 Main idea
+
+At every step:
+
+```text
+Current heads
+     ↓
+[4, 3, 2]
+     ↓
+minimum = 2
+     ↓
+put 2 in output
+     ↓
+advance the list containing 2
+```
+
+So we repeatedly pick the **smallest current head** until all lists are empty.
+
+**Complexity:** If there are `k` lists and `N` total elements, each selection scans up to `k` heads, so **O(N × k)** time.
+
 
 #### 2. Optimized (Min-Heap of Heads)
 Keep the current head of each non-empty list in a min-heap; repeatedly extract the smallest node and push its next node.
@@ -1370,6 +1633,351 @@ while heap not empty:
 
 return output
 ```
+### Dry Run
+Sure. This is the **min-heap optimized approach to merge `k` sorted lists**.
+
+The main idea is:
+
+> Keep only the **current smallest candidate from each list** inside the min-heap. The heap root always gives us the smallest value.
+
+### Pseudocode
+
+```text id="m4k7qp"
+heap = min-heap
+push every list head
+
+while heap not empty:
+    (v, list) = pop the root
+    append v to output
+
+    if list has a next head:
+        push it
+
+    // else list is exhausted
+
+return output
+```
+
+### Input
+
+```text id="z8n2wc"
+lists = [
+    [1,4,7],
+    [2,5],
+    [3,6,8]
+]
+```
+
+We have **3 sorted lists**, so initially we push their first elements.
+
+---
+
+### Step 1: Push every list head
+
+List 1:
+
+```text
+[1,4,7]
+ ↑
+```
+
+Head = `1`
+
+List 2:
+
+```text
+[2,5]
+ ↑
+```
+
+Head = `2`
+
+List 3:
+
+```text
+[3,6,8]
+ ↑
+```
+
+Head = `3`
+
+So heap contains:
+
+```text id="v3q8ma"
+heap = [1,2,3]
+```
+
+The root is:
+
+```text
+1
+```
+
+---
+
+### Step 2
+
+```text
+(v, list) = pop the root
+```
+
+Root = `1`.
+
+So:
+
+```text
+v = 1
+list = [1,4,7]
+```
+
+Remove `1`:
+
+```text
+heap = [2,3]
+```
+
+Append `1`:
+
+```text
+output = [1]
+```
+
+Now check:
+
+```text
+if list has a next head
+```
+
+List 1 has next value `4`.
+
+Push `4`:
+
+```text
+heap = [2,3,4]
+```
+
+---
+
+### Step 3
+
+Heap:
+
+```text
+[2,3,4]
+ ↑
+```
+
+Root = `2`.
+
+Pop `2`:
+
+```text
+output = [1,2]
+```
+
+List 2:
+
+```text
+[2,5]
+   ↑
+```
+
+Next head = `5`.
+
+Push `5`:
+
+```text
+heap = [3,4,5]
+```
+
+---
+
+### Step 4
+
+Heap:
+
+```text
+[3,4,5]
+ ↑
+```
+
+Root = `3`.
+
+Pop `3`:
+
+```text
+output = [1,2,3]
+```
+
+List 3 has next value `6`.
+
+Push `6`:
+
+```text
+heap = [4,5,6]
+```
+
+---
+
+### Step 5
+
+Root = `4`.
+
+Pop `4`:
+
+```text
+output = [1,2,3,4]
+```
+
+List 1 has next value `7`.
+
+Push `7`:
+
+```text
+heap = [5,6,7]
+```
+
+---
+
+### Step 6
+
+Root = `5`.
+
+Pop `5`:
+
+```text
+output = [1,2,3,4,5]
+```
+
+List 2 has no next element.
+
+```text
+[2,5]
+    ↓
+  exhausted
+```
+
+So we **don't push anything**.
+
+Heap:
+
+```text
+[6,7]
+```
+
+---
+
+### Step 7
+
+Root = `6`.
+
+Pop `6`:
+
+```text
+output = [1,2,3,4,5,6]
+```
+
+List 3 has next value `8`.
+
+Push `8`:
+
+```text
+heap = [7,8]
+```
+
+---
+
+### Step 8
+
+Root = `7`.
+
+Pop `7`:
+
+```text
+output = [1,2,3,4,5,6,7]
+```
+
+List 1 is exhausted:
+
+```text
+[1,4,7]
+      ↓
+   exhausted
+```
+
+Nothing is pushed.
+
+Heap:
+
+```text
+[8]
+```
+
+---
+
+### Step 9
+
+Root = `8`.
+
+Pop `8`:
+
+```text
+output = [1,2,3,4,5,6,7,8]
+```
+
+List 3 is exhausted.
+
+Heap becomes:
+
+```text
+[]
+```
+
+Now:
+
+```text
+while heap not empty
+```
+
+is false, so we stop.
+
+### ✅ Final Output
+
+```text id="r7p3kx"
+[1,2,3,4,5,6,7,8]
+```
+
+### Complete dry run
+
+| Step | Popped | Output              | New element pushed |
+| ---: | -----: | ------------------- | -----------------: |
+|    1 |      1 | `[1]`               |                  4 |
+|    2 |      2 | `[1,2]`             |                  5 |
+|    3 |      3 | `[1,2,3]`           |                  6 |
+|    4 |      4 | `[1,2,3,4]`         |                  7 |
+|    5 |      5 | `[1,2,3,4,5]`       |                  — |
+|    6 |      6 | `[1,2,3,4,5,6]`     |                  8 |
+|    7 |      7 | `[1,2,3,4,5,6,7]`   |                  — |
+|    8 |      8 | `[1,2,3,4,5,6,7,8]` |                  — |
+
+### 🧠 Key idea
+
+Unlike the previous approach where we **scan all list heads**, here the heap automatically gives us the smallest head:
+
+```text
+       MIN-HEAP
+          ↓
+          1   ← smallest
+        /   \
+       2     3
+```
+
+After removing `1`, we insert **only its next element `4`**.
+
+So the heap always contains at most **one current element from each list**.
+
+**Complexity:** `O(N log k)` time and `O(k)` heap space, where `N` is the total number of elements and `k` is the number of lists.
+
 
 ### Complexity
 
