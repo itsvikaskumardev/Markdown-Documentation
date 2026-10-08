@@ -990,6 +990,90 @@ take the best k
 
 return them sorted
 ```
+### Dry Run
+Sure. This pseudocode is for finding the **k elements closest to `x`**, with a tie-breaker: if two values have the same distance from `x`, the **smaller value gets higher rank**.
+
+### Pseudocode
+
+```text
+given arr, x, k
+rank each value by (|a − x|, a)
+take the best k
+return them sorted
+```
+
+### 1. Given input
+
+```text
+arr = [1,1,2,3,4,5]
+x = -1
+k = 4
+```
+
+We calculate:
+
+```text
+|a - x| = |a - (-1)| = |a + 1|
+```
+
+### 2. Calculate distance and rank
+
+| Value `a` | Distance `|a - (-1)|` | Rank `(distance, a)` |
+|---:|---:|---|
+| 1 | `|1+1| = 2` | `(2,1)` |
+| 1 | `2` | `(2,1)` |
+| 2 | `|2+1| = 3` | `(3,2)` |
+| 3 | `4` | `(4,3)` |
+| 4 | `5` | `(5,4)` |
+| 5 | `6` | `(6,5)` |
+
+So the ranking from **best → worst** is:
+
+```text
+1 → (2,1)
+1 → (2,1)
+2 → (3,2)
+3 → (4,3)
+4 → (5,4)
+5 → (6,5)
+```
+
+### 3. `take the best k`
+
+`k = 4`, so take the first 4:
+
+```text
+[1, 1, 2, 3]
+```
+
+### 4. `return them sorted`
+
+They are already sorted:
+
+```text
+[1, 1, 2, 3]
+```
+
+### ✅ Final Output
+
+```text
+[1, 1, 2, 3]
+```
+
+### 🧠 Main idea
+
+Because `x = -1` is **to the left of every element**, the closest elements are simply the **smallest values** in the array.
+
+```text
+x = -1
+     ↓
+[-1] 1  1  2  3  4  5
+      ↑  ↑  ↑  ↑
+      2  2  3  4   ← distances
+```
+
+So the **4 closest elements are `[1,1,2,3]`**.
+
 
 #### 2. Optimized (Size-K Max-Heap)
 Maintain a **max-heap of size `K`** using `(distance, value)` as the key. If the heap exceeds `K`, remove the farthest element; for equal distances, remove the larger value.
@@ -1010,6 +1094,225 @@ for a in arr:
 
 return heap sorted
 ```
+### Dry Run
+Sure. This is the **max-heap approach for finding the `k` closest elements to `x`**.
+
+The important point is:
+
+> Since it is a **max-heap**, the `top` contains the **worst/farthest element among the current k elements**.
+
+### Pseudocode
+
+```text
+given arr, x, k
+heap = max-heap on (|a − x|, a)
+
+for a in arr:
+    if heap.size < k:
+        push a
+    else if (dist,a) better than top:
+        pop the worst
+        and push a
+    else:
+        skip
+
+return heap sorted
+```
+
+### Input
+
+```text
+arr = [1,2,3,4,5]
+x = 3
+k = 4
+```
+
+---
+
+### 1. Calculate distances
+
+Distance formula:
+
+```text
+|a - x| = |a - 3|
+```
+
+| Value | Distance |     |      |
+| ----: | -------: | --- | ---- |
+|     1 |        ` | 1-3 | = 2` |
+|     2 |        ` | 2-3 | = 1` |
+|     3 |        ` | 3-3 | = 0` |
+|     4 |        ` | 4-3 | = 1` |
+|     5 |        ` | 5-3 | = 2` |
+
+The ranking `(distance, value)` is:
+
+```text
+3 → (0,3)   ← best
+2 → (1,2)
+4 → (1,4)
+1 → (2,1)
+5 → (2,5)   ← worst
+```
+
+For equal distances, the **smaller value is better**.
+
+---
+
+### 2. Process each element
+
+#### `a = 1`
+
+Heap size is `0`, and `0 < k`.
+
+So push `1`.
+
+```text
+heap = [1]
+```
+
+Distance:
+
+```text
+1 → (2,1)
+```
+
+---
+
+#### `a = 2`
+
+Heap size is `1`, and `1 < 4`.
+
+Push `2`.
+
+```text
+heap = [1,2]
+```
+
+---
+
+#### `a = 3`
+
+Heap size is `2`, and `2 < 4`.
+
+Push `3`.
+
+```text
+heap = [1,2,3]
+```
+
+---
+
+#### `a = 4`
+
+Heap size is `3`, and `3 < 4`.
+
+Push `4`.
+
+```text
+heap = [1,2,3,4]
+```
+
+Now we have exactly `k = 4` elements.
+
+Their distances are:
+
+```text
+1 → distance 2
+2 → distance 1
+3 → distance 0
+4 → distance 1
+```
+
+The **worst** is `1`, because its distance is `2`.
+
+---
+
+#### `a = 5`
+
+Now:
+
+```text
+heap.size = 4
+k = 4
+```
+
+So we cannot directly push.
+
+We compare `5` with the heap's worst element.
+
+```text
+5 → distance |5-3| = 2
+top/worst = 1 → distance |1-3| = 2
+```
+
+Both have the same distance.
+
+Tie-breaker is the value:
+
+```text
+1 < 5
+```
+
+So `1` is better than `5`.
+
+Therefore, `5` is **worse** than the current top.
+
+```text
+else: skip
+```
+
+So `5` is skipped.
+
+Heap remains:
+
+```text
+[1,2,3,4]
+```
+
+---
+
+### 3. Return heap sorted
+
+Sort the selected elements:
+
+```text
+[1,2,3,4]
+```
+
+### ✅ Final Output
+
+```text
+[1,2,3,4]
+```
+
+### 🧠 Key point to remember
+
+For a **max-heap**:
+
+```text
+heap top = worst among current k
+```
+
+So whenever a new element comes:
+
+```text
+new element better than top
+        ↓
+remove top (worst)
+        ↓
+insert new element
+```
+
+Here `5` was not better than `1`, because:
+
+```text
+distance(5,3) = 2
+distance(1,3) = 2
+```
+
+and when distances tie, **smaller value wins**. Hence `1` stays and `5` is skipped.
+
 
 ### Complexity
 
