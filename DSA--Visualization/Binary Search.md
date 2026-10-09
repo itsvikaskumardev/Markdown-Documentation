@@ -1041,6 +1041,228 @@ while lo <= hi:
 
 return false
 ```
+### Dry Run
+This pseudocode uses Binary Search in a 2D matrix to check whether the target exists. It treats the matrix as one sorted, flattened array without actually converting it into a 1D array.
+
+### 1. Given input
+
+```
+matrix = [
+    [1,  3,  5,  7],
+    [10, 11, 16, 20],
+    [23, 30, 34, 60]
+]
+
+target = 13
+```
+
+* `m = 3` → number of rows
+
+* `n = 4` → number of columns
+
+* Total elements = m×n=3×4=12m \times n = 3 \times 4 = 12m×n=3×4=12
+
+* Valid flattened indices: `0` to `11`
+
+### 2. Pseudocode explained line by line
+
+```
+lo ← 0
+hi ← m·n − 1
+
+while lo <= hi:
+    mid ← lo + (hi − lo) / 2
+    v ← grid[mid / n][mid % n]
+
+    if v == target:
+        return true
+    else if v < target:
+        lo ← mid + 1
+    else:
+        hi ← mid − 1
+
+return false
+```
+
+Line 1: `lo ← 0; hi ← m·n − 1`
+
+Initialize the search boundaries:
+
+```
+lo = 0
+hi = 3 × 4 − 1 = 11
+```
+
+Line 2: `while lo <= hi`
+
+Continue searching while the search range is not empty.
+
+Line 3: `mid ← lo + (hi − lo) / 2`
+
+Find the middle index. Integer division is used.
+
+Line 4: `v ← grid[mid / n][mid % n]`
+
+Convert the flattened index into a matrix position:
+
+* Row = `mid / n` (integer division)
+
+* Column = `mid % n` (remainder)
+
+For example, if `mid = 5`:
+
+```
+row = 5 / 4 = 1
+col = 5 % 4 = 1
+
+grid[1][1] = 11
+```
+
+### 3. Dry run step by step
+
+#### Iteration 1
+
+Initially:
+
+```
+lo = 0, hi = 11
+```
+
+Calculate the middle:
+
+mid=0+⌊(11−0)/2⌋=5mid = 0 + \lfloor(11-0)/2\rfloor = 5mid=0+⌊(11−0)/2⌋=5
+
+Convert index `5` into a matrix position:
+
+```
+row = 5 / 4 = 1
+col = 5 % 4 = 1
+
+v = matrix[1][1] = 11
+```
+
+Compare with target `13`:
+
+```
+11 == 13 → False
+11 < 13  → True
+```
+
+Since `11` is smaller than `13`, search the right half:
+
+```
+lo = mid + 1
+lo = 5 + 1 = 6
+```
+
+Now `lo = 6`, `hi = 11`.
+
+#### Iteration 2
+
+Calculate the middle:
+
+mid=6+⌊(11−6)/2⌋=8mid = 6 + \lfloor(11-6)/2\rfloor = 8mid=6+⌊(11−6)/2⌋=8
+
+Convert index `8`:
+
+```
+row = 8 / 4 = 2
+col = 8 % 4 = 0
+
+v = matrix[2][0] = 23
+```
+
+Compare:
+
+```
+23 == 13 → False
+23 < 13  → False
+```
+
+So execute the `else` branch:
+
+```
+hi = mid − 1
+hi = 8 − 1 = 7
+```
+
+Now `lo = 6`, `hi = 7`.
+
+#### Iteration 3
+
+Calculate the middle:
+
+mid=6+⌊(7−6)/2⌋=6mid = 6 + \lfloor(7-6)/2\rfloor = 6mid=6+⌊(7−6)/2⌋=6
+
+Convert index `6`:
+
+```
+row = 6 / 4 = 1
+col = 6 % 4 = 2
+
+v = matrix[1][2] = 16
+```
+
+Compare:
+
+```
+16 == 13 → False
+16 < 13  → False
+```
+
+Therefore:
+
+```
+hi = mid − 1
+hi = 6 − 1 = 5
+```
+
+Now `lo = 6`, `hi = 5`.
+
+### 4. When does the loop stop?
+
+The condition is:
+
+```
+while lo <= hi
+```
+
+But now:
+
+```
+6 <= 5 → False
+```
+
+The loop ends, and the final line executes:
+
+```
+return false
+```
+
+### Complete dry-run table
+
+| Iteration | `lo` | `hi` | `mid` | Matrix value `v` | Action         |
+| --------- | ---- | ---- | ----- | ---------------- | -------------- |
+| 1         | 0    | 11   | 5     | 11               | `lo = 6`       |
+| 2         | 6    | 11   | 8     | 23               | `hi = 7`       |
+| 3         | 6    | 7    | 6     | 16               | `hi = 5`       |
+| Stop      | 6    | 5    | —     | —                | Return `false` |
+
+### ✅ Final Output
+
+```
+false
+```
+
+The target `13` is not present in the matrix.
+
+### 🧠 Key idea
+The matrix is sorted both within rows and across row boundaries, so we can use binary search on its flattened indices without creating a separate array.
+
+* Time complexity: O(log⁡(mn))O(\log(mn))O(log(mn))
+
+* Space complexity: O(1)O(1)O(1)
+
 
 ### Complexity
 
