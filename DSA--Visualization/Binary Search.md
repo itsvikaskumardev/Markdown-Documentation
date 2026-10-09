@@ -523,6 +523,59 @@ for i ← 0 to n − 1:
 
 return −1
 ```
+### Dry Run
+This pseudocode uses Linear Search to find the target in an array. If the target is not present, it returns `-1`.
+
+### 1. Given input
+
+```
+arr = [4, 5, 6, 7, 0, 1, 2]
+target = 3
+```
+
+The array length is `n = 7`, so the valid indices are `0` to `6`.
+
+### 2. Pseudocode explained line by line
+
+```
+for i ← 0 to n − 1:
+    if arr[i] == target: return i
+return −1
+```
+
+Line 1: `for i ← 0 to n − 1`
+
+Check every element from index `0` through index `6`.
+
+Line 2: `if arr[i] == target: return i`
+
+Compare each element with the target, which is `3`.
+
+| Iteration | Index `i` | `arr[i]` | Is it equal to `3`? |
+| --------- | --------- | -------- | ------------------- |
+| 1         | 0         | 4        | No                  |
+| 2         | 1         | 5        | No                  |
+| 3         | 2         | 6        | No                  |
+| 4         | 3         | 7        | No                  |
+| 5         | 4         | 0        | No                  |
+| 6         | 5         | 1        | No                  |
+| 7         | 6         | 2        | No                  |
+
+The target `3` is not found, so the loop completes without returning an index.
+
+Line 3: `return −1`
+
+Since no element matched the target, the function returns `-1`, meaning the target was not found.
+
+### ✅ Final Output
+
+```
+-1
+```
+
+### 🧠 Remember
+This algorithm checks each element one by one. Its time complexity is O(n)O(n)O(n), and it returns `-1` when the target does not exist in the array.
+
 
 #### 2. Optimized (steer by the sorted half)
 Check which half is sorted; determine whether the target lies inside that sorted range, then discard the other half.
@@ -546,6 +599,184 @@ while lo ≤ hi:
 
         target in (arr[mid], arr[hi]] ? lo = mid+1 : hi = mid−1
 ```
+### Dry Run
+This pseudocode uses Modified Binary Search to search in a rotated sorted array.
+
+Normally, binary search works on a fully sorted array. Here, the array was sorted and then rotated, so we identify which half is sorted and decide where to search.
+
+### 1. Given input
+
+```
+arr = [4, 5, 6, 7, 0, 1, 2]
+target = 0
+```
+
+* `n = 7`
+
+* Valid indices: `0` to `6`
+
+### 2. Pseudocode explained line by line
+
+```
+lo = 0, hi = n − 1
+
+while lo ≤ hi:
+    mid = (lo + hi) / 2
+
+    if arr[mid] == target:
+        return mid
+
+    if arr[lo] ≤ arr[mid]:        // left sorted
+        target in [arr[lo], arr[mid]) ? hi = mid−1 : lo = mid+1
+
+    else:                         // right sorted
+        target in (arr[mid], arr[hi]] ? lo = mid+1 : hi = mid−1
+```
+
+* `lo`: left boundary of the search.
+
+* `hi`: right boundary of the search.
+
+* `mid`: middle index.
+
+* `?` means “if the condition is true, perform the specified assignment.”
+
+### 3. Dry run step by step
+
+#### Iteration 1
+
+Initially:
+
+```
+lo = 0
+hi = 6
+```
+
+Calculate the middle index:
+
+mid=⌊(0+6)/2⌋=3mid=\lfloor(0+6)/2\rfloor=3mid=⌊(0+6)/2⌋=3
+
+Check:
+
+```
+arr[3] = 7
+target = 0
+
+7 == 0 → False
+```
+
+Now check whether the left half is sorted:
+
+```
+arr[lo] ≤ arr[mid]
+arr[0] ≤ arr[3]
+4 ≤ 7 → True
+```
+
+So the left half `[4,5,6,7]` is sorted.
+
+Is target `0` inside the range `[4,7)`?
+
+```
+4 ≤ 0 < 7 → False
+```
+
+Therefore, search the right half:
+
+```
+lo = mid + 1
+lo = 3 + 1 = 4
+```
+
+Updated boundaries:
+
+```
+lo = 4
+hi = 6
+```
+
+#### Iteration 2
+
+Calculate the middle index:
+
+mid=⌊(4+6)/2⌋=5mid=\lfloor(4+6)/2\rfloor=5mid=⌊(4+6)/2⌋=5
+
+Check:
+
+```
+arr[5] = 1
+1 == 0 → False
+```
+
+Check whether the left half is sorted:
+
+```
+arr[4] ≤ arr[5]
+0 ≤ 1 → True
+```
+
+The left half `[0,1]` is sorted.
+
+Is target `0` inside `[arr[4], arr[5])`, meaning `[0,1)`?
+
+```
+0 ≤ 0 < 1 → True
+```
+
+Therefore, search the left side of `mid`:
+
+```
+hi = mid − 1
+hi = 5 − 1 = 4
+```
+
+Updated boundaries:
+
+```
+lo = 4
+hi = 4
+```
+
+#### Iteration 3
+
+Calculate the middle index:
+
+mid=⌊(4+4)/2⌋=4mid=\lfloor(4+4)/2\rfloor=4mid=⌊(4+4)/2⌋=4
+
+Check:
+
+```
+arr[4] = 0
+target = 0
+
+arr[4] == target → True
+```
+
+The target is found, so the algorithm immediately returns index `4`.
+
+### 4. Complete dry-run table
+
+| Iteration | `lo` | `hi` | `mid` | `arr[mid]` | Action            |
+| --------- | ---- | ---- | ----- | ---------- | ----------------- |
+| 1         | 0    | 6    | 3     | 7          | Search right half |
+| 2         | 4    | 6    | 5     | 1          | Search left half  |
+| 3         | 4    | 4    | 4     | 0          | Target found      |
+
+### ✅ Final Output
+
+```
+4
+```
+
+The target `0` is at index `4`.
+
+### 🧠 Key idea
+At each iteration, identify the sorted half. If the target lies within that half's range, search there; otherwise, search the other half.
+
+* Time complexity: O(log⁡n)O(\log n)O(logn)
+
+* Space complexity: O(1)O(1)O(1)
+
 
 ### Complexity
 
