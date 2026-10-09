@@ -817,6 +817,193 @@ while lo < hi:
 
 return arr[lo]
 ```
+### Dry Run
+This pseudocode finds the minimum element in a rotated sorted array using Binary Search.
+
+### 1. Given input
+
+```
+arr = [4, 5, 6, 7, 0, 1, 2]
+```
+
+Array length: `n = 7`
+
+Valid indices are `0` to `6`.
+
+The minimum element is `0`, but let's understand how the pseudocode finds it efficiently.
+
+### 2. Pseudocode explained line by line
+
+```
+lo = 0, hi = n − 1
+
+while lo < hi:
+    mid = lo + (hi − lo) / 2
+
+    if arr[mid] > arr[hi]:
+        lo = mid + 1
+    else:
+        hi = mid
+
+return arr[lo]
+```
+
+* `lo`: left boundary of the search range.
+
+* `hi`: right boundary of the search range.
+
+* `mid`: middle index of the current range.
+
+Important: The loop continues while `lo < hi`. When both pointers meet, we have found the minimum's index.
+
+### 3. Dry run step by step
+
+#### Iteration 1
+
+Initially:
+
+```
+lo = 0
+hi = 6
+```
+
+Calculate the middle index:
+
+mid=0+⌊(6−0)/2⌋=3mid=0+\lfloor(6-0)/2\rfloor=3mid=0+⌊(6−0)/2⌋=3
+
+Check the values:
+
+```
+arr[mid] = arr[3] = 7
+arr[hi]  = arr[6] = 2
+```
+
+Condition:
+
+```
+arr[mid] > arr[hi]
+7 > 2 → True
+```
+
+This means the minimum is to the right of `mid`, because the rotation point lies in that half.
+
+Execute:
+
+```
+lo = mid + 1
+lo = 3 + 1 = 4
+```
+
+Updated boundaries:
+
+```
+lo = 4
+hi = 6
+```
+
+The remaining search range is `[0,1,2]` at indices `4` to `6`.
+
+#### Iteration 2
+
+Calculate the middle index:
+
+mid=4+⌊(6−4)/2⌋=5mid=4+\lfloor(6-4)/2\rfloor=5mid=4+⌊(6−4)/2⌋=5
+
+Check:
+
+```
+arr[mid] = arr[5] = 1
+arr[hi]  = arr[6] = 2
+```
+
+Condition:
+
+```
+1 > 2 → False
+```
+
+So the minimum is at `mid` or to its left.
+
+Execute:
+
+```
+hi = mid
+hi = 5
+```
+
+Updated boundaries:
+
+```
+lo = 4
+hi = 5
+```
+
+#### Iteration 3
+
+Calculate the middle index:
+
+mid=4+⌊(5−4)/2⌋=4mid=4+\lfloor(5-4)/2\rfloor=4mid=4+⌊(5−4)/2⌋=4
+
+Check:
+
+```
+arr[mid] = arr[4] = 0
+arr[hi]  = arr[5] = 1
+```
+
+Condition:
+
+```
+0 > 1 → False
+```
+
+The minimum is at `mid` or to its left.
+
+Execute:
+
+```
+hi = mid
+hi = 4
+```
+
+Now:
+
+```
+lo = 4
+hi = 4
+```
+
+The loop condition `lo < hi` is false, so the loop stops.
+
+#### Final line: `return arr[lo]`
+
+```
+return arr[4]
+return 0
+```
+
+### 4. Complete dry-run table
+
+| Iteration | `lo` | `hi` | `mid` | `arr[mid]` | `arr[hi]` | Action          |
+| --------- | ---- | ---- | ----- | ---------- | --------- | --------------- |
+| 1         | 0    | 6    | 3     | 7          | 2         | `lo = 4`        |
+| 2         | 4    | 6    | 5     | 1          | 2         | `hi = 5`        |
+| 3         | 4    | 5    | 4     | 0          | 1         | `hi = 4`        |
+| Stop      | 4    | 4    | —     | —          | —         | Return `arr[4]` |
+
+### ✅ Final Output
+
+```
+0
+```
+
+### 🧠 Key idea
+If `arr[mid] > arr[hi]`, the minimum must be on the right. Otherwise, the minimum is at `mid` or on the left. Each iteration cuts down the search range.
+
+* Time complexity: O(log⁡n)O(\log n)O(logn)
+
+* Space complexity: O(1)O(1)O(1)
+
 
 ### Complexity
 
