@@ -1347,6 +1347,90 @@ flatten into a list; sort it
 
 return list[k − 1]
 ```
+### Dry Run
+This pseudocode finds the k-th smallest element in a matrix by flattening the matrix into a list, sorting the list, and returning the element at index `k − 1`.
+
+### 1. Given input
+
+```
+matrix = [
+    [1,  5,  9],
+    [10, 11, 13],
+    [12, 13, 15]
+]
+
+k = 8
+```
+
+There are 3 rows and 3 columns, so the matrix contains 9 elements.
+
+### 2. Pseudocode explained line by line
+
+```
+flatten into a list
+sort it
+return list[k − 1]
+```
+
+Line 1: `flatten into a list`
+
+Convert the 2D matrix into a single 1D list by taking elements row by row.
+
+```
+[1, 5, 9, 10, 11, 13, 12, 13, 15]
+```
+
+Line 2: `sort it`
+
+Arrange all elements in ascending order, from smallest to largest.
+
+```
+list = [1, 5, 9, 10, 11, 12, 13, 13, 15]
+```
+
+Notice that `12` comes before both occurrences of `13` after sorting.
+
+Line 3: `return list[k − 1]`
+
+We need the 8th smallest element.
+
+Since array indexing starts at `0`, calculate:
+
+```
+index = k − 1
+      = 8 − 1
+      = 7
+```
+
+Now access `list[7]`.
+
+| Index | Value |
+| ----- | ----- |
+| 0     | 1     |
+| 1     | 5     |
+| 2     | 9     |
+| 3     | 10    |
+| 4     | 11    |
+| 5     | 12    |
+| 6     | 13    |
+| 7     | 13    |
+| 8     | 15    |
+
+Therefore, `list[7] = 13`.
+
+### ✅ Final Output
+
+```
+13
+```
+
+### 🧠 Remember
+The `k`-th smallest element is at index `k − 1` in the sorted list.
+
+* Time complexity: O(mnlog⁡(mn))O(mn\log(mn))O(mnlog(mn)), where mmm is the number of rows and nnn is the number of columns.
+
+* Space complexity: O(mn)O(mn)O(mn), because we create a flattened list.
+
 
 #### 2. Optimized (binary search the value range)
 Binary search between the smallest and largest matrix values; for each `mid`, count how many elements are `≤ mid`. If the count is at least `k`, search smaller; otherwise, search larger.
@@ -1370,6 +1454,176 @@ while lo ≤ hi:
 
 return ans
 ```
+### Dry Run
+We need to find the kth smallest element in a sorted matrix using binary search on the value range.
+
+### 1. Given input
+
+```
+matrix = [
+  [1,  5,  9],
+  [10, 11, 13],
+  [12, 13, 15]
+]
+
+k = 8
+```
+
+We need to find the 8th smallest element.
+
+### 2. Explain the code line by line
+
+Line 1: `lo = matrix min, hi = matrix max`
+
+* `lo` = smallest element in the matrix = `1`
+
+* `hi` = largest element in the matrix = `15`
+
+So, `lo = 1` and `hi = 15`.
+
+Line 2: `while lo ≤ hi:`
+
+Keep searching while `lo` is less than or equal to `hi`.
+
+Line 3: `x = (lo + hi) / 2`
+
+Find the middle value of the current range. In this algorithm, `x` is a candidate value, not a matrix index.
+
+Line 4: `cnt = # cells ≤ x (per sorted row)`
+
+Count how many matrix elements are less than or equal to `x`.
+
+Because each row is sorted, we can count these elements efficiently by checking each row.
+
+Line 5: `if cnt ≥ k:`
+
+If at least `k` elements are less than or equal to `x`, the kth smallest element could be `x` or a smaller value.
+
+* Save `x` in `ans`.
+
+* Move left by setting `hi = x − 1`.
+
+Line 6: `else: lo = x + 1`
+
+If fewer than `k` elements are less than or equal to `x`, `x` is too small. Search higher values by setting `lo = x + 1`.
+
+Line 7: `return ans`
+
+Return the smallest candidate value for which at least `k` elements are less than or equal to it.
+
+### 3. Dry run step by step
+
+The matrix elements in sorted order are:
+
+`[1, 5, 9, 10, 11, 12, 13, 13, 15]`
+
+The 8th element is `13`, but let's see how the algorithm finds it.
+
+#### Iteration 1
+
+lo
+
+# 1
+
+hi
+
+# 15
+
+x = (1+15)/2
+
+# 8
+
+Elements `≤ 8`: `1, 5`
+
+`cnt = 2`
+
+Since `2 < 8`, the candidate is too small.
+
+Update: `lo = 8 + 1 = 9`
+
+#### Iteration 2
+
+lo
+
+# 9
+
+hi
+
+# 15
+
+x = (9+15)/2
+
+# 12
+
+Elements `≤ 12`: `1, 5, 9, 10, 11, 12`
+
+`cnt = 6`
+
+Since `6 < 8`, the candidate is still too small.
+
+Update: `lo = 12 + 1 = 13`
+
+#### Iteration 3
+
+lo
+
+# 13
+
+hi
+
+# 15
+
+x = (13+15)/2
+
+# 14
+
+Elements `≤ 14`: `1, 5, 9, 10, 11, 12, 13, 13`
+
+`cnt = 8`
+
+Since `8 ≥ 8`, save `ans = 14`.
+
+Update: `hi = 14 − 1 = 13`
+
+#### Iteration 4
+
+lo
+
+# 13
+
+hi
+
+# 13
+
+x = (13+13)/2
+
+# 13
+
+Elements `≤ 13`: `1, 5, 9, 10, 11, 12, 13, 13`
+
+`cnt = 8`
+
+Since `8 ≥ 8`, update `ans = 13`.
+
+Update: `hi = 13 − 1 = 12`
+
+#### Stop condition
+
+Now `lo = 13` and `hi = 12`.
+
+Since `lo > hi`, the loop stops.
+
+### ✅ Final Output
+
+Returned answer
+
+# 13
+
+The 8th smallest element is 13.
+
+### 🧠 Important
+In an implementation where the matrix values are integers, this binary search works as shown. For the count operation, count every cell `≤ x`; the two occurrences of `13` count separately.
+
 
 ### Complexity
 
