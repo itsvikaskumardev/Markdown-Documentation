@@ -14,7 +14,7 @@
 **LeetCode #215** · [LeetCode](https://leetcode.com/problems/kth-largest-element-in-an-array/) · **Medium**
 
 > **Array · Top K · Min-Heap of Size K**
-
+// As i done Kth Smallest  Element in an Array -> DSA 03-> Pg no: 135
 ### Approaches
 
 #### 1. Brute Force (Sort)
@@ -486,6 +486,7 @@ For `k = 4`, the heap always contains the best 4 candidates, and the **smallest 
 
 > **Array · Top K · Max-Heap of Size K · Squared Distance**
 
+Soln : DSA 03 -> Pg no: 147
 ### Approaches
 
 #### 1. Brute Force (Sort by Distance)
@@ -974,6 +975,7 @@ return heap contents
 
 > **Array · Top K · Max-Heap of Size K · Distance + Value**
 
+DSA 03 : Pg no: 144
 ### Approaches
 
 #### 1. Brute Force (Sort by Distance)

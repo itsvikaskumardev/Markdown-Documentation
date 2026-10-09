@@ -71,6 +71,60 @@ for i ← 0 to n − 1:
 
 return n
 ```
+### Dry Run
+This pseudocode is used to find the insert position of a target in a sorted array. If the target already exists, it returns its current index.
+
+### 1. Pseudocode
+
+```
+for i ← 0 to n − 1:
+    if arr[i] ≥ target: return i
+return n
+```
+
+### 2. Given input
+
+```
+nums = [1, 3, 5, 6]
+target = 5
+```
+
+Here, `n = 4` because the array contains 4 elements.
+
+### 3. Explain line by line
+
+Line 1: `for i ← 0 to n − 1`
+
+The loop checks each element from index `0` to index `3`.
+
+Line 2: `if arr[i] ≥ target: return i`
+
+At each index, check whether the current element is greater than or equal to the target (`5`).
+
+| Iteration | `i` | `arr[i]` | Is `arr[i] ≥ 5`? | Action     |
+| --------- | --- | -------- | ---------------- | ---------- |
+| 1         | 0   | 1        | `1 ≥ 5` → False  | Continue   |
+| 2         | 1   | 3        | `3 ≥ 5` → False  | Continue   |
+| 3         | 2   | 5        | `5 ≥ 5` → True   | Return `2` |
+
+As soon as the condition becomes true, the function returns `i = 2`. The loop stops immediately.
+
+Line 3: `return n`
+
+This line runs only if the loop finishes without finding an element greater than or equal to the target. Here, it does not execute.
+
+### ✅ Final Output
+
+```
+2
+```
+
+The target `5` is already present at index `2` (using zero-based indexing).
+
+### 🧠 Remember
+If the target is greater than every element, the algorithm returns `n`, which is `4` in this example.
+
+
 
 #### 2. Optimized (binary search)
 Use binary search to find the **leftmost position** where `arr[i] ≥ target`; when the target is missing, `lo` lands exactly at its insertion position.
@@ -92,6 +146,194 @@ while lo ≤ hi:
 
 return lo
 ```
+### Dry Run
+This pseudocode uses Binary Search to find the target in a sorted array. If the target is not found, it returns the index where the target should be inserted.
+
+### 1. Given input
+
+```
+arr = [1, 3, 5, 6]
+target = 7
+```
+
+Array length: `n = 4`
+
+```
+lo ← 0
+hi ← n − 1 = 3
+```
+
+* `lo` = starting index.
+
+* `hi` = ending index.
+
+* `mid` = middle index of the current search range.
+
+### 2. Explain the pseudocode line by line
+
+```
+lo ← 0; hi ← n − 1
+
+while lo ≤ hi:
+    mid ← (lo + hi) / 2
+
+    if arr[mid] == target:
+        return mid
+
+    if arr[mid] < target:
+        lo ← mid + 1
+    else:
+        hi ← mid − 1
+
+return lo
+```
+
+#### Iteration 1
+
+Initially:
+
+```
+lo = 0
+hi = 3
+```
+
+Calculate the middle index:
+
+mid=⌊(0+3)/2⌋=1mid = \lfloor(0+3)/2\rfloor = 1mid=⌊(0+3)/2⌋=1
+
+`arr[1] = 3`
+
+Compare with target `7`:
+
+```
+3 == 7 → False
+3 < 7  → True
+```
+
+Because `3` is smaller than `7`, search the right half.
+
+```
+lo = mid + 1
+lo = 1 + 1 = 2
+```
+
+Updated values:
+
+```
+lo = 2
+hi = 3
+```
+
+#### Iteration 2
+
+Calculate the middle index again:
+
+mid=⌊(2+3)/2⌋=2mid = \lfloor(2+3)/2\rfloor = 2mid=⌊(2+3)/2⌋=2
+
+`arr[2] = 5`
+
+Compare:
+
+```
+5 == 7 → False
+5 < 7  → True
+```
+
+Move `lo` to the right:
+
+```
+lo = mid + 1
+lo = 2 + 1 = 3
+```
+
+Updated values:
+
+```
+lo = 3
+hi = 3
+```
+
+#### Iteration 3
+
+Calculate the middle index:
+
+mid=⌊(3+3)/2⌋=3mid = \lfloor(3+3)/2\rfloor = 3mid=⌊(3+3)/2⌋=3
+
+`arr[3] = 6`
+
+Compare:
+
+```
+6 == 7 → False
+6 < 7  → True
+```
+
+Move `lo` again:
+
+```
+lo = mid + 1
+lo = 3 + 1 = 4
+```
+
+Updated values:
+
+```
+lo = 4
+hi = 3
+```
+
+### 3. When does the loop stop?
+
+The loop condition is:
+
+```
+while lo ≤ hi
+```
+
+Now:
+
+```
+4 ≤ 3 → False
+```
+
+So the loop stops.
+
+The final line executes:
+
+```
+return lo
+```
+
+Therefore, it returns `4`.
+
+### ✅ Final Output
+
+```
+4
+```
+
+The array becomes:
+
+```
+[1, 3, 5, 6, 7]
+```
+
+The target `7` should be inserted at index 4, at the end of the array.
+
+### Complete dry run
+
+| Iteration | `lo` | `hi` | `mid` | `arr[mid]` | Action     |
+| --------- | ---- | ---- | ----- | ---------- | ---------- |
+| 1         | 0    | 3    | 1     | 3          | `lo = 2`   |
+| 2         | 2    | 3    | 2     | 5          | `lo = 3`   |
+| 3         | 3    | 3    | 3     | 6          | `lo = 4`   |
+| Stop      | 4    | 3    | —     | —          | Return `4` |
+
+### 🧠 Key point
+When the target is greater than every element, `lo` moves one position beyond the last index. That final `lo` is the correct insertion index.
+
+Time complexity: O(log⁡n)O(\log n)O(logn) because binary search halves the search range in each iteration.
+
 
 ### Complexity
 
