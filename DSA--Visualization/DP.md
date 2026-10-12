@@ -83,7 +83,7 @@ def rob(nums):
 **LeetCode #118** · [LeetCode](https://leetcode.com/problems/pascals-triangle/) · **Easy**
 
 > **Array / DP · Build each row from the two values above**
-
+- DSA 01 pg no 87
 ### Approaches
 
 #### 1. Brute Force (Binomial Formula)

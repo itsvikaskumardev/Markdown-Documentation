@@ -37,6 +37,94 @@ repeat:
 
 return s is empty
 ```
+### Dry Run
+We need to check whether the brackets in `s = "([{}])"` are valid and balanced using the repeated deletion method.
+
+### 1. Explain the pseudocode line by line
+
+Line 1: `repeat:`
+
+Start a loop that continues until no more adjacent matching bracket pairs can be found.
+
+Line 2: `find an adjacent pair "()", "[]" or "{}"`
+
+Search the string for any matching pair of brackets that are next to each other.
+
+For example:
+
+* `"()"` is a matching pair.
+
+* `"[]"` is a matching pair.
+
+* `"{}"` is a matching pair.
+
+Line 3: `if found: delete it`
+
+If a matching pair is found, remove both characters from the string.
+
+Line 4: `else: break`
+
+If no matching adjacent pair exists, stop the loop.
+
+Line 5: `return s is empty`
+
+* If the string is empty, return `true` — all brackets are balanced.
+
+* If the string is not empty, return `false` — some brackets remain unmatched.
+
+### 2. Dry run step by step
+
+Given:
+
+```
+s = "([{}])"
+```
+
+#### Step 1
+
+Original string
+
+# `([{}])`
+
+The adjacent pair `"{}"` is found inside the string.
+
+Delete `"{}"`.
+
+## `([])`
+
+#### Step 2
+
+In `"([])"`, the pair `"[]"` is now adjacent inside the parentheses.
+
+Delete `"[]"`.
+
+## `()`
+
+#### Step 3
+
+The string now contains the adjacent pair `"()"`.
+
+Delete `"()"`.
+
+## `""` (empty string)
+
+#### Step 4
+
+The string is empty. No more pairs can be found, so the loop stops.
+
+### ✅ Final Output
+
+Returned value
+
+# `true`
+
+The brackets are correctly balanced and nested.
+
+Final answer: `true`
+
+### 🧠 Key idea
+The order is valid because `{}` closes first, then `[]`, and finally `()`.
+
 
 #### 2. Optimized (stack of open brackets)
 Push opening brackets onto a stack. For every closing bracket, check whether it matches the stack top; at the end, the stack must be empty.

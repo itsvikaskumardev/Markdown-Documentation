@@ -3270,7 +3270,7 @@ This is better than the previous approach because the previous one used an `aux`
 **LeetCode #75** · [LeetCode](https://leetcode.com/problems/sort-colors/) · **Medium**
 
 > **Array · Dutch National Flag · In-place · Three Pointers**
-
+- DSA 01 pg no: 39
 ### Approaches
 
 #### 1. Brute Force (Counting Sort)
@@ -4214,7 +4214,7 @@ return arr
 **LeetCode #189** · [LeetCode](https://leetcode.com/problems/rotate-array/) · **Medium**
 
 > **Array · Three Reversals · In-place · No Extra Array**
-
+- DSA 01 pg no: 35
 ### Approaches
 
 #### 1. Brute Force (Rotate by One)
