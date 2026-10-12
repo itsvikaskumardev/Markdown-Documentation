@@ -6,6 +6,7 @@
 - [Find K Closest Elements](#find-k-closest-elements)
 - [Merge K Sorted Lists](#merge-k-sorted-lists)
 - [Median from Data Stream](#median-from-data-stream)
+- [Task Scheduler](#task-scheduler)
 
 ---
 
@@ -2633,3 +2634,58 @@ Therefore, the median is always available at the **top of one or both heaps**.
 | **Optimized · Max-Heap + Min-Heap** | **Add: O(log n) · Find: O(1)** | **O(n)** |
 
 ---
+
+# Task Scheduler
+
+**LeetCode #621** · [LeetCode](https://leetcode.com/problems/task-scheduler/) · **Medium**
+
+> **Greedy · Max-Heap · Most-frequent-first · Cooldown scheduling**
+
+### Approaches
+
+#### 1. Brute Force (Simulation)
+Repeatedly schedule the available task with the highest remaining frequency, respecting the cooldown and inserting idle intervals when necessary.
+
+**Pseudo Code:**
+
+```text
+count tasks; heap = max-heap by remaining count
+
+time = 0
+
+while tasks remain:
+
+    run up to n+1 distinct tasks, highest count first
+
+        (decrement; re-add to heap if count > 0)
+
+    if a slot has no available task → idle
+
+    advance one cooldown frame
+
+return time
+```
+
+#### 2. Optimized (Math Formula)
+Let `maxFreq` be the highest task frequency and `countMax` be the number of tasks with that frequency. Use `max(totalTasks, (maxFreq − 1) × (n + 1) + countMax)`.
+
+**Pseudo Code:**
+
+```text
+count tasks
+
+maxFreq = max count; ties = labels with that count
+
+frame = (maxFreq − 1) · (n + 1) + ties
+
+answer = max(total tasks, frame)
+
+return answer
+```
+
+### Complexity
+
+| Approach | Time | Space |
+| :--- | :---: | :---: |
+| **Brute Force · Simulation** | **O(totalTasks × log k)** | **O(k)** |
+| **Optimized · Math Formula** | **O(totalTasks)** | **O(k)** |
