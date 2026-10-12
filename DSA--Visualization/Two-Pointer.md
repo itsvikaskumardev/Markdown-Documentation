@@ -9,6 +9,7 @@
 - [Sort Colors](#sort-colors)
 - [Rotate Array by K Places](#rotate-array-by-k-places)
 - [4Sum](#4sum)
+- [Container With Most Water](#container-with-most-water)
 
 ---
 
@@ -5496,3 +5497,66 @@ Extra space is approximately **O(1)** apart from the space needed to store the a
 | :--- | :---: | :---: |
 | **Brute Force · Four Nested Loops** | **O(n⁴)** | **O(1)** |
 | **Optimized · Sort + Two Pointers** | **O(n³)** | **O(1)** |
+
+---
+
+# Container With Most Water
+
+**LeetCode #11** · [LeetCode](https://leetcode.com/problems/container-with-most-water/) · **Medium**
+
+> **Two Pointers · Greedy · Maximum Area**
+
+### Approaches
+
+#### 1. Brute Force (All Pairs)
+Check every pair of lines and calculate `area = (j - i) × min(height[i], height[j])`. Return the maximum area.
+
+**Pseudo Code:**
+
+```text
+given heights[]
+
+max ← 0
+
+for i ← 0 to n − 2:
+
+    for j ← i + 1 to n − 1:
+
+        area = (j − i) × min(h[i], h[j])
+
+        if area > max: max ← area
+
+return max
+```
+
+#### 2. Optimized (Two Pointers)
+Start with pointers at both ends. Calculate the area, update the maximum, and move the pointer pointing to the shorter line inward. The shorter line limits the height, so moving the taller line cannot improve the area for the current pair.
+
+**Pseudo Code:**
+
+```text
+given heights[]
+
+left  ← 0
+
+right ← n − 1; max ← 0
+
+while left < right:
+
+    area = (right − left) × min(h[left], h[right])
+
+    max ← max(max, area)
+
+    if h[left] ≤ h[right] → left++
+
+    else                  → right−−
+
+return max
+```
+
+### Complexity
+
+| Approach | Time | Space |
+| :--- | :---: | :---: |
+| **Brute Force · All Pairs** | **O(n²)** | **O(1)** |
+| **Optimized · Two Pointers** | **O(n)** | **O(1)** |
