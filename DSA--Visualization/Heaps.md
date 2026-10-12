@@ -2665,6 +2665,157 @@ while tasks remain:
 
 return time
 ```
+### Dry Run
+We need to find the minimum time required to execute all tasks when the same task must have at least `n` intervals between two executions.
+
+### 1. Given input
+
+```
+tasks = ["A", "A", "A", "B", "B", "B"]
+n = 2
+```
+
+* Task `A` appears 3 times.
+
+* Task `B` appears 3 times.
+
+* `n = 2` means after running a task, we must wait for 2 intervals before running that same task again.
+
+### 2. Explain the pseudocode line by line
+
+Line 1: `heap = max-heap by remaining count`
+
+Create a max-heap that keeps the task with the highest remaining frequency at the top.
+
+Initially:
+
+* `A = 3`
+
+* `B = 3`
+
+The heap prioritizes tasks with the largest remaining count.
+
+Line 2: `time = 0`
+
+Initialize the total time to `0`. Every task execution and every idle interval consumes one unit of time.
+
+Line 3: `while tasks remain:`
+
+Repeat until every task has been executed.
+
+Line 4: `run up to n+1 distinct tasks, highest count first`
+
+Since `n = 2`:
+
+n+1=2+1=3n+1=2+1=3n+1=2+1=3
+
+In each cycle, try to execute up to 3 different tasks, choosing tasks with the highest remaining counts first.
+
+Why 3? A task needs 2 intervals of cooldown, so a cycle can contain `A`, `B`, and one other distinct task before the next cycle begins.
+
+Line 5: `(decrement; re-add to heap if count > 0)`
+
+When you execute a task:
+
+1. Decrease its remaining count by 1.
+
+2. If its count is still greater than 0, put it back into the heap after the current cycle.
+
+Line 6: `if a slot has no available task → idle`
+
+If there are no tasks available to fill a required slot, use an idle interval. Idle time still increases the total time.
+
+Line 7: `advance one cooldown frame`
+
+Move time forward through the cycle, allowing previously executed tasks to cool down.
+
+Line 8: `return time`
+
+Return the total time taken to finish all tasks.
+
+### 3. Dry run step by step
+
+We have 3 `A` tasks and 3 `B` tasks. Since both have the same frequency, either can run first.
+
+#### Cycle 1 — up to 3 slots
+
+##### A
+
+Time 1
+
+##### B
+
+Time 2
+
+##### Idle
+
+Time 3
+
+After executing `A` and `B` once, both tasks have 2 remaining. No third distinct task exists, so the third slot is idle.
+
+Remaining: `A = 2`, `B = 2`
+
+Total time: `3`
+
+#### Cycle 2 — next 3 slots
+
+##### A
+
+Time 4
+
+##### B
+
+Time 5
+
+##### Idle
+
+Time 6
+
+Execute `A` and `B` again. Both now have 1 remaining. The third slot is idle.
+
+Remaining: `A = 1`, `B = 1`
+
+Total time: `6`
+
+#### Cycle 3 — final tasks
+
+##### A
+
+Time 7
+
+##### B
+
+Time 8
+
+##### —
+
+Not needed
+
+Execute the last `A` and `B`. All tasks are now complete, so we do not need to count another idle slot.
+
+Remaining: `A = 0`, `B = 0`
+
+Total time: `8`
+
+### 4. Final schedule
+
+| Time | 1 | 2 | 3    | 4 | 5 | 6    | 7 | 8 |
+| ---- | - | - | ---- | - | - | ---- | - | - |
+| Task | A | B | Idle | A | B | Idle | A | B |
+
+Notice that `A` runs at times 1, 4, and 7, while `B` runs at times 2, 5, and 8. There are exactly two intervals between executions of each repeated task.
+
+### ✅ Final Output
+
+Minimum total time
+
+# 8
+
+Answer: `8`
+
+### 🧠 Important implementation detail
+The pseudocode is a high-level description. In a correct implementation, process a whole cycle of up to `n + 1` tasks before adding those tasks back to the heap. Also, if all remaining tasks finish before the cycle ends, count only the slots actually used—don't add unnecessary idle time.
+
 
 #### 2. Optimized (Math Formula)
 Let `maxFreq` be the highest task frequency and `countMax` be the number of tasks with that frequency. Use `max(totalTasks, (maxFreq − 1) × (n + 1) + countMax)`.
@@ -2682,6 +2833,126 @@ answer = max(total tasks, frame)
 
 return answer
 ```
+
+### Dry Run
+We need to find the minimum time required to complete all tasks when the same task must have a cooldown of `n` intervals before it can run again.
+
+### 1. Given input
+
+```
+tasks = ["A", "C", "A", "B", "D", "B"]
+n = 1
+```
+
+There are 6 tasks total:
+
+* `A` appears 2 times.
+
+* `B` appears 2 times.
+
+* `C` appears 1 time.
+
+* `D` appears 1 time.
+
+### 2. Explain the pseudocode line by line
+
+Line 1: `maxFreq = max count; ties = labels with that count`
+
+* `maxFreq` is the highest frequency of any task.
+
+* `ties` is the number of different task labels that share that highest frequency.
+
+Here, `A` and `B` each appear twice.
+
+Therefore:
+
+```
+maxFreq = 2
+ties = 2
+```
+
+Line 2: `frame = (maxFreq − 1) · (n + 1) + ties`
+
+Calculate the minimum schedule length needed to separate the most frequent tasks.
+
+frame=(maxFreq−1)(n+1)+ties\text{frame}=(\text{maxFreq}-1)(n+1)+\text{ties}frame=(maxFreq−1)(n+1)+ties
+
+Substitute the values:
+
+=(2−1)(1+1)+2=(2-1)(1+1)+2=(2−1)(1+1)+2
+
+=1×2+2=4=1\times2+2=\boxed{4}=1×2+2=4
+
+So, `frame = 4`.
+
+Why subtract 1 from `maxFreq`?
+
+With 2 occurrences of a most-frequent task, there is only one gap between its occurrences. The formula uses these gaps to calculate the schedule frame.
+
+Line 3: `answer = max(total tasks, frame)`
+
+Compare:
+
+* `total tasks = 6`
+
+* `frame = 4`
+
+Choose the larger value:
+
+answer=max⁡(6,4)=6\text{answer}=\max(6,4)=6answer=max(6,4)=6
+
+Line 4: `return answer`
+
+Return `6`.
+
+### 3. Dry run summary
+
+Total tasks
+
+# 6
+
+Maximum frequency
+
+# 2
+
+Tied labels
+
+# 2
+
+Frame calculation
+
+(2−1)(1+1)+2=4(2-1)(1+1)+2=4(2−1)(1+1)+2=4
+
+Final calculation
+
+max⁡(6,4)=6\max(6,4)=6max(6,4)=6
+
+### 4. One valid task schedule
+
+Since `n = 1`, the same task cannot run in consecutive time slots.
+
+| Time | 1 | 2 | 3 | 4 | 5 | 6 |
+| ---- | - | - | - | - | - | - |
+| Task | A | B | A | B | C | D |
+
+* `A` runs at times 1 and 3, with one interval between.
+
+* `B` runs at times 2 and 4, with one interval between.
+
+* `C` and `D` each run once.
+
+* No idle time is needed.
+
+### ✅ Final Output
+
+Minimum time to complete all tasks
+
+# 6
+
+Final answer: `6`
+
+### 🧠 Key concept
+The formula gives the minimum schedule length imposed by the most frequent tasks and their cooldown. Taking `max(total tasks, frame)` ensures the answer is never smaller than the number of tasks that must actually be executed.
 
 ### Complexity
 
