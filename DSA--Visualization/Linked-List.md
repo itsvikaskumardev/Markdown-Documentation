@@ -748,6 +748,113 @@ while L < R: if arr[L++] ≠ arr[R−−]: return false
 
 return true
 ```
+### Dry Run
+
+This pseudocode checks whether a linked list is a palindrome. A palindrome reads the same forward and backward, such as `[1, 2, 2, 1]`.
+
+Input: `head = [1, 2, 2, 1]`
+
+### 1. Explain the pseudocode line by line
+
+```text
+copy all values into arr
+
+L = 0, R = n − 1
+
+while L < R:
+    if arr[L++] ≠ arr[R−−]:
+        return false
+
+return true
+```
+
+#### Line 1: Copy linked-list values into an array
+
+```text
+copy all values into arr
+```
+
+We copy each node's value into an array so we can easily compare values from both ends.
+
+For our input:
+
+`arr = [1, 2, 2, 1]`
+
+The array has `n = 4` elements.
+
+#### Line 2: Initialize two pointers
+
+```text
+L = 0, R = n − 1
+```
+
+* `L` points to the first element (index `0`).
+* `R` points to the last element (index `3`).
+
+So:
+* `L = 0` → `1`
+* Index 1 → `2`
+* Index 2 → `2`
+* `R = 3` → `1`
+
+#### Line 3: Continue while the pointers have not met
+
+```text
+while L < R:
+```
+
+The loop runs while `L` is smaller than `R`.
+
+We compare the first and last elements, then move inward. Once the pointers meet or cross, all necessary comparisons are complete.
+
+#### Line 4: Compare both ends
+
+```text
+if arr[L++] ≠ arr[R−−]:
+    return false
+```
+
+This line compares the left and right values.
+
+* `arr[L++]` means use `arr[L]` first, then increase `L` by 1.
+* `arr[R−−]` means use `arr[R]` first, then decrease `R` by 1.
+* `≠` means “not equal.”
+
+If the values differ, the list is not a palindrome, so return `false` immediately.
+
+#### Line 5: Return true
+
+```text
+return true
+```
+
+If every pair matches, the linked list is a palindrome, so return `true`.
+
+### 2. Dry run for `[1, 2, 2, 1]`
+
+| Step | `L` before | `R` before | Values compared | Result |
+| :---: | :---: | :---: | :---: | :--- |
+| **1** | 0 | 3 | `arr[0] = 1`, `arr[3] = 1` | Equal; move inward |
+| **2** | 1 | 2 | `arr[1] = 2`, `arr[2] = 2` | Equal; move inward |
+| **3** | 2 | 1 | `L < R` is false | Stop loop |
+
+Both comparisons match, so the code reaches `return true`.
+
+### ✅ Final Output
+
+Output:
+
+# `true`
+
+`[1, 2, 2, 1]` is a palindrome because it reads the same forward and backward.
+
+### 🧠 Key idea
+
+Complexity:
+* Time: O(n) — copy the values and compare pairs.
+* Extra space: O(n) — the array stores all linked-list values.
+
+Interview tip: The array approach is simple to understand. You can also check a linked-list palindrome with O(1) extra space by reversing its second half.
 
 #### 2. Optimized (Reverse the Back Half)
 Find the middle using slow/fast pointers, reverse the second half, then compare the first and reversed second halves.
@@ -767,6 +874,119 @@ while p2: if p1.val ≠ p2.val: return false; advance both
 
 return true
 ```
+
+### Dry Run
+
+This pseudocode checks whether a linked list is a palindrome without copying all values into an array. It uses slow/fast pointers and reverses the second half of the list.
+
+Input: `head = [1, 3, 2, 1, 2, 3, 1]`
+
+### 1. Understand the pseudocode line by line
+
+#### Step 1: Find the middle of the linked list
+
+```text
+slow/fast walk → slow = middle
+```
+
+* `slow` moves one node at a time.
+* `fast` moves two nodes at a time.
+* When `fast` reaches the end, `slow` is around the middle.
+
+For our input, there are 7 nodes, so the middle value is `1` at index `3`.
+
+```text
+1 → 3 → 2 → [1] → 2 → 3 → 1
+                  middle
+```
+
+#### Step 2: Reverse the list after the middle
+
+```text
+reverse the list after middle
+```
+
+The second half originally is:
+
+`2 → 3 → 1`
+
+After reversing it:
+
+`1 → 3 → 2`
+
+The list is now conceptually split into two parts:
+
+* First half (including middle): `1 → 3 → 2 → 1`
+* Reversed second half: `1 → 3 → 2`
+
+#### Step 3: Initialize two pointers
+
+```text
+p1 = head
+p2 = head of reversed half
+```
+
+* `p1` starts at the beginning of the original list.
+* `p2` starts at the beginning of the reversed second half.
+
+For our example:
+
+* `p1` points to `1 → 3 → 2 → 1 ...`
+* `p2` points to `1 → 3 → 2`
+
+#### Step 4: Compare the values
+
+```text
+while p2:
+    if p1.val ≠ p2.val:
+        return false
+    advance both
+```
+
+As long as `p2` is not `NULL`:
+
+1. Compare `p1.val` with `p2.val`.
+2. If they differ, return `false`.
+3. Otherwise, move both pointers forward by one node.
+
+We only need to compare the length of the reversed second half.
+
+#### Step 5: Return true
+
+```text
+return true
+```
+
+If every comparison matches, the list is a palindrome.
+
+### 2. Dry run for `[1, 3, 2, 1, 2, 3, 1]`
+
+After reversing the second half, we compare these values:
+
+| Step | `p1.val` | `p2.val` | Comparison |
+| :---: | :---: | :---: | :--- |
+| **1** | 1 | 1 | Equal |
+| **2** | 3 | 3 | Equal |
+| **3** | 2 | 2 | Equal |
+| **4** | 1 | — | Stop; `p2` is `NULL` |
+
+Every comparison matches, so the code reaches `return true`.
+
+### ✅ Final Output
+
+Output:
+
+# `true`
+
+The linked list `[1, 3, 2, 1, 2, 3, 1]` is a palindrome because its values read the same forward and backward.
+
+### 🧠 Key idea
+
+Complexity:
+* Time: O(n) — finding the middle, reversing the second half, and comparing take linear time.
+* Extra space: O(1) — only pointers are used.
+
+Important: This is conceptual pseudocode. In an actual implementation, for an odd-length list, you skip the middle node when comparing the two halves. Also, reversing the second half modifies the list, so you may reverse it again afterward to restore the original list.
 
 ### Complexity
 
