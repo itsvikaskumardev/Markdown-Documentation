@@ -437,6 +437,137 @@ cur = head; while cur ≠ ∅:
 return false
 ```
 
+### Dry Run
+
+This pseudocode detects whether a linked list contains a cycle (loop). It uses a set called `visited` to remember which nodes it has already visited.
+
+Input: `head = [3, 2, 0, -4]`, `pos = 1`
+
+Here, `pos = 1` means the last node (`-4`) points back to the node at index `1`, which contains `2`. Therefore, the linked list has a cycle.
+
+### 1. Explain the pseudocode line by line
+
+```text
+visited = {}
+cur = head
+
+while cur ≠ ∅:
+    if cur in visited:
+        return true
+    add cur to visited
+    cur = cur.next
+
+return false
+```
+
+#### Line 1: Create an empty set
+
+```text
+visited = {}
+```
+
+* `visited` stores the nodes we have already visited.
+* Initially, it is empty: `{}`.
+
+#### Line 2: Start at the head
+
+```text
+cur = head
+```
+
+`cur` is a pointer to the current node.
+
+Initially, `cur` points to node `3`.
+
+#### Line 3: Check whether the current node exists
+
+```text
+while cur ≠ ∅:
+```
+
+This loop continues as long as `cur` is not `NULL` (∅).
+
+If `cur` becomes `NULL`, we reach the end of the list, meaning there is no cycle.
+
+#### Line 4: Check whether we have seen this node before
+
+```text
+if cur in visited:
+    return true
+```
+
+If the current node is already in `visited`, we have reached the same node again.
+
+That means the linked list contains a cycle, so return `true`.
+
+Important: We check the node itself, not just its value. Two different nodes could contain the same value.
+
+#### Line 5: Remember the current node
+
+```text
+add cur to visited
+```
+
+Store the current node in the set so we can detect it if we encounter it again.
+
+#### Line 6: Move to the next node
+
+```text
+cur = cur.next
+```
+
+Move `cur` forward by one node.
+
+#### Line 7: Return false
+
+```text
+return false
+```
+
+This executes only if the loop reaches `NULL` without finding a previously visited node. It means there is no cycle.
+
+### 2. Dry run for the given input
+
+The linked list looks like this:
+
+Because `pos = 1`, the last node points back to node `2`:
+
+# `3 → 2 → 0 → -4 ──┐`
+# `     ^           │`
+# `     └───────────┘`
+
+Now execute the code step by step:
+
+| Step | `cur` value | Is it in `visited`? | Action | `visited` after action |
+| :---: | :---: | :---: | :--- | :---: |
+| **1** | 3 | No | Add node 3; move to next | `{3}` |
+| **2** | 2 | No | Add node 2; move to next | `{3, 2}` |
+| **3** | 0 | No | Add node 0; move to next | `{3, 2, 0}` |
+| **4** | -4 | No | Add node -4; move to next | `{3, 2, 0, -4}` |
+| **5** | 2 | Yes! | Node 2 was visited before, so return `true` | No change |
+
+Notice the sequence of nodes visited:
+
+`3 → 2 → 0 → -4 → 2 → 0 → -4 → ...`
+
+The node containing `2` is encountered again, so the loop never reaches `NULL`.
+
+### ✅ Final Output
+
+Output:
+
+# `true`
+
+The linked list contains a cycle because the last node points back to the node at index `1`.
+
+### 🧠 Key idea
+
+This approach uses extra space:
+* Time: O(n) — each distinct node is checked once before the cycle is detected.
+* Extra space: O(n) — the `visited` set stores the nodes.
+
+Interview tip: This approach uses extra space. Another common solution is Floyd’s Cycle Detection algorithm, which uses two pointers (`slow` and `fast`) and requires O(1) extra space.
+
 #### 2. Optimized (Floyd’s Two-Speed Pointers)
 Use `slow` moving one step and `fast` moving two steps; if they meet, there is a cycle. If `fast` reaches `null`, there is no cycle.
 
@@ -458,6 +589,132 @@ return false
 // in a loop, fast gains 1 per step → must catch slow
 ```
 
+### Dry Run
+
+This pseudocode detects whether a linked list contains a cycle (loop) using Floyd’s Cycle Detection Algorithm, also called the Slow and Fast Pointer method.
+
+Input: `head = [1, 2]`, `pos = 0`
+
+Here, `pos = 0` means the last node (`2`) points back to the node at index `0` (`1`). So the linked list contains a cycle.
+
+### 1. Explain the pseudocode line by line
+
+```text
+slow = fast = head
+
+while fast and fast.next:
+    slow = slow.next
+    fast = fast.next.next
+
+    if slow == fast:
+        return true
+
+return false
+```
+
+#### Line 1: Initialize both pointers
+
+```text
+slow = fast = head
+```
+
+Both pointers start at the first node.
+
+* `slow` moves one node at a time.
+* `fast` moves two nodes at a time.
+
+Initially, both point to node `1`.
+
+#### Line 2: Check whether fast can move
+
+```text
+while fast and fast.next:
+```
+
+The loop continues as long as:
+
+* `fast` is not `NULL`.
+* `fast.next` is not `NULL`.
+
+This ensures that `fast` can safely move two nodes forward.
+
+#### Line 3: Move the slow pointer
+
+```text
+slow = slow.next
+```
+
+Move `slow` forward by one node.
+
+For example, if `slow` points to node `1`, it moves to node `2`.
+
+#### Line 4: Move the fast pointer
+
+```text
+fast = fast.next.next
+```
+
+Move `fast` forward by two nodes.
+
+Because the linked list contains a cycle, `fast` will keep moving around the loop.
+
+#### Line 5: Compare the pointers
+
+```text
+if slow == fast:
+    return true
+```
+
+If both pointers reach the same node, a cycle exists.
+
+Why? In a cycle, `fast` moves faster than `slow`, so eventually it catches up with `slow`.
+
+#### Line 6: Return false
+
+```text
+return false
+```
+
+If `fast` reaches `NULL`, there is no cycle.
+
+### 2. Dry run for `head = [1, 2], pos = 0`
+
+Because `pos = 0`, node `2` points back to node `1`.
+
+Linked list with a cycle:
+
+# `1 ⇄ 2` (Node 2 points back to node 1)
+
+### Step-by-step execution
+
+| Step | `slow` | `fast` | What happens? |
+| :---: | :---: | :---: | :--- |
+| **Initial** | 1 | 1 | Both start at node 1 |
+| **Iteration 1** | 2 | 1 | `slow` moves to 2; `fast` moves two steps: 1 → 2 → 1 |
+| **After iteration 1** | 2 | 1 | Pointers are different, continue |
+| **Iteration 2** | 1 | 1 | `slow` moves to 1; `fast` moves two steps and returns to 1 |
+| **After iteration 2** | 1 | 1 | Both point to the same node, return `true` |
+
+Notice that `fast` can move two steps even with only two nodes because the list loops back to node `1`.
+
+### ✅ Final Output
+
+Output:
+
+# `true`
+
+A cycle exists because `slow` and `fast` eventually meet at the same node.
+
+### 🧠 Key idea
+
+* `slow = slow.next` → moves 1 step.
+* `fast = fast.next.next` → moves 2 steps.
+* `slow == fast` → cycle detected.
+* `fast == NULL` or `fast.next == NULL` → no cycle.
+
+Complexity:
+* Time: O(n)
+* Extra space: O(1), because only two pointers are used and no set is needed.
 ### Complexity
 
 | Approach | Time | Space |
