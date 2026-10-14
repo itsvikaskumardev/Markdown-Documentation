@@ -289,6 +289,7 @@ permute(path, used):
 
 > **Backtracking · One digit per tree level · Choose one letter per digit**
 
+- DSA 5 page no: 180
 ### Approaches
 
 #### 1. Optimized (Backtracking)
@@ -313,6 +314,186 @@ combine(index, path):
 
         path.pop()              // un-choose (backtrack)
 ```
+### Dry Run
+
+This pseudocode solves the Letter Combinations of a Phone Number problem using recursion and backtracking.
+
+Given a string of digits, we generate all possible letter combinations using the letters mapped to each digit on a phone keypad.
+
+Input: `digits = "23"`
+
+On a phone keypad:
+
+| Digit | Letters |
+| :---: | :---: |
+| **2** | ABC |
+| **3** | DEF |
+| **4** | GHI |
+| **5** | JKL |
+| **6** | MNO |
+| **7** | PQRS |
+| **8** | TUV |
+| **9** | WXYZ |
+
+Digit `2` gives `A, B, C`, and digit `3` gives `D, E, F`.
+
+### 1. Explain the pseudocode line by line
+
+```text
+combine(index, path):
+    if index == len(digits):
+        record path
+        return
+
+    for letter in keypad[digits[index]]:
+        path.push(letter)
+        combine(index+1, path)
+        path.pop()
+```
+
+#### Line 1: `combine(index, path)`
+
+- `index` tells us which digit we are currently processing.
+- `path` stores the letters selected so far.
+
+Initially:
+
+```text
+index = 0
+path = ""
+digits = "23"
+```
+
+#### Line 2: Check whether all digits are processed
+
+```text
+if index == len(digits):
+```
+
+The input `"23"` has length `2`.
+
+When `index == 2`, both digits have been processed, so we have a complete combination.
+
+#### Line 3: Record the combination
+
+```text
+record path
+return
+```
+
+Save the current `path` as one answer and return from that recursive call.
+
+For example, if `path = "ad"`, record `"ad"`.
+
+#### Line 4: Loop through the current digit's letters
+
+```text
+for letter in keypad[digits[index]]:
+```
+
+Get all letters mapped to the current digit.
+
+- At `index = 0`, digit `2` gives `A, B, C`.
+- At `index = 1`, digit `3` gives `D, E, F`.
+
+#### Line 5: Choose a letter
+
+```text
+path.push(letter)
+```
+
+Add a letter to the current combination.
+
+Example:
+
+`"" → "a"`
+
+#### Line 6: Process the next digit
+
+```text
+combine(index+1, path)
+```
+
+Move to the next digit and choose one of its letters.
+
+Example:
+
+`combine(1, "a")`
+
+Now the algorithm chooses `d`, `e`, and `f`, creating `"ad"`, `"ae"`, and `"af"`.
+
+#### Line 7: Backtrack
+
+```text
+path.pop()
+```
+
+Remove the last letter after exploring that choice, so we can try another letter.
+
+Example:
+
+`"ad" → "a"`
+
+Now we can try `"e"` instead of `"d"`.
+
+### 2. Dry run for `digits = "23"`
+
+The recursion explores each letter for digit `2`, and then every letter for digit `3`.
+
+Search tree:
+
+```text
+path = ""
+ └─ Choose 'a' (digit 2)
+      ├─ Choose 'd' (digit 3) → "ad" ✅
+      ├─ Choose 'e' (digit 3) → "ae" ✅
+      └─ Choose 'f' (digit 3) → "af" ✅
+ └─ Choose 'b' (digit 2)
+      ├─ Choose 'd' (digit 3) → "bd" ✅
+      ├─ Choose 'e' (digit 3) → "be" ✅
+      └─ Choose 'f' (digit 3) → "bf" ✅
+ └─ Choose 'c' (digit 2)
+      ├─ Choose 'd' (digit 3) → "cd" ✅
+      ├─ Choose 'e' (digit 3) → "ce" ✅
+      └─ Choose 'f' (digit 3) → "cf" ✅
+```
+
+### Step-by-step execution
+
+| Step | Action | `path` | Result |
+| :---: | :--- | :---: | :--- |
+| **1** | Choose `a` for digit 2 | `"a"` | Continue to digit 3 |
+| **2** | Choose `d` | `"ad"` | Record `"ad"` |
+| **3** | Backtrack; choose `e` | `"ae"` | Record `"ae"` |
+| **4** | Backtrack; choose `f` | `"af"` | Record `"af"` |
+| **5** | Backtrack; choose `b` | `"b"` | Start next group |
+| **6** | Choose `d`, `e`, `f` | `"bd"`, `"be"`, `"bf"` | Record all three |
+| **7** | Backtrack; choose `c` | `"c"` | Start final group |
+| **8** | Choose `d`, `e`, `f` | `"cd"`, `"ce"`, `"cf"` | Record all three |
+
+Each output contains exactly two letters: one from digit `2` and one from digit `3`.
+
+### ✅ Final Output
+
+### All letter combinations:
+
+* `"ad"`, `"ae"`, `"af"`
+* `"bd"`, `"be"`, `"bf"`
+* `"cd"`, `"ce"`, `"cf"`
+
+Output:
+
+# `["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]`
+
+Total combinations: \\(3 \times 3 = 9\\)
+
+### 🧠 Key idea
+
+Complexity:
+- Time: \\(O(3^m \times 4^n \times (m+n))\\) in the general keypad case, commonly expressed as \\(O(4^k \cdot k)\\) as an upper bound, where \\(k\\) is the number of digits.
+- Auxiliary space: \\(O(k)\\) for the recursion stack and current path, excluding the output.
+
+Interview tip: `path.push(letter)` chooses a letter, the recursive call processes the next digit, and `path.pop()` undoes the choice so another letter can be tried.
 
 ### Complexity
 
@@ -370,6 +551,7 @@ gen(s, opens, closes):
 **LeetCode #39** · [LeetCode](https://leetcode.com/problems/combination-sum/) · **Medium**
 
 > **Backtracking · Reuse allowed · Overshoot pruning**
+- DSA 5 : pg no : 169
 
 ### Approaches
 
@@ -396,6 +578,198 @@ combo(start, rem, path):
     return
 ```
 
+### Dry Run
+
+This pseudocode solves the Combination Sum problem using recursion and backtracking.
+
+The goal is to find all combinations of candidates that add up to the target. You can reuse the same candidate multiple times.
+
+Input:
+
+- `candidates = [2, 3, 6, 7]`
+- `target = 7`
+
+### 1. Explain the pseudocode line by line
+
+```text
+combo(start, rem, path):
+    if rem == 0:
+        record path
+        return
+
+    for i in start..n−1:
+        if cand[i] > rem:
+            prune
+            continue
+
+        path.push(cand[i])
+        combo(i, rem − cand[i], path)
+        path.pop()
+
+    return
+```
+
+#### Line 1: `combo(start, rem, path)`
+
+This function has three parameters:
+
+- `start`: index where we begin checking candidates.
+- `rem`: remaining target we need to make.
+- `path`: current combination we are building.
+
+Initially:
+
+```text
+start = 0
+rem = 7
+path = []
+```
+
+#### Line 2: Check whether the target is reached
+
+```text
+if rem == 0:
+    record path
+    return
+```
+
+If `rem` becomes `0`, the combination adds up exactly to `7`.
+
+For example, if `path = [2, 2, 3]`:
+
+\\[ 2+2+3=7 \\]
+
+Record `[2, 2, 3]` as a valid answer and return from that recursive call.
+
+#### Line 3: Loop through candidates
+
+```text
+for i in start..n−1:
+```
+
+Try candidates starting from index `start`.
+
+The candidates are:
+
+| Index | Candidate |
+| :---: | :---: |
+| **0** | 2 |
+| **1** | 3 |
+| **2** | 6 |
+| **3** | 7 |
+
+#### Line 4: Prune candidates that are too large
+
+```text
+if cand[i] > rem:
+    prune
+    continue
+```
+
+If the candidate is greater than the remaining target, skip it.
+
+For example, if `rem = 1` and the next candidate is `2`, we skip `2` because it would exceed the remaining target.
+
+This works because the candidates are sorted and positive.
+
+#### Line 5: Choose a candidate
+
+```text
+path.push(cand[i])
+```
+
+Add the candidate to the current combination.
+
+Example:
+
+→ [2]
+
+#### Line 6: Explore recursively
+
+```text
+combo(i, rem − cand[i], path)
+```
+
+Subtract the chosen candidate from `rem` and search for the remaining sum.
+
+Important: The next call uses `i`, not `i + 1`. This allows the same candidate to be selected again.
+
+Example:
+
+```text
+path = [2]
+rem = 5
+```
+
+Choosing `2` again gives:
+
+```text
+path = [2, 2]
+rem = 3
+```
+
+#### Line 7: Backtrack
+
+```text
+path.pop()
+```
+
+Remove the last candidate after exploring that choice.
+
+Example:
+
+`[2, 2, 3] → [2, 2]`
+
+This lets the algorithm try another candidate.
+
+### 2. Dry run for `candidates = [2, 3, 6, 7]`, `target = 7`
+
+The algorithm tries each candidate and explores possible combinations.
+
+Search tree (showing the successful paths and key pruned branches):
+
+```text
+path = [], rem = 7
+ └─ Choose 2 → [2], rem = 5
+      └─ Choose 2 again → [2, 2], rem = 3
+           ├─ Choose 2 → [2, 2, 2], rem = 1 (pruned: 2 > 1)
+           └─ Choose 3 → [2, 2, 3], rem = 0 ✅ (Valid combination!)
+ └─ Backtrack to path = [], rem = 7
+ └─ Choose 7 directly → [7], rem = 0 ✅ (Valid combination!)
+```
+
+### Important recursive steps
+
+| Current `path` | Remaining `rem` | Action |
+| :---: | :---: | :--- |
+| `[]` | 7 | Choose 2 |
+| `[2]` | 5 | Choose 2 again |
+| `[2, 2]` | 3 | Choose 2 again; remaining becomes 1 |
+| `[2, 2, 2]` | 1 | Skip 2 and 3 because both exceed 1; backtrack |
+| `[2, 2]` | 3 | Choose 3 |
+| `[2, 2, 3]` | 0 | Record `[2, 2, 3]` |
+| `[]` | 7 | Backtrack and try 3, then 6 |
+| `[]` | 7 | Choose 7 |
+| `[7]` | 0 | Record `[7]` |
+
+The combination `[2, 2, 3]` is found first. After backtracking, the algorithm eventually finds `[7]`.
+
+### ✅ Final Output
+
+### Valid combinations:
+
+* `[2, 2, 3]` (2 + 2 + 3 = 7)
+* `[7]` (7 = 7)
+
+Output:
+
+# `[[2, 2, 3], [7]]`
+
+### 🧠 Key idea
+
+Complexity: The search can take exponential time in the target value because candidates can be reused. Auxiliary recursion/path space is proportional to the maximum combination length, approximately \\(O(\text{target}/\min(\text{candidates}))\\), excluding the output.
+
+Interview tip: `combo(i, ...)` allows reuse of the current candidate. If you used `combo(i + 1, ...)`, each candidate could be used at most once.
 ### Complexity
 
 | Approach | Time | Space |
