@@ -16,6 +16,7 @@
 **LeetCode #20** · [LeetCode](https://leetcode.com/problems/valid-parentheses/) · **Easy**
 
 > **Stack · LIFO · The top bracket must close next**
+- DSA 05: pg no : 214
 
 ### Approaches
 
@@ -435,6 +436,7 @@ for i ← 0 to n − 1:
 
 > **Stack · Twin stacks · Track minimum in O(1)**
 
+- DSA 5 pg no : 215
 ### Approaches
 
 #### 1. Brute Force
