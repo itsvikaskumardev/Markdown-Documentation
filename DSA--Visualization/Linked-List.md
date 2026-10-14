@@ -1022,6 +1022,114 @@ cur.next = cur.next.next     // splice
 return head
 ```
 
+### Dry Run
+
+This pseudocode removes the Nth node from the end of a linked list.
+
+Input: `head = [1, 2, 3, 4, 5]`, `n = 2`
+
+We need to remove the 2nd node from the end, which is node `4`.
+
+### 1. Explain the pseudocode line by line
+
+#### Line 1: Count the nodes
+
+```text
+L = count the nodes     // pass 1
+```
+
+Count how many nodes are in the linked list.
+
+Input:
+
+`1 → 2 → 3 → 4 → 5 → NULL`
+
+There are 5 nodes, so:
+
+`L = 5`
+
+#### Line 2: Walk to the node before the target
+
+```text
+walk to node (L − n − 1)    // pass 2
+```
+
+Calculate the index of the node just before the one we want to remove.
+
+\\[ L-n-1=5-2-1=2 \\]
+
+Using zero-based indexing:
+
+| Index | Node value |
+| :---: | :--- |
+| **0** | 1 |
+| **1** | 2 |
+| **2** | 3 |
+| **3** | 4 ← Remove this node |
+| **4** | 5 |
+
+So, move `cur` to node `3`, at index `2`.
+
+#### Line 3: Skip the target node
+
+```text
+cur.next = cur.next.next
+```
+
+This is the most important line.
+
+Before:
+
+`3 → 4 → 5`
+
+- `cur` points to node `3`.
+- `cur.next` points to node `4`.
+- `cur.next.next` points to node `5`.
+
+The statement changes the next pointer of node `3` to point directly to node `5`.
+
+After:
+
+`3 → 5`
+
+Node `4` is now disconnected from the linked list.
+
+#### Line 4: Return the head
+
+```text
+return head
+```
+
+Return the updated linked list, starting from node `1`.
+
+### 2. Complete dry run
+
+Original list:
+
+# `1 → 2 → 3 → 4 → 5`
+
+Count = 5 nodes; the 2nd node from the end is 4.
+
+After `cur.next = cur.next.next`:
+
+# `1 → 2 → 3 → 5 → NULL`
+
+### ✅ Final Output
+
+Output:
+
+# `[1, 2, 3, 5]`
+
+Node `4` has been removed because it was the 2nd node from the end.
+
+### 🧠 Key idea
+
+Complexity:
+- Time: O(n) — one pass to count and another to reach the target's predecessor.
+- Extra space: O(1) — only a few pointers and variables are needed.
+
+Important edge case: This pseudocode needs an extra check when the node to remove is the head itself (`n = L`). In that case, return `head.next` instead of trying to access the predecessor.
+
 #### 2. Optimized (One Pass, Gap of `n`)
 Move `fast` `n` steps ahead, then move `slow` and `fast` together; when `fast` reaches the end, `slow` is at the node before the target. Use a dummy node to handle removing the head.
 
@@ -1040,6 +1148,124 @@ slow.next = slow.next.next    // splice
 
 return head
 ```
+
+### Dry Run
+
+This pseudocode removes the Nth node from the end of a linked list using the two-pointer technique. Unlike the previous method, it does not need to count all the nodes first.
+
+Input: `head = [1, 2, 3, 4, 5]`, `n = 2`
+
+We need to remove node `4`, because it is the second node from the end.
+
+### 1. Explain the pseudocode line by line
+
+#### Line 1: Move `fast` forward by `n` hops
+
+```text
+fast = head advanced n hops
+```
+
+Since `n = 2`, move `fast` two nodes forward from the head.
+
+- Initially, `fast` points to node `1`.
+- After one hop, it points to node `2`.
+- After two hops, it points to node `3`.
+
+Now `fast` points to `3`.
+
+#### Line 2: Initialize `slow`
+
+```text
+slow = head
+```
+
+`slow` starts at node `1`.
+
+Our pointers are now:
+
+- `slow` → node `1`
+- `fast` → node `3`
+
+There is a gap of two links between them.
+
+#### Line 3: Move both pointers together
+
+```text
+while fast is not the last node:
+    slow++, fast++     // gap stays n
+```
+
+Move both pointers one node forward at a time, maintaining the gap between them.
+
+| Step | `slow` | `fast` |
+| :---: | :---: | :---: |
+| **Initial** | 1 | 3 |
+| **Move 1** | 2 | 4 |
+| **Move 2** | 3 | 5 |
+
+Now `fast` is at the last node, `5`, so the loop stops.
+
+Why does this work? Because `slow` is always two nodes behind `fast`. When `fast` reaches the last node, `slow` reaches node `3`, the node immediately before the target node `4`.
+
+#### Line 4: Remove the target node
+
+```text
+slow.next = slow.next.next
+```
+
+Currently:
+
+- `slow` points to node `3`.
+- `slow.next` points to node `4`.
+- `slow.next.next` points to node `5`.
+
+This statement makes node `3` point directly to node `5`.
+
+Before:
+
+`3 → 4 → 5`
+
+After:
+
+`3 → 5`
+
+Node `4` is removed from the linked list.
+
+#### Line 5: Return the head
+
+```text
+return head
+```
+
+Return the updated list starting from node `1`.
+
+### 2. Visual dry run
+
+Original list:
+
+# `1 → 2 → 3 → 4 → 5`
+
+After moving the pointers: `slow = 3`, `fast = 5`.
+
+After removing node 4:
+
+# `1 → 2 → 3 → 5 → NULL`
+
+### ✅ Final Output
+
+Output:
+
+# `[1, 2, 3, 5]`
+
+Node `4` is removed because it is the 2nd node from the end.
+
+### 🧠 Key idea
+
+Complexity:
+- Time: O(n)
+- Extra space: O(1)
+
+Important correction: Your pseudocode says `while fast is not the last node`. That is correct for this version, where `fast` starts exactly `n` hops ahead. In implementations that move `fast` only `n - 1` hops ahead, the loop condition is usually `while fast.next != NULL`. The initialization and loop condition must match.
 
 ### Complexity
 
