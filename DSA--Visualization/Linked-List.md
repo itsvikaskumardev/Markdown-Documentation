@@ -38,6 +38,123 @@ while curr:
 
 return prev               // new head
 ```
+### Dry Run
+
+We need to reverse a singly linked list using the given pseudocode.
+
+### Given input
+
+```text
+head = [1, 2, 3, 4, 5]
+```
+
+Original linked list:
+
+# `1 → 2 → 3 → 4 → 5 → null`
+
+### 1. Explain the pseudocode line by line
+
+Line 1: `prev ← ∅`
+
+Initialize `prev` as `null`. It represents the previous node when reversing the links.
+
+Line 2: `curr ← head`
+
+Set `curr` to the first node of the list, which contains `1`.
+
+Line 3: `while curr:`
+
+Keep looping while `curr` is not `null`. This means there is still a node to process.
+
+Line 4: `next ← curr.next`
+
+Save the next node before changing the link. Otherwise, we could lose access to the remaining list.
+
+Line 5: `curr.next ← prev`
+
+Reverse the current node's arrow so it points backward to `prev`.
+
+Line 6: `prev ← curr; curr ← next`
+
+* `prev ← curr`: Move `prev` to the node just processed.
+* `curr ← next`: Move `curr` to the next unprocessed node.
+
+Line 7: `return prev`
+
+When `curr` becomes `null`, all links have been reversed. `prev` points to the new head of the list.
+
+### 2. Dry run step by step
+
+#### Initial state
+
+* `prev = null`
+* `curr = 1`
+
+#### Iteration 1
+
+* `next = 2`
+* Reverse the link: `1 → null`
+* Move `prev = 1`, `curr = 2`
+
+Reversed part: `1 → null`
+
+#### Iteration 2
+
+* `next = 3`
+* Reverse the link: `2 → 1`
+* Move `prev = 2`, `curr = 3`
+
+Reversed part: `2 → 1 → null`
+
+#### Iteration 3
+
+* `next = 4`
+* Reverse the link: `3 → 2`
+* Move `prev = 3`, `curr = 4`
+
+Reversed part: `3 → 2 → 1 → null`
+
+#### Iteration 4
+
+* `next = 5`
+* Reverse the link: `4 → 3`
+* Move `prev = 4`, `curr = 5`
+
+Reversed part: `4 → 3 → 2 → 1 → null`
+
+#### Iteration 5
+
+* `next = null`
+* Reverse the link: `5 → 4`
+* Move `prev = 5`, `curr = null`
+
+Reversed list: `5 → 4 → 3 → 2 → 1 → null`
+
+#### Loop ends
+
+`curr = null`, so the loop stops. Return `prev`, which points to node `5`.
+
+### 3. Dry-run summary
+
+| Iteration | `curr` | `next` | `prev` after update |
+| :---: | :---: | :---: | :---: |
+| **1** | 1 | 2 | 1 |
+| **2** | 2 | 3 | 2 |
+| **3** | 3 | 4 | 3 |
+| **4** | 4 | 5 | 4 |
+| **5** | 5 | null | 5 |
+
+### ✅ Final Output
+
+Reversed linked list:
+
+# `[5, 4, 3, 2, 1]`
+
+Final answer: `[5, 4, 3, 2, 1]`
+
+### 🧠 Key idea
+
+Remember the three key steps: save the next node, reverse the current link, then move `prev` and `curr` forward.
 
 #### 2. Recursive
 Recursively reverse the remaining list, then make `head.next.next = head` and set `head.next = null`.
@@ -57,6 +174,144 @@ reverse(head):
 
     return newHead
 ```
+
+### Dry Run
+
+This pseudocode reverses a linked list using recursion. Unlike the iterative method, which uses a `while` loop, this method calls the same function again and again until it reaches the last node.
+
+Input: `head = [1, 2, 3, 4, 5]`
+
+### 1. Understand the pseudocode line by line
+
+```text
+reverse(head):
+    if head is ∅ or head.next is ∅:
+        return head
+
+    newHead ← reverse(head.next)
+
+    head.next.next ← head
+    head.next ← ∅
+
+    return newHead
+```
+
+#### Line 1: Base condition
+
+```text
+if head is ∅ or head.next is ∅:
+    return head
+```
+
+* `head is ∅` means the linked list is empty.
+* `head.next is ∅` means there is only one node left.
+* In either case, the list is already reversed, so return `head`.
+
+For our input, the recursion continues until it reaches node `5`, because `5.next = ∅`.
+
+#### Line 2: Recursive call
+
+```text
+newHead ← reverse(head.next)
+```
+
+This calls `reverse()` on the next node.
+
+For example:
+
+* `reverse(1)` calls `reverse(2)`.
+* `reverse(2)` calls `reverse(3)`.
+* `reverse(3)` calls `reverse(4)`.
+* `reverse(4)` calls `reverse(5)`.
+
+At node `5`, the base condition is satisfied, so `5` is returned as `newHead`.
+
+Important: The recursive calls now start returning in reverse order, from node `5` back toward node `1`.
+
+#### Line 3: Reverse the link
+
+```text
+head.next.next ← head
+```
+
+This is the most important line.
+
+Suppose `head = 4`, and `head.next = 5`.
+
+Originally:
+
+`4 → 5 → NULL`
+
+The statement `head.next.next ← head` means:
+
+`5.next = 4`
+
+Now the link points backward:
+
+`5 → 4`
+
+#### Line 4: Remove the old forward link
+
+```text
+head.next ← ∅
+```
+
+This sets the next pointer of the current node to `NULL`.
+
+For example, when `head = 4`, it sets `4.next = NULL`, so the old forward connection from `4` to `5` is removed.
+
+This prevents the list from keeping the old link in the wrong direction.
+
+#### Line 5: Return the new head
+
+```text
+return newHead
+```
+
+Return node `5`, which became the first node of the reversed linked list. Every recursive call returns the same `newHead`.
+
+### 2. Dry run with input `[1, 2, 3, 4, 5]`
+
+#### Step A: Recursive calls go down
+
+The function keeps calling the next node.
+
+* `reverse(1)`
+* `reverse(2)`
+* `reverse(3)`
+* `reverse(4)`
+* `reverse(5)` — base condition reached
+
+At node `5`, the function returns `5`. Now the remaining calls execute their statements while returning.
+
+#### Step B: Recursive calls return and reverse links
+
+| Current `head` | Statement | Result |
+| :---: | :--- | :--- |
+| **4** | `5.next = 4`, then `4.next = NULL` | `5 → 4` |
+| **3** | `4.next = 3`, then `3.next = NULL` | `5 → 4 → 3` |
+| **2** | `3.next = 2`, then `2.next = NULL` | `5 → 4 → 3 → 2` |
+| **1** | `2.next = 1`, then `1.next = NULL` | `5 → 4 → 3 → 2 → 1` |
+
+Notice that `newHead` remains node `5` throughout the process.
+
+### 3. Final output
+
+Original linked list:
+
+# `1 → 2 → 3 → 4 → 5 → NULL`
+
+Reversed linked list:
+
+# `[5, 4, 3, 2, 1]`
+
+Output: `[5, 4, 3, 2, 1]`
+
+### 🧠 Key idea
+
+1. `reverse(head.next)` goes all the way to the last node first.
+2. `head.next.next = head` flips the link backward.
+3. `head.next = NULL` removes the old forward link.
 
 ### Complexity
 

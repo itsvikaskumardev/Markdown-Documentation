@@ -457,6 +457,128 @@ top():    return main.top()
 getMin(): return mins.top()
 ```
 
+### Dry Run
+
+We need to find the output of MinStack, a stack that supports `push`, `pop`, `top`, and `getMin` in O(1) time.
+
+### 1. Explain the pseudocode line by line
+
+We maintain two stacks:
+
+* `main`: stores all the values pushed into the stack.
+* `mins`: stores the minimum value at each corresponding stack position.
+
+Line 1: `push(x): main.push(x); mins.push(min(x, mins.top))`
+
+When pushing a value `x`:
+
+1. Push `x` into `main`.
+2. Push the smaller of `x` and the previous minimum into `mins`.
+
+If `mins` is empty, use `x` as the minimum for the first element.
+
+Line 2: `pop(): main.pop(); mins.pop()`
+
+Remove the top element from both stacks to keep them in sync.
+
+Line 3: `top(): return main.top()`
+
+Return the top value from `main` without removing it.
+
+Line 4: `getMin(): return mins.top()`
+
+Return the top value of `mins`, which represents the minimum of all values currently in `main`.
+
+### 2. Dry run step by step
+
+Given:
+
+```text
+Operations: ["MinStack", "push", "push", "push", "getMin", "pop", "top", "getMin"]
+Arguments:  [[], [-2], [0], [-3], [], [], [], []]
+```
+
+#### Step 1: `MinStack()`
+
+Create two empty stacks.
+
+* `main`: `[]`
+* `mins`: `[]`
+
+Returned value: `null`
+
+#### Step 2: `push(-2)`
+
+* Push `-2` into `main`.
+* Since `mins` is empty, push `-2` as the current minimum.
+
+* `main`: `[-2]`
+* `mins`: `[-2]`
+
+Returned value: `null`
+
+#### Step 3: `push(0)`
+
+* Push `0` into `main`.
+* Compare `0` with the previous minimum `-2`.
+* `min(0, -2) = -2`, so push `-2` into `mins`.
+
+* `main`: `[-2, 0]`
+* `mins`: `[-2, -2]`
+
+Returned value: `null`
+
+#### Step 4: `push(-3)`
+
+* Push `-3` into `main`.
+* Compare `-3` with the previous minimum `-2`.
+* `min(-3, -2) = -3`, so push `-3` into `mins`.
+
+* `main`: `[-2, 0, -3]`
+* `mins`: `[-2, -2, -3]`
+
+Returned value: `null`
+
+#### Step 5: `getMin()`
+
+The top of `mins` is `-3`.
+
+Returned value: `-3`
+
+#### Step 6: `pop()`
+
+Remove the top element from both stacks.
+
+* Remove `-3` from `main`.
+* Remove `-3` from `mins`.
+
+* `main`: `[-2, 0]`
+* `mins`: `[-2, -2]`
+
+Returned value: `null`
+
+#### Step 7: `top()`
+
+The top of `main` is `0`.
+
+Returned value: `0`
+
+#### Step 8: `getMin()`
+
+The top of `mins` is `-2`.
+
+Returned value: `-2`
+
+### ✅ Final Output
+
+Output array, in operation order:
+
+# `[null, null, null, null, -3, null, 0, -2]`
+
+### 🧠 Key idea
+
+After `pop()` removes `-3`, the top of `mins` returns to `-2`. This allows `getMin()` to instantly return the current minimum in O(1) time without rescanning the stack.
+
 ### Complexity
 
 | Approach | Time | Space |
