@@ -537,6 +537,177 @@ gen(s, opens, closes):
 
 // answer = all recorded strings
 ```
+### Dry Run
+
+This pseudocode generates all valid combinations of `n` pairs of parentheses using recursion and backtracking.
+
+Input: `n = 3`
+
+We need to generate strings containing 3 opening parentheses `(` and 3 closing parentheses `)`, while ensuring that every closing parenthesis has a matching opening parenthesis before it.
+
+### 1. Explain the pseudocode line by line
+
+```text
+gen(s, opens, closes):
+    if s.length == 2n:
+        record s
+        return
+
+    if opens < n:
+        gen(s + "(", opens + 1, closes)
+
+    if closes < opens:
+        gen(s + ")", opens, closes + 1)
+
+    return
+```
+
+#### Line 1: `gen(s, opens, closes)`
+
+The function has three parameters:
+
+- `s`: the string being constructed.
+- `opens`: the number of opening parentheses used.
+- `closes`: the number of closing parentheses used.
+
+Initially:
+
+```text
+s = ""
+opens = 0
+closes = 0
+n = 3
+```
+
+#### Line 2: Check whether the string is complete
+
+```text
+if s.length == 2n:
+    record s
+    return
+```
+
+Since `n = 3`, the string must contain \\(2 \times 3 = 6\\) characters.
+
+When `s.length == 6`, record the string and return.
+
+For example, `"((()))"` has 6 characters, so it is complete.
+
+#### Line 3: Choose an opening parenthesis
+
+```text
+if opens < n:
+    gen(s + "(", opens + 1, closes)
+```
+
+We can add `(` only while fewer than 3 opening parentheses have been used.
+
+For example:
+
+```text
+s = ""
+```
+
+Adding `(` gives:
+
+```text
+s = "("
+opens = 1
+closes = 0
+```
+
+The recursive call explores this choice further.
+
+#### Line 4: Choose a closing parenthesis
+
+```text
+if closes < opens:
+    gen(s + ")", opens, closes + 1)
+```
+
+We can add `)` only when `closes < opens`.
+
+This prevents invalid strings such as `")("`, because we cannot close a parenthesis before opening one.
+
+For example, if:
+
+```text
+opens = 2
+closes = 1
+```
+
+We can add `)` because \\(1 < 2\\).
+
+#### Line 5: Return and backtrack
+
+```text
+return
+```
+
+Each recursive call returns to its previous call after exploring a choice. The algorithm then tries the other valid choice.
+
+Unlike an array-based backtracking algorithm, this pseudocode creates a new string with `s + "("` or `s + ")"`, so it doesn't need an explicit `pop()`.
+
+### 2. Dry run for `n = 3`
+
+Let's explore the valid strings.
+
+Start with an empty string. Add only parentheses that satisfy the rules:
+
+```text
+""
+ └─ Add '(' → "("
+      ├─ Add '(' → "(("
+      │    ├─ Add '(' → "(((" → Add ')' → "((()" → Add ')' → "((())" → Add ')' → "((()))" ✅
+      │    └─ Add ')' → "(()"
+      │         ├─ Add '(' → "(()(" → Add ')' → "(()()" → Add ')' → "(()())" ✅
+      │         └─ Add ')' → "(())" → Add '(' → "(())(" → Add ')' → "(())()" ✅
+      └─ Add ')' → "()"
+           └─ Add '(' → "()("
+                ├─ Add '(' → "()((" → Add ')' → "()(()" → Add ')' → "()(())" ✅
+                └─ Add ')' → "()()" → Add '(' → "()()(" → Add ')' → "()()()" ✅
+```
+
+### Example: How `"((()))"` is generated
+
+| Step | Action | `s` | `opens` | `closes` |
+| :---: | :--- | :---: | :---: | :---: |
+| **1** | Start | `""` | 0 | 0 |
+| **2** | Add `(` | `"("` | 1 | 0 |
+| **3** | Add `(` | `"(("` | 2 | 0 |
+| **4** | Add `(` | `"((("` | 3 | 0 |
+| **5** | Add `)` | `"((()"` | 3 | 1 |
+| **6** | Add `)` | `"((())"` | 3 | 2 |
+| **7** | Add `)` | `"((()))"` | 3 | 3 |
+| **8** | Length is 6 | `"((()))"` | 3 | 3 |
+
+The string is recorded because its length is 6 and all parentheses are matched.
+
+The algorithm explores other branches as well, producing four more valid strings.
+
+### ✅ Final Output
+
+### Valid parentheses combinations for `n = 3`:
+
+1. `"((()))"`
+2. `"(()())"`
+3. `"(())()"`
+4. `"()(())"`
+5. `"()()()"`
+
+Output:
+
+# `["((()))", "(()())", "(())()", "()(())", "()()()"]`
+
+Total valid combinations: 5
+
+### 🧠 Key idea
+
+Remember the two rules:
+- `opens < n` — you can add an opening parenthesis if fewer than `n` have been used.
+- `closes < opens` — you can add a closing parenthesis only if there is an unmatched opening parenthesis.
+
+Complexity: The number of valid strings is the \\(n\\)-th Catalan number. For `n = 3`, there are 5 strings. The algorithm uses \\(O(n)\\) recursion depth, excluding the output; generating and storing all strings requires output space proportional to the total length of all results.
 
 ### Complexity
 
