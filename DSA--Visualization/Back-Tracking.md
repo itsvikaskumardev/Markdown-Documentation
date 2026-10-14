@@ -62,6 +62,7 @@ dfs(r, c, i):                  // board[r][c] == word[i]
 
 > **Backtracking · Choose / un-choose · Every node is a subset**
 
+- DSA 05: pg no : 165
 ### Approaches
 
 #### 1. Optimized (Backtracking)
@@ -82,6 +83,160 @@ subsets(start, path):
 
         path.pop()              // un-choose (backtrack)
 ```
+### Dry Run
+
+This pseudocode generates all possible subsets of an array using backtracking.
+
+Input: `nums = [1, 2, 3]`
+
+A subset is any combination of elements, including the empty subset `[]` and the complete subset `[1, 2, 3]`.
+
+For an array of \\(n\\) elements, the total number of subsets is \\(2^n\\). Here, \\(2^3 = 8\\) subsets.
+
+### 1. Explain the pseudocode line by line
+
+```text
+subsets(start, path):
+    record path
+    for i in start..n−1:
+        path.push(arr[i])
+        subsets(i+1, path)
+        path.pop()
+```
+
+#### Line 1: `subsets(start, path)`
+
+- `start` tells us the index from which to choose elements.
+- `path` stores the subset we are currently building.
+
+Initially:
+
+`start = 0`, `path = []`
+
+#### Line 2: Record the current path
+
+```text
+record path
+```
+
+Every current `path` is a valid subset, so save it in the answer.
+
+Initially, `path = []`, so the empty subset is recorded first.
+
+#### Line 3: Loop through the remaining elements
+
+```text
+for i in start..n−1:
+```
+
+Try each element starting at index `start`.
+
+For `[1, 2, 3]`, the indices are:
+
+| Index | Value |
+| :---: | :---: |
+| **0** | 1 |
+| **1** | 2 |
+| **2** | 3 |
+
+#### Line 4: Choose an element
+
+```text
+path.push(arr[i])
+```
+
+Add the selected element to the current subset.
+
+Example: `[]` becomes `[1]`.
+
+#### Line 5: Explore further subsets
+
+```text
+subsets(i+1, path)
+```
+
+Call the function recursively to choose elements that come after the selected element.
+
+If we choose `1` at index `0`, the next call starts at index `1`, so we can choose `2` or `3`.
+
+This avoids generating duplicate subsets such as `[2, 1]`.
+
+#### Line 6: Backtrack
+
+```text
+path.pop()
+```
+
+Remove the last selected element after exploring that choice.
+
+For example:
+
+`[1, 2] → [1]`
+
+This lets us try a different choice, such as selecting `3` instead of `2`.
+
+Remember: `push()` means choose, the recursive call means explore, and `pop()` means undo the choice.
+
+### 2. Dry run for `nums = [1, 2, 3]`
+
+The function explores subsets in this order:
+
+Each branch represents a choice. An empty choice is also a subset.
+
+```text
+[]
+ └─ Choose 1 → [1]
+      ├─ Choose 2 → [1, 2]
+      │    └─ Choose 3 → [1, 2, 3]
+      └─ Choose 3 → [1, 3]
+ └─ Choose 2 → [2]
+      └─ Choose 3 → [2, 3]
+ └─ Choose 3 → [3]
+```
+
+After backtracking to the empty path, the function also explores subsets starting with 2 and then 3.
+
+### Step-by-step execution table
+
+| Step | Action | Current `path` | Subset recorded |
+| :---: | :--- | :---: | :---: |
+| **1** | Start | `[]` | `[]` |
+| **2** | Choose 1 | `[1]` | `[1]` |
+| **3** | Choose 2 | `[1, 2]` | `[1, 2]` |
+| **4** | Choose 3 | `[1, 2, 3]` | `[1, 2, 3]` |
+| **5** | Backtrack, remove 3 | `[1, 2]` | — |
+| **6** | Backtrack, remove 2; choose 3 | `[1, 3]` | `[1, 3]` |
+| **7** | Backtrack, remove 1 | `[]` | — |
+| **8** | Choose 2 | `[2]` | `[2]` |
+| **9** | Choose 3 | `[2, 3]` | `[2, 3]` |
+| **10** | Backtrack; choose 3 alone | `[3]` | `[3]` |
+
+The empty subset is recorded at the beginning, and the remaining subsets are recorded during recursive calls.
+
+### ✅ Final Output
+
+### All subsets of `[1, 2, 3]`
+
+1. `[]`
+2. `[1]`
+3. `[1, 2]`
+4. `[1, 2, 3]`
+5. `[1, 3]`
+6. `[2]`
+7. `[2, 3]`
+8. `[3]`
+
+Total subsets: 8
+
+The exact order depends on when `record path` occurs. With this pseudocode, the output order is:
+
+# `[[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]`
+
+### 🧠 Key idea
+
+Complexity:
+- Time: \\(O(n \cdot 2^n)\\), because there are \\(2^n\\) subsets and copying each subset can take up to \\(O(n)\\).
+- Auxiliary space: \\(O(n)\\) for the current path and recursion stack, excluding the stored output.
 
 ### Complexity
 
