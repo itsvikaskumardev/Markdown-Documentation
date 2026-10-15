@@ -695,6 +695,116 @@ repeat WIDTH times:
 return result
 ```
 
+### Dry Run
+
+Problem: Reverse Bits
+
+Input: `n = 43261596`
+
+This pseudocode reverses the bits of a number. It takes the rightmost bit of `n` and adds it to the right side of `result`, repeating this process for `WIDTH` bits.
+
+For the standard 32-bit version of this problem, `WIDTH = 32`.
+
+### 1. Explain the pseudocode line by line
+
+Line 1:
+
+```text
+result = 0
+```
+
+- Initialize `result` to `0`.
+- We will build the reversed binary number inside this variable.
+
+Line 2:
+
+```text
+repeat WIDTH times:
+```
+
+- Repeat the operation 32 times because we are reversing a 32-bit integer.
+- Even if the number starts with leading zero bits, those positions count.
+
+Line 3:
+
+```text
+result = (result << 1) | (n & 1)
+```
+
+This line performs two operations:
+
+- `result << 1`: Shift `result` left by one bit, creating space for a new bit on the right.
+- `n & 1`: Extract the rightmost bit of `n`. The result is either `0` or `1`.
+- `|`: Add that extracted bit into the empty position on the right. Here, bitwise OR is used.
+
+Line 4:
+
+```text
+n >>= 1
+```
+
+- Shift `n` right by one bit.
+- This discards the bit we just processed and moves the next bit into the rightmost position.
+
+Line 5:
+
+```text
+return result
+```
+
+- Return the reversed 32-bit value.
+
+### 2. Understand the number in binary
+
+The input is:
+
+\\[ n = 43261596 \\]
+
+Its 32-bit binary representation is:
+
+```text
+00000010100101000001111010011100
+```
+
+The algorithm reads the bits from right to left and builds the answer in that order.
+
+### 3. Dry run — first few iterations
+
+| Iteration | `n & 1` (bit extracted) | What happens to `result` |
+| :---: | :---: | :--- |
+| **Initial** | — | `0` |
+| **1** | 0 | `(0 << 1) \| 0 = 0` |
+| **2** | 0 | `(0 << 1) \| 0 = 0` |
+| **3** | 1 | `(0 << 1) \| 1 = 1` |
+| **4** | 1 | `(1 << 1) \| 1 = 3` |
+| **5** | 1 | `(3 << 1) \| 1 = 7` |
+
+The first extracted bits are `0, 0, 1, 1, 1`. They are appended to `result` in that order, so the result gradually becomes `0`, `1`, `3`, `7`, and so on.
+
+After all 32 iterations, the complete bit sequence is reversed.
+
+### ✅ Final Output
+
+Output:
+
+# `964176192`
+
+The reversed 32-bit binary representation is:
+
+```text
+00111001011110000010100101000000
+```
+
+This binary number equals 964176192 in decimal.
+
+### 🧠 Key idea
+
+Time and space complexity:
+- Time: \\(O(W)\\), where \\(W\\) is the bit width. For 32 bits, there are exactly 32 iterations.
+- Extra space: \\(O(1)\\), because only a few variables are used.
+
+Remember: `n & 1` extracts the last bit, `result << 1` makes room for it, and `n >>= 1` moves to the next bit.
+
 ### Complexity
 
 | Approach | Time | Space |
@@ -727,6 +837,157 @@ while b != 0:
 
 return a
 ```
+### Dry Run
+
+Problem: Add Two Numbers Without `+` or `−`
+
+Input: `a = 2, b = 3`
+
+The goal is to calculate \\(2 + 3 = 5\\) without using the addition or subtraction operators. We use bitwise XOR (`^`), AND (`&`), and left shift (`<<`) instead.
+
+### 1. Explain the pseudocode line by line
+
+Line 1:
+
+```text
+while b != 0:
+```
+
+- Continue looping while `b` is not zero.
+- Here, `b` stores the carry that still needs to be added.
+- When there is no carry left, the answer is stored in `a`.
+
+Line 2:
+
+```text
+carry ← (a & b) << 1
+```
+
+- `a & b` identifies bit positions where both numbers have `1`.
+- When both bits are `1`, they generate a carry.
+- `<< 1` shifts the carry one position to the left because a carry belongs to the next binary column.
+
+Line 3:
+
+```text
+a ← a ^ b
+```
+
+- XOR calculates the sum of each bit without carrying.
+- `0 ^ 0 = 0`, `0 ^ 1 = 1`, and `1 ^ 1 = 0`.
+
+Line 4:
+
+```text
+b ← carry
+```
+
+- Store the carry in `b`.
+- The next loop iteration adds that carry to the partial sum.
+
+Line 5:
+
+```text
+return a
+```
+
+- Once `b = 0`, no carry remains.
+- Return `a` as the final sum.
+
+### 2. Dry run: `a = 2, b = 3`
+
+Convert the numbers to binary:
+
+- `a = 2` → `010`
+- `b = 3` → `011`
+
+#### Iteration 1
+
+Calculate the carry:
+
+```text
+  010   (a = 2)
+& 011   (b = 3)
+-----
+  010
+```
+
+Shift left by one:
+
+```text
+carry = 010 << 1 = 100 = 4
+```
+
+Calculate the sum without carry:
+
+```text
+  010
+^ 011
+-----
+  001 = 1
+```
+
+Update variables:
+
+- `a = 1`
+- `b = 4`
+
+#### Iteration 2
+
+Calculate the carry:
+
+```text
+  001   (a = 1)
+& 100   (b = 4)
+-----
+  000
+```
+
+Shift left:
+
+```text
+carry = 000 << 1 = 0
+```
+
+Calculate the sum without carry:
+
+```text
+  001
+^ 100
+-----
+  101 = 5
+```
+
+Update variables:
+
+- `a = 5`
+- `b = 0`
+
+The loop stops because `b == 0`.
+
+### 3. Dry-run summary
+
+| Iteration | `a` before | `b` before | `carry = (a & b) << 1` | New `a = a ^ b` |
+| :---: | :---: | :---: | :---: | :---: |
+| **1** | 2 (`010`) | 3 (`011`) | 4 (`100`) | 1 (`001`) |
+| **2** | 1 (`001`) | 4 (`100`) | 0 (`000`) | 5 (`101`) |
+
+### ✅ Final Output
+
+Output:
+
+# `5`
+
+### 🧠 Key idea
+
+Time and space complexity:
+- Time: \\(O(W)\\), where \\(W\\) is the integer's bit width in the worst case.
+- Extra space: \\(O(1)\\), because only a few variables are used.
+
+Remember this trick:
+- `a ^ b` → calculate the sum without carry.
+- `(a & b) << 1` → calculate the carry.
+- Repeat until the carry becomes zero.
 
 ### Complexity
 
