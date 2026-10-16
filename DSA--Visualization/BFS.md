@@ -268,6 +268,190 @@ zigzag(root):
 
     return result
 ```
+### Dry Run
+
+Problem: Binary Tree Zigzag Level Order Traversal
+
+Input: `root = [3, 9, 20, null, null, 15, 7]`
+
+The goal is to traverse a binary tree level by level, but alternate the direction at each level:
+
+- Level 1: left to right
+- Level 2: right to left
+- Level 3: left to right
+- Continue alternating.
+
+### 1. Understand the input tree
+
+The tree looks like this:
+
+```text
+        3
+       / \
+      9   20
+          / \
+         15  7
+```
+
+### 2. Explain the pseudocode line by line
+
+Line 1:
+
+```text
+zigzag(root):
+    queue = [root]
+    leftToRight = true
+```
+
+- Create a queue starting with the root node `3`.
+- `leftToRight = true` means the first level will be read from left to right.
+
+Line 2:
+
+```text
+while queue not empty:
+```
+
+Keep processing levels until the queue becomes empty.
+
+Line 3:
+
+```text
+levelSize = len(queue)
+```
+
+Count how many nodes are currently in the queue. This tells us how many nodes belong to the current level.
+
+Line 4:
+
+```text
+collected = []
+```
+
+Create an empty list to store the values of the current level.
+
+Line 5:
+
+```text
+for _ in range(levelSize):
+```
+
+Process exactly `levelSize` nodes.
+
+The underscore `_` means we don't need the loop counter.
+
+Line 6:
+
+```text
+node = queue.dequeue()
+```
+
+Remove the first node from the queue.
+
+Line 7:
+
+```text
+collected.append(node.val)
+```
+
+Add the current node's value to `collected`.
+
+Line 8:
+
+```text
+enqueue node.children
+```
+
+Add the node's existing children to the queue, left child first and then right child. Ignore `null` children.
+
+Line 9:
+
+```text
+result.append(
+    collected if leftToRight else reversed(collected)
+)
+```
+
+This is the main zigzag logic:
+
+- If `leftToRight` is `true`, append `collected` as it is.
+- If `leftToRight` is `false`, append the reversed list.
+
+Line 10:
+
+```text
+leftToRight = not leftToRight
+```
+
+Switch the direction for the next level:
+
+- `true` becomes `false`.
+- `false` becomes `true`.
+
+Line 11:
+
+```text
+return result
+```
+
+Return all the levels in zigzag order.
+
+### 3. Dry run step by step
+
+Initial state:
+
+```text
+queue = [3]
+leftToRight = true
+result = []
+```
+
+#### Level 1 (Left → Right)
+
+- Node processed: `3`
+- `levelSize = 1`
+- `collected = [3]`
+- Direction is left to right, so append `[3]`.
+- Toggle direction to `false`.
+
+`result = [[3]]`
+
+#### Level 2 (Right → Left)
+
+- Nodes processed: `9`, `20`
+- `levelSize = 2`
+- Process nodes `9` and `20`.
+- `collected = [9, 20]`
+- Direction is right to left, so reverse it to `[20, 9]`.
+- Toggle direction to `true`.
+
+`result = [[3], [20, 9]]`
+
+#### Level 3 (Left → Right)
+
+- Nodes processed: `15`, `7`
+- `levelSize = 2`
+- Process nodes `15` and `7`.
+- `collected = [15, 7]`
+- Direction is left to right, so keep the list unchanged.
+
+`result = [[3], [20, 9], [15, 7]]`
+
+The queue is now empty, so the loop stops.
+
+### ✅ Final Output
+
+Output:
+
+# `[[3], [20, 9], [15, 7]]`
+
+### 🧠 Key idea
+
+Time and space complexity:
+- Time complexity: \\(O(n)\\) for visiting every node, plus the cost of reversing levels. Overall, it remains \\(O(n)\\).
+- Space complexity: \\(O(n)\\) for the queue, level lists, and result.
+
+Interview tip: The queue handles normal level-order traversal. The `leftToRight` flag and list reversal are what make the traversal zigzag.
 
 ### Complexity
 
@@ -311,6 +495,204 @@ widthOfTree(root):
 
     return maxWidth
 ```
+### Dry Run
+
+Problem: Maximum Width of a Binary Tree
+
+Input: `root = [1, 3, 2, 5, null, null, 9, 6, null, 7]`
+
+The goal is to find the maximum width at any level of the binary tree.
+
+Width includes both the leftmost and rightmost non-null nodes, plus any empty positions between them, as if the tree were a complete binary tree.
+
+### 1. Understand the input tree
+
+The level-order input represents this tree:
+
+The tree is:
+
+```text
+          1
+        /   \
+       3     2
+      /       \
+     5         9
+    /         /
+   6         7
+```
+
+Notice that some positions are empty. Those gaps matter when calculating the width.
+
+### 2. Explain the pseudocode line by line
+
+Line 1:
+
+```text
+widthOfTree(root):
+    queue = [(root, 0)]
+```
+
+- Create a queue containing the root node and its index.
+- The root starts at index `0`.
+- Each queue entry stores `(node, index)`.
+
+Line 2:
+
+```text
+while queue not empty:
+```
+
+Continue processing the tree level by level until the queue is empty.
+
+Line 3:
+
+```text
+base = queue.front.index
+```
+
+- Get the index of the first node at the current level.
+- This is used to normalize indices so they don't grow too large for deep trees.
+
+Line 4:
+
+```text
+width = queue.back.index - base + 1
+```
+
+- `queue.back.index` is the index of the last node at the current level.
+- Subtract `base` to measure the distance between the first and last positions.
+- Add `1` because both endpoints count.
+
+For example, if the first node has index `0` and the last has index `3`, width is `3 - 0 + 1 = 4`, even if two positions between them are empty.
+
+Line 5:
+
+```text
+maxWidth = max(maxWidth, width)
+```
+
+- Compare the current level's width with the largest width found so far.
+- Keep whichever is greater.
+- Initialize `maxWidth = 0` before the loop.
+
+Line 6:
+
+```text
+for _ in range(len(queue)):
+```
+
+Process only the nodes that were in the queue at the start of this level. Save that length before the loop because new children will be added.
+
+Line 7:
+
+```text
+node, i = queue.dequeue()
+```
+
+Remove a node and its index from the queue.
+
+Important correction: The pseudocode needs to normalize the index before calculating child indices:
+
+```text
+i = i - base
+```
+
+This step is missing from the supplied pseudocode, despite the comment saying that `i` is already normalized.
+
+Line 8:
+
+```text
+enqueue (node.left, 2*i), (node.right, 2*i+1)
+```
+
+Use these formulas to calculate the children's positions:
+
+- Left child: `2 * i`
+- Right child: `2 * i + 1`
+
+Only enqueue children that are not `null`.
+
+Line 9:
+
+```text
+return maxWidth
+```
+
+Return the largest width found across all levels.
+
+### 3. Dry run step by step
+
+Start with:
+
+```text
+queue = [(1, 0)]
+maxWidth = 0
+```
+
+#### Level 1
+
+Queue: `[(1, 0)]`
+
+- First index = `0`, last index = `0`
+- Width = `0 - 0 + 1 = 1`
+- `maxWidth = 1`
+- Children: `3` at index `0`, `2` at index `1`
+
+#### Level 2
+
+Queue: `[(3, 0), (2, 1)]`
+
+- First index = `0`, last index = `1`
+- Width = `1 - 0 + 1 = 2`
+- `maxWidth = 2`
+- The existing children are `5` at index `0` and `9` at index `3`.
+
+#### Level 3
+
+Queue: `[(5, 0), (9, 3)]`
+
+- First index = `0`, last index = `3`
+- Width = `3 - 0 + 1 = 4`
+- `maxWidth = 4`
+- Node `5` has child `6` at index `0`.
+- Node `9` has child `7` at index `6`.
+
+The positions at this level span indices 0 through 3, including empty positions.
+
+#### Level 4
+
+Queue: `[(6, 0), (7, 6)]`
+
+- First index = `0`, last index = `6`
+- Width = `6 - 0 + 1 = 7`
+- `maxWidth = 7`
+
+The queue becomes empty after processing these leaf nodes.
+
+### 4. Width summary
+
+| Level | Node values | Indexed positions | Width |
+| :---: | :---: | :---: | :---: |
+| **1** | `[1]` | `0` to `0` | 1 |
+| **2** | `[3, 2]` | `0` to `1` | 2 |
+| **3** | `[5, 9]` | `0` to `3` | 4 |
+| **4** | `[6, 7]` | `0` to `6` | 7 |
+
+### ✅ Final Output
+
+Output:
+
+# `7`
+
+The maximum width occurs at Level 4. Although that level contains only two actual nodes, their positions are far apart, with empty positions between them.
+
+### 🧠 Key idea
+
+Time and space complexity:
+- Time: \\(O(n)\\), because each node is processed once.
+- Space: \\(O(n)\\) in the worst case for the queue.
+
+Interview tip: Maximum width is not the same as the number of nodes at a level. You must count the gaps between the leftmost and rightmost positions too.
 
 ### Complexity
 
