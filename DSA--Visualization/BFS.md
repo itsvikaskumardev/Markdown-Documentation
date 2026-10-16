@@ -88,6 +88,139 @@ rightSideView(root):
 
     return rightView
 ```
+### Dry Run
+
+Problem: Binary Tree Right Side View
+
+Input: `root = [1, 2, 3, 4, null, null, null, 5]`
+
+The goal is to return the nodes visible when looking at a binary tree from its right side.
+
+### 1. Understand the input tree
+
+The rightmost visible node at each level is selected.
+
+The tree is:
+
+```text
+        1
+       / \
+      2   3
+     /
+    4
+   /
+  5
+```
+
+The `null` values mean those child nodes do not exist.
+
+### 2. Explain the pseudocode line by line
+
+Line 1:
+
+```text
+rightSideView(root):
+```
+
+Defines a function that returns the values visible from the right side of the tree.
+
+Line 2:
+
+```text
+queue = [root]
+```
+
+- Create a queue containing the root node, `1`.
+- A queue follows FIFO: First In, First Out.
+- This allows us to visit the tree level by level.
+
+Line 3:
+
+```text
+while queue not empty:
+```
+
+Continue until there are no more nodes to process.
+
+Line 4:
+
+```text
+levelSize = len(queue)
+```
+
+Save the number of nodes currently in the queue. This tells us how many nodes belong to the current level.
+
+Line 5:
+
+```text
+for i in range(levelSize):
+```
+
+Process exactly `levelSize` nodes for this level. In Python-style indexing, `i` starts at `0`.
+
+Line 6:
+
+```text
+node = queue.dequeue()
+```
+
+Remove the first node from the queue.
+
+Line 7:
+
+```text
+if i == levelSize - 1:
+    rightView.append(node.val)
+```
+
+- Check whether this is the last node being processed at the current level.
+- If yes, add its value to `rightView`.
+- This works because nodes are processed from left to right, so the last node is the rightmost node at that level.
+
+Line 8:
+
+```text
+enqueue node.children
+```
+
+Add the node's existing children to the queue, normally left child first and then right child. Ignore any `null` children.
+
+Line 9:
+
+```text
+return rightView
+```
+
+Return the collected rightmost values.
+
+### 3. Dry run
+
+Initially:
+
+`queue = [1]`, `rightView = []`
+
+| Level | Nodes processed | `levelSize` | Selected node | `rightView` |
+| :---: | :---: | :---: | :---: | :--- |
+| **1** | `[1]` | 1 | 1 | `[1]` |
+| **2** | `[2, 3]` | 2 | 3 | `[1, 3]` |
+| **3** | `[4]` | 1 | 4 | `[1, 3, 4]` |
+| **4** | `[5]` | 1 | 5 | `[1, 3, 4, 5]` |
+
+Notice that at Level 2, node `2` is processed first and node `3` last. Therefore, `3` is selected.
+
+### ✅ Final Output
+
+Output:
+
+# `[1, 3, 4, 5]`
+
+### 🧠 Key idea
+
+Time and space complexity:
+- Time complexity: \\(O(n)\\) — every node is visited once.
+- Space complexity: \\(O(n)\\) — the queue can hold up to a level's worth of nodes, and the result stores the visible nodes.
+
+Interview tip: The key condition is `i == levelSize - 1`. It selects the last node at each level, provided children are enqueued from left to right.
 
 ### Complexity
 
