@@ -41,6 +41,110 @@ depth(node):
 
     return 1 + max(L, R)            // combine
 ```
+### Dry Run
+
+Problem: Maximum Depth of a Binary Tree
+
+Input: `root = [3, 9, 20, null, null, 15, 7]`
+
+The goal is to find the maximum depth (height) of the binary tree — the number of nodes along the longest path from the root to a leaf.
+
+### 1. Understand the input tree
+
+```text
+        3
+       / \
+      9   20
+          / \
+         15  7
+```
+
+The longest paths are `3 → 20 → 15` and `3 → 20 → 7`. Each path contains 3 nodes.
+
+### 2. Explain the pseudocode line by line
+
+Line 1:
+
+```text
+depth(node):
+    push frame
+```
+
+- Call the `depth` function for the current node.
+- `push frame` means a recursive call adds a new frame to the call stack. Each frame remembers which node is being processed.
+
+Line 2:
+
+```text
+if node is null: return 0
+```
+
+- This is the base case.
+- If the node does not exist, its depth is `0`.
+- This stops recursion when the function reaches a missing child.
+
+Line 3:
+
+```text
+L = depth(node.left)
+```
+
+- Recursively calculate the depth of the left subtree.
+- Store the result in `L`.
+
+Line 4:
+
+```text
+R = depth(node.right)
+```
+
+- Recursively calculate the depth of the right subtree.
+- Store the result in `R`.
+
+Line 5:
+
+```text
+return 1 + max(L, R)
+```
+
+- `max(L, R)` chooses the deeper subtree.
+- Add `1` to count the current node.
+- Return the depth of the entire subtree rooted at this node.
+
+### 3. Dry run step by step
+
+Recursion first travels down to the leaf nodes, then calculates depths while returning back up the tree.
+
+| Node | Left depth (`L`) | Right depth (`R`) | Calculation | Returned depth |
+| :---: | :---: | :---: | :---: | :---: |
+| `15` | 0 | 0 | `1 + max(0, 0)` | 1 |
+| `7` | 0 | 0 | `1 + max(0, 0)` | 1 |
+| `9` | 0 | 0 | `1 + max(0, 0)` | 1 |
+| `20` | 1 | 1 | `1 + max(1, 1)` | 2 |
+| `3` | 1 | 2 | `1 + max(1, 2)` | 3 |
+
+### Visualize the return process:
+
+* Node `15` → Returns depth `1`
+* Node `7` → Returns depth `1`
+* Node `20` → `1 + max(1, 1) = 2`
+* Node `3` → `1 + max(1, 2) = 3`
+
+### ✅ Final Output
+
+Output:
+
+# `3`
+
+The maximum depth is 3, because the longest root-to-leaf path contains three nodes.
+
+### 🧠 Key idea
+
+Time and space complexity:
+- Time: \\(O(n)\\) — each node is visited once.
+- Space: \\(O(h)\\) for the recursive call stack, where \\(h\\) is the tree height. Worst case: \\(O(n)\\); balanced tree: \\(O(\log n)\\).
+
+Interview tip: The base case returns `0` for a null node. Each real node adds `1` to the maximum depth of its two subtrees.
 
 ### Complexity
 
@@ -109,6 +213,110 @@ isValid(root):
 
     return true
 ```
+### Dry Run
+
+Problem: Validate Binary Search Tree (BST)
+
+Input: `root = [5, 1, 4, null, null, 3, 6]`
+
+The goal is to check whether the given binary tree is a valid Binary Search Tree (BST).
+
+A valid BST follows two rules:
+
+- Every value in the left subtree must be less than the node's value.
+- Every value in the right subtree must be greater than the node's value.
+
+### 1. Understand the input tree
+
+```text
+        5
+       / \
+      1   4
+         / \
+        3   6
+```
+
+Notice that node `4` is the right child of `5`. Since `4 < 5`, the tree violates the BST rule.
+
+### 2. Explain the pseudocode line by line
+
+Line 1:
+
+```text
+isValid(root):
+```
+
+Defines a function that checks whether the tree follows the BST rules.
+
+Line 2:
+
+```text
+for each node:
+```
+
+Visit each node in the tree and check its relationship with the values in its left and right subtrees.
+
+Line 3:
+
+```text
+if max(left subtree) >= node:
+    return false
+```
+
+- Find the maximum value in the left subtree.
+- If that value is greater than or equal to the current node, the tree is invalid.
+- All left-subtree values must be strictly smaller.
+
+Line 4:
+
+```text
+if min(right subtree) <= node:
+    return false
+```
+
+- Find the minimum value in the right subtree.
+- If that value is less than or equal to the current node, the tree is invalid.
+- All right-subtree values must be strictly greater.
+
+Line 5:
+
+```text
+return true
+```
+
+If every node passes both checks, return `true`.
+
+Important: These checks must apply to the entire left and right subtrees, not just the immediate children.
+
+### 3. Dry run
+
+Start at the root node `5`.
+
+| Node | Left-subtree maximum | Right-subtree minimum | Result |
+| :---: | :---: | :---: | :--- |
+| `5` | 1 | 3 | Invalid: right-subtree minimum `3` is less than `5` |
+| `1` | No children | No children | No violation |
+| `4` | 3 | 6 | No local violation: `3 < 4 < 6` |
+
+The crucial detail is that node `4` lies in the right subtree of node `5`, so it must be greater than `5`. But `4 < 5`, making the tree invalid.
+
+The pseudocode as written would detect the violation at node `5` if it correctly calculates the maximum and minimum across the full subtrees.
+
+### ✅ Final Output
+
+Output:
+
+# `false`
+
+The tree is not a valid BST because node `4` is in the right subtree of `5`, but its value is smaller than `5`.
+
+### 🧠 Key idea
+
+For the given approach, repeatedly finding subtree minimums and maximums can take \\(O(n^2)\\) time in the worst case.
+
+A more efficient standard approach passes a valid range `(min, max)` down the tree, checking each node once:
+- Time: \\(O(n)\\)
+- Space: \\(O(h)\\) for recursion, where \\(h\\) is the tree height.
 
 #### 2. Optimized (DFS with bounds)
 Pass valid `(low, high)` bounds down the tree. For the left child use `(low, node.val)`, and for the right child use `(node.val, high)`.
@@ -128,6 +336,135 @@ valid(node, low, high):
 
 // answer = valid(root, -inf, +inf)
 ```
+
+### Dry Run
+
+Problem: Validate Binary Search Tree using Bounds
+
+This algorithm checks whether a binary tree is a Valid Binary Search Tree (BST).
+
+In a BST:
+- Every value in the left subtree must be smaller than the node's value.
+- Every value in the right subtree must be greater than the node's value.
+- These rules must hold for the entire subtree, not just the direct children.
+
+### 1. Understand the input tree
+
+Input: `root = [5, 3, 8, 1, 4, 6, 9]`
+
+The tree looks like this:
+
+```text
+        5
+       / \
+      3   8
+     / \ / \
+    1  4 6  9
+```
+
+Root = 5; left subtree = 3, 1, 4; right subtree = 8, 6, 9.
+
+### 2. Explain the pseudocode line by line
+
+Line 1:
+
+```text
+valid(node, low, high):
+```
+
+The function receives three values:
+- `node`: the current node being checked.
+- `low`: the minimum allowed boundary.
+- `high`: the maximum allowed boundary.
+
+These boundaries tell us which values are allowed at the current position.
+
+Line 2:
+
+```text
+if node is null: return true
+```
+
+If the current node does not exist, return `true`.
+
+An empty subtree does not violate BST rules. This is the base case of recursion.
+
+Line 3:
+
+```text
+if not (low < node.val < high): return false
+```
+
+Check whether the current node's value is strictly between `low` and `high`.
+
+For example, if `low = 3` and `high = 5`, the current value must be greater than 3 and less than 5.
+- Value `4` → valid.
+- Value `3` → invalid, because it equals the lower boundary.
+- Value `5` → invalid, because it equals the upper boundary.
+
+Line 4:
+
+```text
+return valid(node.left, low, node.val)
+```
+
+Recursively check the left subtree.
+
+The current node's value becomes the new upper boundary because every value in its left subtree must be smaller.
+
+Line 5:
+
+```text
+and valid(node.right, node.val, high)
+```
+
+Recursively check the right subtree.
+
+The current node's value becomes the new lower boundary because every value in its right subtree must be greater.
+
+The `and` means both subtrees must be valid.
+
+Final line:
+
+```text
+answer = valid(root, -inf, +inf)
+```
+
+Start at the root with no restrictions:
+- `low = -∞`
+- `high = +∞`
+
+Every node must satisfy the boundaries passed down from its ancestors.
+
+### 3. Dry run
+
+| Node | Allowed range | Check | Result |
+| :---: | :---: | :---: | :---: |
+| `5` | \\((-\infty,+\infty)\\) | \\(-\infty < 5 < +\infty\\) | Valid |
+| `3` | \\((-\infty,5)\\) | \\(-\infty < 3 < 5\\) | Valid |
+| `1` | \\((-\infty,3)\\) | \\(-\infty < 1 < 3\\) | Valid |
+| `4` | \\((3,5)\\) | \\(3 < 4 < 5\\) | Valid |
+| `8` | \\((5,+\infty)\\) | \\(5 < 8 < +\infty\\) | Valid |
+| `6` | \\((5,8)\\) | \\(5 < 6 < 8\\) | Valid |
+| `9` | \\((8,+\infty)\\) | \\(8 < 9 < +\infty\\) | Valid |
+
+Every node satisfies its allowed range, so both recursive calls return `true`.
+
+### ✅ Final Output
+
+Output:
+
+# `true`
+
+Why? Every value in the left subtree of `5` is less than `5`, and every value in the right subtree is greater than `5`. The same rule holds for all other nodes.
+
+### 🧠 Key idea
+
+Time and space complexity:
+- Time: \\(O(n)\\) — each node is checked once.
+- Auxiliary space: \\(O(h)\\) — recursive call stack, where \\(h\\) is the tree's height. In a balanced tree, this is \\(O(\log n)\\); in a skewed tree, it can be \\(O(n)\\).
+
+Interview tip: Passing `low` and `high` boundaries is more efficient than repeatedly finding the maximum of each left subtree and minimum of each right subtree.
 
 ### Complexity
 
@@ -207,6 +544,161 @@ height(node):
 
 // answer = best
 ```
+
+### Dry Run
+
+Problem: Diameter of a Binary Tree
+
+This algorithm finds the Diameter of a Binary Tree.
+
+The diameter is the number of edges in the longest path between any two nodes in the tree. The path does not have to pass through the root.
+
+### 1. Understand the input tree
+
+Input: `root = [1, 2, 3, 4, 5]`
+
+The tree looks like this:
+
+```text
+        1
+       / \
+      2   3
+     / \
+    4   5
+```
+
+Longest path: `4 → 2 → 1 → 3`, or `5 → 2 → 1 → 3`.
+
+The longest path has 3 edges, so the expected diameter is `3`.
+
+### 2. Explain the pseudocode line by line
+
+Line 1:
+
+```text
+best = 0
+```
+
+`best` stores the maximum diameter found so far.
+
+Initially, no path has been found, so `best = 0`.
+
+Line 2:
+
+```text
+height(node):
+```
+
+This function calculates the height of the current node and updates `best` whenever it finds a longer path.
+
+Line 3:
+
+```text
+if node is null: return -1
+```
+
+If the node does not exist, return `-1`.
+
+Why `-1` instead of `0`?
+
+Because this algorithm measures height in edges, not nodes.
+
+For a leaf node:
+- Its left child is null, so `L = -1`.
+- Its right child is null, so `R = -1`.
+- Its height becomes `1 + max(-1, -1) = 0`.
+
+Therefore, a leaf has height `0` edges.
+
+Line 4:
+
+```text
+L = height(node.left)
+```
+
+Recursively calculate the height of the left subtree.
+
+Line 5:
+
+```text
+R = height(node.right)
+```
+
+Recursively calculate the height of the right subtree.
+
+Line 6:
+
+```text
+best = max(best, (L+1) + (R+1))
+```
+
+Calculate the longest path that passes through the current node.
+
+- `L + 1` = number of edges from the current node down to the deepest node on its left.
+- `R + 1` = number of edges from the current node down to the deepest node on its right.
+- Add both sides to get the path length through this node.
+
+Then `max()` keeps whichever is larger: the old `best` or the newly calculated path.
+
+Line 7:
+
+```text
+return 1 + max(L, R)
+```
+
+Return the current node's height to its parent.
+
+We choose the taller subtree and add one edge to reach it from the current node.
+
+Important: The function returns height, while `best` stores the diameter. They are different values.
+
+### 3. Dry run step by step
+
+The function processes the tree from the bottom upward because of recursion.
+
+| Current node | `L` | `R` | Path through node `(L+1)+(R+1)` | `best` |
+| :---: | :---: | :---: | :---: | :---: |
+| `4` | -1 | -1 | 0 | 0 |
+| `5` | -1 | -1 | 0 | 0 |
+| `2` | 0 | 0 | 2 | 2 |
+| `3` | -1 | -1 | 0 | 2 |
+| `1` | 1 | 0 | 3 | 3 |
+
+Let's understand the important calculations:
+
+#### At node 2:
+
+Its children are `4` and `5`, both leaves.
+- `L = 0`, `R = 0`
+- Path through node 2 = `(0+1) + (0+1) = 2`
+- `best = max(0, 2) = 2`
+- Height returned = `1 + max(0, 0) = 1`
+
+#### At node 1:
+
+Its left subtree has height `1`, and its right subtree has height `0`.
+- `L = 1`, `R = 0`
+- Path through node 1 = `(1+1) + (0+1) = 3`
+- `best = max(2, 3) = 3`
+- Height returned = `1 + max(1, 0) = 2`
+
+The traversal is complete, and `best` contains the longest path length.
+
+### ✅ Final Output
+
+Output:
+
+# `3`
+
+The diameter is 3 edges (`answer = best = 3`).
+
+### 🧠 Key idea
+
+Time and space complexity:
+- Time: \\(O(n)\\) — each node is visited once.
+- Auxiliary space: \\(O(h)\\) — recursion stack, where \\(h\\) is the tree height. Worst case: \\(O(n)\\).
+
+Interview tip: The diameter is the longest path through any node, not necessarily the root. That's why we update `best` at every node instead of returning only the root's height.
 
 ### Complexity
 
