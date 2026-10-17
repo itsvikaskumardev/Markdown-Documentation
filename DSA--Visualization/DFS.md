@@ -1804,7 +1804,162 @@ serialize(node):
     serialize(node.left); serialize(node.right)
 
 // result = "1,2,#,#,3,4,#,#,5,#,#"
+### Dry Run
+
+Problem: Serialize a Binary Tree
+
+### 1. What does this pseudocode do?
+
+This algorithm serializes a binary tree. Serialization means converting a tree into a string so that it can be stored or reconstructed later.
+
+It uses pre-order traversal:
+
+1. Visit the current node.
+2. Serialize the left subtree.
+3. Serialize the right subtree.
+
+For empty children, it records `#` as a null marker.
+
+### 2. Input tree
+
+Input: `root = [1,2,3,null,null,4,5]`
+
+Node 2 is a leaf; node 3 has children 4 and 5.
+
+### 3. Line-by-line explanation
+
+Line 1:
+
+```text
+serialize(node):
 ```
+
+The function takes the current node and serializes its subtree.
+
+Line 2:
+
+```text
+if node: append(node.val)
+```
+
+If the node exists, add its value to the output.
+
+For example, starting at the root, append `1`.
+
+This happens before visiting its children, which is why the traversal is called pre-order.
+
+Line 3:
+
+```text
+else: append("#"); return
+```
+
+If the node is null, append `#` and return immediately.
+
+Why do we need `#`?
+
+Without null markers, different tree structures could produce the same sequence of node values. The markers preserve the structure.
+
+For example, a leaf node `2` is serialized as:
+
+```text
+2,#,#
+```
+
+The two `#` markers represent its missing left and right children.
+
+Line 4:
+
+```text
+serialize(node.left)
+```
+
+Recursively serialize the left subtree.
+
+The algorithm finishes the entire left subtree before moving to the right subtree.
+
+Line 5:
+
+```text
+serialize(node.right)
+```
+
+Recursively serialize the right subtree.
+
+This continues until every node and every null child has been recorded.
+
+### 4. Dry run step by step
+
+The traversal visits nodes in this order:
+
+| Step | What is visited | Value appended | Output so far |
+| :---: | :---: | :---: | :---: |
+| **1** | Root | `1` | `1` |
+| **2** | Left child of 1 | `2` | `1,2` |
+| **3** | Left child of 2 (null) | `#` | `1,2,#` |
+| **4** | Right child of 2 (null) | `#` | `1,2,#,#` |
+| **5** | Right child of 1 | `3` | `1,2,#,#,3` |
+| **6** | Left child of 3 | `4` | `1,2,#,#,3,4` |
+| **7** | Left child of 4 (null) | `#` | `1,2,#,#,3,4,#` |
+| **8** | Right child of 4 (null) | `#` | `1,2,#,#,3,4,#,#` |
+| **9** | Right child of 3 | `5` | `1,2,#,#,3,4,#,#,5` |
+| **10** | Left child of 5 (null) | `#` | `1,2,#,#,3,4,#,#,5,#` |
+| **11** | Right child of 5 (null) | `#` | `1,2,#,#,3,4,#,#,5,#,#` |
+
+Notice that the algorithm records both null children of every leaf.
+
+### ✅ Final Output
+
+Output:
+
+# `"1,2,#,#,3,4,#,#,5,#,#"`
+
+`result = "1,2,#,#,3,4,#,#,5,#,#"`
+
+Answer: `1,2,#,#,3,4,#,#,5,#,#`
+
+### 🧠 Key idea
+
+Complexity:
+- Time: \\(O(n)\\), where \\(n\\) is the number of nodes, because each node and its null children are processed once.
+- Auxiliary space: \\(O(h)\\) for the recursive call stack, where \\(h\\) is the tree height. The serialized output itself requires \\(O(n)\\) space.
+
+Interview tip: Serialization and deserialization must use the same traversal order and null-marker convention. Here, pre-order plus `#` markers lets you reconstruct the original tree unambiguously.
+
+
+
+### Is Pseudo Code match Your thinking is correct! 😊
+
+`[1,2,3,null,null,4,5]` is the original tree representation, but your pseudocode is doing something different: it is serializing the tree into a string.
+
+Let's understand the difference.
+
+#### 1. Original input
+
+```text
+root = [1,2,3,null,null,4,5]
+```
+
+This array represents the tree:
+
+#### 2. Why is the output different?
+
+It depends on what the algorithm is asked to return.
+
+| Operation | Output |
+| :--- | :---: |
+| Original tree in level-order array format | `[1,2,3,null,null,4,5]` |
+| Your `serialize(node)` pseudocode | `"1,2,#,#,3,4,#,#,5,#,#"` |
+
+Your pseudocode visits nodes in pre-order and records every null child using `#`. That is why its output is a longer string.
+
+Remember:
+
+- Input array describes the tree.
+- Serialized string encodes the tree in the format defined by the algorithm.
+- Deserialization converts that serialized string back into the original tree.
+
+So if the question asked you to return the original level-order array, your answer would be correct. But for this particular `serialize()` pseudocode, the expected output is `"1,2,#,#,3,4,#,#,5,#,#"`.
 
 #### 2. Optimized (Deserialize)
 Read the values in the same pre-order sequence. For each value, create a node; for `#`, return `null`, then recursively build the left and right subtrees.
@@ -1824,6 +1979,91 @@ build():
 
     return node                       // first call returns the root
 ```
+
+### Dry Run
+
+Problem: Deserialize a Binary Tree
+
+### 1. Problem: Deserialize a Binary Tree
+
+Input: `root = [1,2,3,null,null,4,5]`
+
+The `build()` function reads tokens from left to right and reconstructs the binary tree. It uses `#` to represent a `null` node.
+
+Important: Your input is a level-order array, but `build()` expects a serialized pre-order sequence with `#` markers. We must first convert the input into that sequence.
+
+### 2. Original tree
+
+Node 2 has no children. Node 3 has children 4 and 5.
+
+### 3. Line-by-line explanation
+
+```text
+build():
+    token = next()
+    if token == "#": return null
+    node = new Node(token)
+    node.left = build()
+    node.right = build()
+    return node
+```
+
+- `token = next()` — reads the next token from the serialized input.
+- `if token == "#": return null` — if the token represents an empty subtree, return `null`.
+- `node = new Node(token)` — creates a new tree node using the token's value.
+- `node.left = build()` — recursively builds the left subtree.
+- `node.right = build()` — recursively builds the right subtree.
+- `return node` — returns the completed subtree. The first call ultimately returns the root.
+
+### 4. Convert the input to the expected serialized sequence
+
+For the tree `[1,2,3,null,null,4,5]`, pre-order traversal visits the root, left subtree, then right subtree, recording `#` for every null child.
+
+The correct serialized input is:
+
+```text
+1,2,#,#,3,4,#,#,5,#,#
+```
+
+### 5. Dry run
+
+| Step | Token read | Action |
+| :---: | :---: | :--- |
+| **1** | `1` | Create node 1 |
+| **2** | `2` | Create node 2 as left child of 1 |
+| **3** | `#` | Node 2's left child is null |
+| **4** | `#` | Node 2's right child is null; return node 2 |
+| **5** | `3` | Create node 3 as right child of 1 |
+| **6** | `4` | Create node 4 as left child of 3 |
+| **7** | `#` | Node 4's left child is null |
+| **8** | `#` | Node 4's right child is null; return node 4 |
+| **9** | `5` | Create node 5 as right child of 3 |
+| **10** | `#` | Node 5's left child is null |
+| **11** | `#` | Node 5's right child is null; return node 5 |
+
+### ✅ Final Output
+
+Output:
+
+# `[1, 2, 3, null, null, 4, 5]`
+
+The reconstructed tree is:
+
+```text
+        1
+       / \
+      2   3
+         / \
+        4   5
+```
+
+Its level-order representation is:
+
+```text
+[1,2,3,null,null,4,5]
+```
+
+Remember: `build()` does not directly output an array. It returns a tree; converting that tree back to level order gives the original array. The serialized input it consumes is `1,2,#,#,3,4,#,#,5,#,#`.
 
 ### Complexity
 
