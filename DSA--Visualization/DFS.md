@@ -183,6 +183,149 @@ hasPathSum(node, remaining):
 // answer = hasPathSum(root, target)
 ```
 
+### Dry Run
+
+Problem: Path Sum
+
+This algorithm solves the Path Sum problem for a binary tree.
+
+It checks whether there is at least one path from the root to a leaf whose node values add up to `targetSum`.
+
+A leaf is a node that has no left or right child.
+
+### 1. Understand the input tree
+
+Input: `root = [5, 4, 8, 11, null, 13, 4, 7, 2, null, null, null, 1]`
+
+`targetSum = 22`
+
+The tree looks like this:
+
+```text
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \      \
+        7    2      1
+```
+
+The successful path is `5 → 4 → 11 → 2`.
+
+### 2. Explain the pseudocode line by line
+
+Line 1:
+
+```text
+hasPathSum(node, remaining):
+```
+
+The function receives:
+- `node`: the current node.
+- `remaining`: the sum still needed to reach the target.
+
+Initially, `remaining = 22`.
+
+Line 2:
+
+```text
+remaining -= node.val
+```
+
+Subtract the current node's value from the remaining target.
+
+For example, at the root node `5`:
+
+`remaining = 22 - 5 = 17`
+
+Now we need another `17` from the path below this node.
+
+Line 3:
+
+```text
+if leaf: return remaining == 0
+```
+
+Check whether the current node is a leaf.
+
+If it is a leaf, return `true` only if `remaining == 0`.
+
+For example, along the path `5 → 4 → 11 → 2`:
+
+\\[ 5+4+11+2=22 \\]
+
+After subtracting each value, the remaining sum becomes `0` at node `2`. Since node `2` is a leaf, the function returns `true`.
+
+If the remaining sum is not zero at a leaf, that path fails.
+
+Line 4:
+
+```text
+if hasPathSum(node.left, remaining): return true
+```
+
+Recursively check the left subtree.
+
+If the left subtree contains a valid root-to-leaf path, immediately return `true`.
+
+Line 5:
+
+```text
+if hasPathSum(node.right, remaining): return true
+```
+
+If the left subtree does not find a valid path, check the right subtree.
+
+If either side succeeds, the function returns `true`.
+
+Line 6:
+
+```text
+return false
+```
+
+If the current node is not a successful leaf and neither subtree finds a valid path, return `false`.
+
+Important: The pseudocode assumes `node` is not null when the function starts. In an implementation, add a null-node check before accessing `node.val`, such as `if node is null: return false`.
+
+### 3. Dry run
+
+Let's follow the path exploration:
+
+| Current node | Remaining before subtraction | Calculation | Remaining after | Result |
+| :---: | :---: | :---: | :---: | :--- |
+| `5` | 22 | `22 - 5` | 17 | Not a leaf, go left |
+| `4` | 17 | `17 - 4` | 13 | Not a leaf, go left |
+| `11` | 13 | `13 - 11` | 2 | Not a leaf, explore children |
+| `7` | 2 | `2 - 7` | -5 | Leaf with `remaining ≠ 0` → Fails |
+| `2` | 2 | `2 - 2` | 0 | Leaf with `remaining == 0` → **Succeeds!** |
+
+The algorithm first explores node `7`. That path fails because it reaches a leaf with remaining sum `-5`.
+
+Then it explores node `2`. That path succeeds because it reaches a leaf with remaining sum `0`.
+
+The recursive call returns `true` from node `2` to node `11`, then to node `4`, and finally to node `5`.
+
+### ✅ Final Output
+
+Output:
+
+# `true`
+
+Because at least one root-to-leaf path has sum `22`:
+
+\\[ \boxed{5+4+11+2=22} \\]
+
+### 🧠 Key idea
+
+Complexity:
+- Time: \\(O(n)\\) in the worst case, because the algorithm may visit every node.
+- Auxiliary space: \\(O(h)\\) for the recursion stack, where \\(h\\) is the tree height.
+
+Interview tip: The path must start at the root and end at a leaf. Finding any group of nodes that adds up to the target is not enough.
+
+
 ### Complexity
 
 | Approach | Time | Space |
