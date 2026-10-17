@@ -1030,7 +1030,7 @@ The sum is \\(5+4+11+2=22\\), so the algorithm saves a copy of `[5, 4, 11, 2]`.
 #### Path 3: `5 → 8 → 4 → 5`
 
 | Node | Remaining after subtraction | Leaf? | Action |
-| :---: | :---: | :---: | :---: |
+| :---: | :---: | :---: | :--- |
 | **5** | 17 | No | Continue |
 | **8** | 9 | No | Continue |
 | **4** | 5 | No | Continue |
