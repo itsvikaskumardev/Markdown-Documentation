@@ -1413,6 +1413,122 @@ lca(node):
 // answer = lca(root)
 ```
 
+### Dry Run
+
+Problem: Lowest Common Ancestor of a Binary Tree
+
+### 1. What does this pseudocode do?
+
+This algorithm finds the Lowest Common Ancestor (LCA) of two nodes in a binary tree.
+
+The LCA is the lowest node in the tree that has both target nodes as descendants. A node can be a descendant of itself.
+
+### 2. Input tree
+
+Input: `root = [3,5,1,6,2,0,8,null,null,7,4]`
+
+`p = 5`, `q = 4`
+
+Node 5 is an ancestor of node 4.
+
+### 3. Line-by-line explanation
+
+Line 1:
+
+```text
+lca(node):
+```
+
+The function takes the current node and searches for the lowest common ancestor of `p` and `q`.
+
+Line 2:
+
+```text
+if node is null: return null
+```
+
+If the current node does not exist, return `null`.
+
+There is no target node in an empty subtree.
+
+Line 3:
+
+```text
+if node is p or node is q: return node
+```
+
+If the current node is either target node, return it immediately.
+
+For example, when DFS reaches node `5`, it returns node `5` without searching deeper from that call.
+
+Important: `p` and `q` refer to the target nodes themselves, not merely any node with the same value.
+
+Line 4:
+
+```text
+left = lca(node.left)
+```
+
+Search the left subtree recursively. The result tells us whether either target was found there.
+
+Line 5:
+
+```text
+right = lca(node.right)
+```
+
+Search the right subtree recursively for the targets.
+
+Line 6:
+
+```text
+if left and right: return node
+```
+
+If both results are non-null, one target was found in the left subtree and the other in the right subtree.
+
+Therefore, the current node is their lowest common ancestor.
+
+Line 7:
+
+```text
+return left or right
+```
+
+If only one side found a target, return that result upward to the parent.
+
+If neither side found anything, both are null, so return null.
+
+### 4. Dry run
+
+We need to find the LCA of nodes `5` and `4`.
+
+1. Start at node `3`. It is neither target, so search both subtrees.
+2. Search the left subtree and reach node `5`. Since `5` is a target, return node `5` immediately.
+3. The recursive search below node `5` is not needed in that call. The returned node `5` is passed upward.
+4. The search of node `3`'s right subtree (rooted at `1`) cannot find node `4`, so it returns `null`.
+5. Back at node `3`, `left = 5` and `right = null`. Only one side returned a target, so the function returns node `5`.
+
+Why is node `5` the answer? Node `5` is itself one of the targets and is an ancestor of node `4`.
+
+### ✅ Final Output
+
+Output:
+
+# `5`
+
+`answer = node 5`
+
+Output: `5`
+
+### 🧠 Key idea
+
+Complexity:
+- Time: \\(O(n)\\) in the worst case, because the algorithm may visit every node.
+- Auxiliary space: \\(O(h)\\) for the recursive call stack, where \\(h\\) is the tree height.
+
+Interview tip: The LCA can be one of the target nodes itself. Here, node `5` is the LCA because node `4` is inside its subtree.
+
 ### Complexity
 
 | Approach | Time | Space |
