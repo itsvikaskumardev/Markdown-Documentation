@@ -1275,7 +1275,104 @@ same(p, q):
     return same(p.left, q.left) AND same(p.right, q.right)
 
 // answer = same(p, q)
+### Dry Run
+
+Problem: Same Tree
+
+### 1. What does this pseudocode do?
+
+This algorithm checks whether two binary trees are identical.
+
+Two trees are identical only when:
+
+- Both have the same structure.
+- Corresponding nodes have the same values.
+
+Even if both trees contain the same values, they are not identical if the values are arranged differently.
+
+### 2. Input trees
+
+Input:
+
+- `p = [1,2,1]`
+- `q = [1,1,2]`
+
+Tree P
+
+Tree Q
+
+Both trees have the same shape, but their left and right child values differ.
+
+### 3. Line-by-line explanation
+
+Line 1:
+
+```text
+if p is null and q is null: return true
 ```
+
+If both nodes are empty, return `true`.
+
+There is nothing to compare, so this part of the trees matches.
+
+Line 2:
+
+```text
+if p is null or q is null: return false
+```
+
+If only one node is empty, return `false`.
+
+The tree structures are different at that position.
+
+Line 3:
+
+```text
+if p.val != q.val: return false
+```
+
+Compare the values of the current nodes.
+
+If they are different, the trees are not identical.
+
+Line 4:
+
+```text
+return same(p.left, q.left) AND same(p.right, q.right)
+```
+
+Recursively compare the left children, then the right children.
+
+The `AND` means both comparisons must return `true` for the entire result to be `true`.
+
+### 4. Dry run
+
+| Step | Node in P | Node in Q | Comparison | Result |
+| :---: | :---: | :---: | :---: | :---: |
+| **1** | `1` | `1` | Root values match | Continue |
+| **2** | `2` | `1` | Left child values differ | `false` |
+
+The algorithm can stop at step 2 because it has already found a mismatch.
+
+Even though the root values match, the left child of `P` is `2`, while the left child of `Q` is `1`.
+
+### ✅ Final Output
+
+Output:
+
+# `false`
+
+`answer = false`
+
+Why? The trees have different corresponding node values, so they are not identical.
+
+### 🧠 Key idea
+
+Complexity:
+- Time: \\(O(n)\\) in the worst case, where \\(n\\) is the number of nodes examined.
+- Auxiliary space: \\(O(h)\\) for the recursion stack, where \\(h\\) is the tree height.
+
+Interview tip: Identical trees require both matching values and matching structure. Having the same collection of values is not enough.
 
 ### Complexity
 
