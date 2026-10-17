@@ -880,6 +880,182 @@ dfs(node, remaining):
 // answer = results
 ```
 
+### Dry Run
+
+Problem: Path Sum II
+
+This algorithm solves Path Sum II. It finds all root-to-leaf paths whose node values add up to `targetSum`.
+
+Unlike the previous problem, which returned only `true` or `false`, this algorithm stores every valid path in `results`.
+
+### 1. Understand the input tree
+
+Input: `root = [5, 4, 8, 11, null, 13, 4, 7, 2, null, null, 5, 1]`
+
+`targetSum = 22`
+
+The tree looks like this:
+
+```text
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \    / \
+        7    2  5   1
+```
+
+The valid paths are highlighted in the dry run below.
+
+### 2. Explain the pseudocode line by line
+
+Line 1:
+
+```text
+dfs(node, remaining):
+```
+
+This function explores the tree using Depth-First Search (DFS).
+
+- `node` is the current node.
+- `remaining` is how much sum is still needed.
+- `path` stores the nodes in the current path.
+- `results` stores all valid paths.
+
+Initially, `remaining = 22`, `path = []`, and `results = []`.
+
+Line 2:
+
+```text
+path.push(node.val)
+remaining -= node.val
+```
+
+Step A: `path.push(node.val)`
+
+Add the current node's value to the path.
+
+Step B: `remaining -= node.val`
+
+Subtract the current node's value from the remaining target.
+
+For example, at node `5`:
+
+- `path = [5]`
+- `remaining = 22 - 5 = 17`
+
+Then at node `4`:
+
+- `path = [5, 4]`
+- `remaining = 17 - 4 = 13`
+
+We keep going deeper until we reach a leaf or finish exploring that branch.
+
+Line 3:
+
+```text
+if leaf and remaining == 0:
+    results.push(copy of path)
+```
+
+Check two conditions:
+
+1. The current node must be a leaf.
+2. The remaining sum must equal `0`.
+
+If both are true, save a copy of the current path in `results`.
+
+Why a copy? Because `path` will change as DFS continues and backtracks. Saving a copy preserves the path exactly as it was when the answer was found.
+
+Line 4:
+
+```text
+dfs(node.left, remaining)
+```
+
+Recursively explore the left child using the updated remaining sum.
+
+Line 5:
+
+```text
+dfs(node.right, remaining)
+```
+
+After exploring the left side, explore the right child.
+
+In a complete implementation, call DFS only when the child is not null, or make the function immediately return for a null node.
+
+Line 6:
+
+```text
+path.pop()
+```
+
+This is backtracking.
+
+Remove the current node's value from `path` after exploring its children. This allows DFS to try another branch without keeping values from the previous branch.
+
+For example:
+
+- Before backtracking: `path = [5, 4, 11, 7]`
+- After `path.pop()`: `path = [5, 4, 11]`
+
+Now the algorithm can explore node `2` using the correct path.
+
+### 3. Dry run
+
+#### Path 1: `5 → 4 → 11 → 7`
+
+| Node | Remaining after subtraction | Leaf? | Action |
+| :---: | :---: | :---: | :---: |
+| **5** | 17 | No | Continue |
+| **4** | 13 | No | Continue |
+| **11** | 2 | No | Continue |
+| **7** | -5 | Yes | Not saved |
+
+The sum is \\(5+4+11+7=27\\), so this path is not valid.
+
+#### Path 2: `5 → 4 → 11 → 2`
+
+| Node | Remaining after subtraction | Leaf? | Action |
+| :---: | :---: | :---: | :---: |
+| **5** | 17 | No | Continue |
+| **4** | 13 | No | Continue |
+| **11** | 2 | No | Continue |
+| **2** | 0 | Yes | Save path |
+
+The sum is \\(5+4+11+2=22\\), so the algorithm saves a copy of `[5, 4, 11, 2]`.
+
+#### Path 3: `5 → 8 → 4 → 5`
+
+| Node | Remaining after subtraction | Leaf? | Action |
+| :---: | :---: | :---: | :---: |
+| **5** | 17 | No | Continue |
+| **8** | 9 | No | Continue |
+| **4** | 5 | No | Continue |
+| **5** | 0 | Yes | Save path |
+
+The sum is \\(5+8+4+5=22\\), so the algorithm saves `[5, 8, 4, 5]`.
+
+The other root-to-leaf paths do not produce the target sum.
+
+### ✅ Final Output
+
+Output:
+
+# `[[5, 4, 11, 2], [5, 8, 4, 5]]`
+
+The order follows the DFS traversal, exploring the left subtree before the right subtree.
+
+### 🧠 Key idea
+
+Complexity:
+- Time: \\(O(nh)\\) in the general case when copying each valid path costs up to \\(O(h)\\), plus the cost of traversing the tree. Here, \\(n\\) is the number of nodes and \\(h\\) is the tree height.
+- Auxiliary space: \\(O(h)\\) for the recursion stack and current path, excluding the stored results.
+
+Interview tip: `push()` chooses a node, recursive calls explore its descendants, and `pop()` removes the node when returning. This choose–explore–undo pattern is the core idea of backtracking.
+
 ### Complexity
 
 | Approach | Time | Space |
