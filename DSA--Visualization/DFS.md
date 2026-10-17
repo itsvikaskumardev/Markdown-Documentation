@@ -1567,6 +1567,211 @@ gain(node):
 
 // answer = best
 ```
+### Dry Run
+
+Problem: Binary Tree Maximum Path Sum
+
+### 1. What does this pseudocode do?
+
+This algorithm solves the Binary Tree Maximum Path Sum problem.
+
+It finds the maximum sum of values along any path in the tree.
+
+A path:
+
+- Can start and end at any nodes.
+- Must follow connections between parent and child nodes.
+- Cannot visit the same node twice.
+- Does not have to pass through the root.
+
+### 2. Input tree
+
+Input: `root = [-10,9,20,null,null,15,7]`
+
+Best path: 15 → 20 → 7
+
+The best path is `15 → 20 → 7`.
+
+Its sum is:
+
+\\[ 15+20+7=\boxed{42} \\]
+
+Let's understand how the pseudocode finds this result.
+
+### 3. Line-by-line explanation
+
+Line 1:
+
+```text
+best = −∞
+```
+
+`best` stores the largest path sum found so far.
+
+We initialize it to negative infinity so that even if all node values are negative, the algorithm can still return the largest single-node value.
+
+For example, if the tree contained only `-5`, the answer would be `-5`, not `0`.
+
+Line 2:
+
+```text
+gain(node):
+```
+
+This function calculates the maximum sum that can be extended upward from the current node to its parent.
+
+It also updates `best` with the best complete path found at the current node.
+
+Line 3:
+
+```text
+if node is null: return 0
+```
+
+If the node is empty, return `0`.
+
+An empty branch contributes nothing to the path sum.
+
+Line 4:
+
+```text
+L = max(gain(node.left), 0)
+```
+
+Calculate the maximum contribution from the left subtree.
+
+If the left subtree's contribution is negative, replace it with `0` because adding a negative sum would reduce the total.
+
+For example:
+
+- Left contribution = `9` → use `9`.
+- Left contribution = `-10` → use `0`.
+
+Line 5:
+
+```text
+R = max(gain(node.right), 0)
+```
+
+Do the same for the right subtree.
+
+We keep the right contribution only when it improves the path sum.
+
+Line 6:
+
+```text
+best = max(best, node.val + L + R)
+```
+
+Calculate the best path that bends at the current node.
+
+The path can include:
+
+- The current node's value.
+- The best positive contribution from the left.
+- The best positive contribution from the right.
+
+We compare this sum with the previous `best` and keep the larger one.
+
+For node `20`:
+
+- `L = 15`
+- `R = 7`
+- Path sum = `20 + 15 + 7 = 42`
+- `best = max(previous best, 42) = 42`
+
+This is how the algorithm discovers the best complete path.
+
+Line 7:
+
+```text
+return node.val + max(L, R)
+```
+
+Return the maximum gain that can be extended to the parent.
+
+Why not return `node.val + L + R`?
+
+Because a path extended to the parent can only go through one child branch. If we included both branches, the path would split into two directions and could not be extended as a single path.
+
+At node `20`:
+
+- Complete path for `best` = `15 + 20 + 7 = 42`.
+- Gain returned to the parent = `20 + max(15, 7) = 35`.
+
+The parent can extend through either `15` or `7`, but not both.
+
+### 4. Dry run step by step
+
+The recursion visits the children before processing their parent.
+
+| Current node | `L` | `R` | Path sum: `node.val + L + R` | Gain returned | `best` |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| `9` | 0 | 0 | 9 | 9 | 9 |
+| `15` | 0 | 0 | 15 | 15 | 15 |
+| `7` | 0 | 0 | 7 | 7 | 15 |
+| `20` | 15 | 7 | 42 | 35 | 42 |
+| `-10` | 9 | 35 | 34 | 25 | 42 |
+
+Let's understand the most important calculations.
+
+#### At node `20`:
+
+Its children are `15` and `7`.
+
+```text
+L = max(15, 0) = 15
+R = max(7, 0) = 7
+
+best = max(15, 20 + 15 + 7)
+     = max(15, 42)
+     = 42
+
+return 20 + max(15, 7)
+     = 35
+```
+
+The best path through node `20` has sum `42`.
+
+#### At node `-10`:
+
+Its left child contributes `9`, and its right subtree returns a gain of `35`.
+
+```text
+best = max(42, -10 + 9 + 35)
+     = max(42, 34)
+     = 42
+
+return -10 + max(9, 35)
+     = 25
+```
+
+Including `-10` cannot improve the best sum, so `best` remains `42`.
+
+### ✅ Final Output
+
+Output:
+
+# `42`
+
+`answer = best = 42`
+
+The maximum-sum path is:
+
+`15 → 20 → 7`
+
+\\[ 15+20+7=\boxed{42} \\]
+
+### 🧠 Key idea
+
+Complexity:
+- Time: \\(O(n)\\) — each node is visited once.
+- Auxiliary space: \\(O(h)\\) — recursion stack, where \\(h\\) is the tree height. In the worst case, this is \\(O(n)\\).
+
+Interview tip: Remember the difference:
+
+- `best = node.val + L + R` considers both branches to find the complete maximum path.
+- `return node.val + max(L, R)` returns only one branch so the parent can extend the path.
 
 ### Complexity
 
