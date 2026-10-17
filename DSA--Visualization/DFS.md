@@ -1131,6 +1131,116 @@ invert(node):
 
 // answer = inverted root
 ```
+### Dry Run
+
+Problem: Invert Binary Tree
+
+### 1. What does this pseudocode do?
+
+This algorithm solves Invert Binary Tree. It mirrors a binary tree by swapping the left and right child of every node.
+
+### 2. Input tree
+
+Input: `root = [4,2,7,1,3,6,9]`
+
+Before inversion
+
+After inversion
+
+### 3. Line-by-line explanation
+
+Line 1:
+
+```text
+invert(node):
+```
+
+The function takes the current tree node and inverts the subtree rooted at that node.
+
+Line 2:
+
+```text
+if node is null: return
+```
+
+If the node does not exist, stop the function.
+
+This is the base case. There is nothing to swap for a null node.
+
+Line 3:
+
+```text
+swap node.left, node.right
+```
+
+Swap the current node's left and right children.
+
+For example, at node `4`:
+
+- Before: left child = `2`, right child = `7`.
+- After: left child = `7`, right child = `2`.
+
+The same operation will happen at every other node.
+
+This is called pre-order traversal because we perform the action on the current node before visiting its children.
+
+Line 4:
+
+```text
+invert(node.left)
+```
+
+Recursively invert the left subtree after the swap.
+
+Since the children have already been swapped, this now visits the subtree that was originally on the right.
+
+Line 5:
+
+```text
+invert(node.right)
+```
+
+Recursively invert the right subtree, which was originally on the left.
+
+Line 6:
+
+```text
+return
+```
+
+Finish processing the current subtree. After all recursive calls finish, the entire tree is mirrored.
+
+### 4. Dry run
+
+| Current node | Left and right before swap | Left and right after swap |
+| :---: | :---: | :---: |
+| `4` | `2`, `7` | `7`, `2` |
+| `7` | `6`, `9` | `9`, `6` |
+| `9` | `null`, `null` | `null`, `null` |
+| `6` | `null`, `null` | `null`, `null` |
+| `2` | `1`, `3` | `3`, `1` |
+| `3` | `null`, `null` | `null`, `null` |
+| `1` | `null`, `null` | `null`, `null` |
+
+Leaf nodes have no children, so swapping their children changes nothing.
+
+### ✅ Final Output
+
+Output:
+
+# `[4, 7, 2, 9, 6, 3, 1]`
+
+`inverted root = [4,7,2,9,6,3,1]`
+
+Answer: `[4,7,2,9,6,3,1]`
+
+### 🧠 Key idea
+
+Complexity:
+- Time: \\(O(n)\\) — every node is visited once.
+- Auxiliary space: \\(O(h)\\) — the recursive call stack, where \\(h\\) is the tree height.
+
+Interview tip: Inversion swaps the children at every node. It does not simply reverse the order of the array representation.
 
 ### Complexity
 
